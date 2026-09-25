@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/base.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+  <script src="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: var(--efkt-white); }
+    a { color: var(--text-link); text-decoration: none; }
+    a:hover { color: var(--text-link-hover); }
+  </style>
+</helmet>
+
+<div style="font-family:var(--efkt-font);color:var(--text-body);min-height:100vh;display:flex;flex-direction:column">
+
+  <header style="padding:14px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;background:var(--surface-dark);z-index:20">
+    <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Logo" variant="white" base="assets/logo/" width="110" style="{{ logoStyle }}" hint-size="110px,36px"></x-import>
+    <nav style="display:flex;gap:24px;margin-left:12px;flex-shrink:0">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2">
+        <button onClick="{{ t.go }}" style="border:none;background:transparent;padding:0;cursor:pointer;font-family:var(--efkt-font);font-size:16px;font-weight:{{ t.weight }};color:{{ t.color }};white-space:nowrap">{{ t.label }}</button>
+      </sc-for>
+    </nav>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:20px;flex-shrink:0">
+      <a href="https://sp.efkt.com/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:25px;background:var(--efkt-coral);font-size:16px;font-weight:600;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-coral-hover)">
+        <i class="ph ph-sign-in" style="font-size:20px"></i> Log in SPA
+      </a>
+      <button onClick="{{ goProfile }}" title="Min profil" style="display:flex;align-items:center;gap:10px;padding:4px 12px 4px 4px;border:none;border-radius:25px;background:transparent;cursor:pointer;font-family:var(--efkt-font);text-align:left;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.10)">
+        <span style="width:34px;height:34px;min-width:34px;border-radius:50%;background:var(--efkt-mint);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--efkt-navy)">{{ me.initials }}</span>
+        <span style="font-size:14px;font-weight:500;color:var(--efkt-white);white-space:nowrap">{{ me.name }}</span>
+        <i class="ph ph-caret-down" style="font-size:14px;color:rgba(255,255,255,0.7)"></i>
+      </button>
+    </div>
+  </header>
+
+  <sc-if value="{{ onHome }}" hint-placeholder-val="{{ true }}">
+
+    <section style="position:relative;min-height:520px;display:flex;flex-direction:column;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="learner-hero" src="assets/photo-hero.webp" shape="rect" placeholder="Drop a wide interior photo"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0.45) 0%, rgba(12,14,57,0.42) 30%, rgba(12,14,57,0.78) 62%, rgba(12,14,57,0.92) 100%);pointer-events:none"></div>
+      <div style="position:relative;flex:1;padding:48px;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;max-width:760px;pointer-events:none">
+        <div style="font-size:14px;font-weight:600;color:var(--efkt-white)">Photographer Dashboard</div>
+        <h1 style="margin:0;font-size:70px;line-height:1;letter-spacing:-0.065em;font-weight:300;color:var(--efkt-white)">Hei, <span style="font-weight:800">{{ me.first }}</span></h1>
+        <div style="font-size:20px;font-weight:300;color:var(--efkt-white);text-wrap:pretty">{{ heroLine }}</div>
+      </div>
+    </section>
+
+    <sc-if value="{{ hasNews }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:64px 48px 0">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:24px">
+          <h2 style="margin:0;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300">Siste <span style="font-weight:800">nytt</span></h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:stretch">
+          <button onClick="{{ featured.open }}" style="height:100%;position:relative;padding:0;border:none;border-radius:20px;overflow:hidden;cursor:pointer;background:var(--efkt-offwhite);font-family:var(--efkt-font);text-align:left;min-height:380px;box-shadow:0 4px 24px rgba(12,14,57,0.06);transition:box-shadow 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="box-shadow:0 8px 32px rgba(12,14,57,0.10)">
+            <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ featured.slotId }}" src="{{ featured.photo }}" shape="rect" placeholder="{{ featured.slotHint }}"></image-slot></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0) 25%, rgba(12,14,57,0.85) 100%);pointer-events:none"></div>
+            <div style="position:relative;height:100%;min-height:380px;padding:32px;display:flex;flex-direction:column;justify-content:flex-end;gap:16px;pointer-events:none">
+              <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:25px;background:var(--efkt-coral);font-size:14px;font-weight:600;color:var(--efkt-white)">
+                <i class="ph-bold ph-push-pin" style="font-size:12px"></i>{{ featured.category }}
+              </span>
+              <div style="font-size:32px;line-height:1.1;letter-spacing:-0.04em;font-weight:800;color:var(--efkt-white);text-wrap:pretty">{{ featured.title }}</div>
+              <div style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);max-width:520px;text-wrap:pretty">{{ featured.lead }}</div>
+              <div style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.75)">{{ featured.date }} · {{ featured.author }}</div>
+            </div>
+          </button>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <sc-for list="{{ newsList }}" as="n" hint-placeholder-count="2">
+              <button onClick="{{ n.open }}" style="flex:1;display:flex;gap:20px;padding:0;border:1px solid var(--border-default);border-radius:20px;overflow:hidden;background:var(--surface-card);cursor:pointer;font-family:var(--efkt-font);text-align:left;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-offwhite)">
+                <span style="width:160px;min-width:160px;position:relative;display:inline-block;pointer-events:none"><image-slot id="{{ n.slotId }}" src="{{ n.photo }}" shape="rect" placeholder="{{ n.slotHint }}"></image-slot></span>
+                <span style="min-width:0;flex:1;display:flex;flex-direction:column;gap:8px;padding:24px 24px 24px 0">
+                  <span style="font-size:14px;font-weight:600;color:var(--efkt-coral)">{{ n.category }}</span>
+                  <span style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--text-body);text-wrap:pretty">{{ n.title }}</span>
+                  <span style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ n.lead }}</span>
+                  <span style="margin-top:auto;font-size:14px;font-weight:300;color:var(--text-muted)">{{ n.date }} · {{ n.author }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <div style="margin-top:96px;background:var(--efkt-mint);padding-bottom:96px">
+    <sc-if value="{{ hasCurrent }}" hint-placeholder-val="{{ true }}">
+      <section style="padding:64px 48px 0">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:32px">
+          <div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+              <i class="ph ph-graduation-cap" style="font-size:24px;color:var(--efkt-coral)"></i>
+              <span style="font-size:14px;font-weight:600;color:var(--text-muted)">EFKT Academy</span>
+            </div>
+            <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Fortsett <span style="font-weight:800">læringen</span></h2>
+          </div>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ currentLine }}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:24px;align-items:stretch">
+          <sc-for list="{{ currentCourses }}" as="c" hint-placeholder-count="2">
+            <button onClick="{{ c.open }}" style="height:100%;position:relative;padding:0;border:none;border-radius:20px;overflow:hidden;cursor:pointer;background:var(--efkt-offwhite);font-family:var(--efkt-font);text-align:left;box-shadow:0 4px 24px rgba(12,14,57,0.06);transition:box-shadow 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="box-shadow:0 8px 32px rgba(12,14,57,0.10)">
+              <div style="position:relative;height:300px">
+                <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ c.slotId }}" src="{{ c.photo }}" shape="rect" placeholder="{{ c.slotHint }}"></image-slot></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0) 30%, rgba(12,14,57,0.72) 100%);pointer-events:none"></div>
+                <div style="position:absolute;inset:0;padding:28px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;pointer-events:none">
+                  <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)">{{ c.category }}</div>
+                  <div style="font-size:32px;line-height:1.1;letter-spacing:-0.04em;font-weight:800;color:var(--efkt-white);text-wrap:pretty">{{ c.title }}</div>
+                </div>
+              </div>
+              <div style="padding:24px 28px;background:var(--efkt-white)">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:12px">
+                  <span style="font-size:16px;font-weight:600;color:var(--text-body)">{{ c.pctLabel }}</span>
+                  <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ c.counter }}</span>
+                </div>
+                <div style="height:8px;border-radius:4px;background:var(--efkt-border);overflow:hidden">
+                  <div style="height:8px;border-radius:4px;width:{{ c.barWidth }};background:var(--efkt-coral);transition:width 320ms cubic-bezier(0.4,0,0.2,1)"></div>
+                </div>
+                <div style="margin-top:16px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--efkt-coral)">{{ c.nextLabel }} <i class="ph ph-arrow-right" style="font-size:14px"></i></div>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-for list="{{ sections }}" as="s" hint-placeholder-count="3">
+      <section style="padding:64px 48px 0">
+        <div style="height:1px;background:rgba(55,59,84,0.15);margin-bottom:32px"></div>
+        <div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;flex-wrap:wrap">
+          <i class="ph ph-{{ s.icon }}" style="font-size:40px;color:var(--efkt-coral)"></i>
+          <div style="min-width:0;flex:1">
+            <h2 style="margin:0 0 6px;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300">{{ s.thin }} <span style="font-weight:800">{{ s.fat }}</span></h2>
+            <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ s.desc }}</div>
+          </div>
+          <div style="font-size:14px;font-weight:500;color:var(--text-muted);white-space:nowrap">{{ s.progressLine }}</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:24px;align-items:stretch">
+          <sc-for list="{{ s.courses }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.open }}" style="height:100%;position:relative;padding:0;border:none;border-radius:20px;overflow:hidden;cursor:pointer;background:var(--efkt-white);font-family:var(--efkt-font);text-align:left;display:flex;flex-direction:column;box-shadow:0 4px 24px rgba(12,14,57,0.06);transition:box-shadow 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="box-shadow:0 8px 32px rgba(12,14,57,0.10)">
+              <div style="position:relative;height:230px">
+                <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ c.slotId }}" src="{{ c.photo }}" shape="rect" placeholder="{{ c.slotHint }}"></image-slot></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0) 35%, rgba(12,14,57,0.75) 100%);pointer-events:none"></div>
+                <div style="position:absolute;inset:0;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;pointer-events:none">
+                  <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:25px;background:{{ c.statusBg }};font-size:14px;font-weight:600;color:{{ c.statusFg }}">
+                    <i class="ph-bold ph-{{ c.statusIcon }}" style="font-size:12px"></i>{{ c.statusLabel }}
+                  </span>
+                  <div style="font-size:24px;line-height:1.15;letter-spacing:-0.03em;font-weight:800;color:var(--efkt-white);text-wrap:pretty">{{ c.title }}</div>
+                </div>
+              </div>
+              <div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+                <div style="min-height:44px;font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ c.desc }}</div>
+                <sc-if value="{{ c.showBar }}" hint-placeholder-val="{{ true }}">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px">
+                      <span style="font-size:14px;font-weight:600;color:var(--text-body)">{{ c.pctLabel }}</span>
+                      <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ c.counter }}</span>
+                    </div>
+                    <div style="height:8px;border-radius:4px;background:var(--efkt-border);overflow:hidden">
+                      <div style="height:8px;border-radius:4px;width:{{ c.barWidth }};background:{{ c.barColor }}"></div>
+                    </div>
+                  </div>
+                </sc-if>
+                <div style="margin-top:auto;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--efkt-coral)">{{ c.cta }} <i class="ph ph-arrow-right" style="font-size:14px"></i></div>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-for>
+    </div>
+
+    <sc-if value="{{ hasReference }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:96px 48px;background:var(--surface-dark)">
+        <div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:32px;flex-wrap:wrap">
+          <i class="ph ph-books" style="font-size:40px;color:var(--efkt-coral)"></i>
+          <div style="min-width:0;flex:1">
+            <h2 style="margin:0 0 6px;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300;color:var(--efkt-white)">Referanse<span style="font-weight:800">materiale</span></h2>
+            <div style="font-size:16px;font-weight:300;color:rgba(255,255,255,0.75);text-wrap:pretty">Slå opp her mens du jobber. Ingen fremdrift, ingen quiz.</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;align-items:stretch">
+          <sc-for list="{{ referenceCourses }}" as="c" hint-placeholder-count="3">
+            <button onClick="{{ c.open }}" style="height:100%;display:flex;align-items:center;gap:20px;padding:20px;border:none;border-radius:20px;background:rgba(255,255,255,0.08);cursor:pointer;font-family:var(--efkt-font);text-align:left;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.14)">
+              <span style="width:80px;height:80px;min-width:80px;border-radius:12px;background:rgba(255,255,255,0.12);display:inline-flex;align-items:center;justify-content:center"><i class="ph ph-{{ c.icon }}" style="font-size:32px;color:var(--efkt-coral)"></i></span>
+              <div style="min-width:0;flex:1">
+                <div style="min-height:44px;font-size:16px;font-weight:600;color:var(--efkt-white);text-wrap:pretty">{{ c.title }}</div>
+                <div style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.7);margin-top:6px">{{ c.meta }}</div>
+              </div>
+              <i class="ph ph-arrow-up-right" style="font-size:20px;color:var(--efkt-coral)"></i>
+            </button>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <section style="padding:96px 48px;background:var(--efkt-offwhite)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:stretch">
+
+        <div style="height:100%;background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:24px">
+          <h2 style="margin:0;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300">Kontakt <span style="font-weight:800">oss</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ contactIntro }}</div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px">
+            <sc-for list="{{ teamleaders }}" as="t" hint-placeholder-count="4">
+              <div style="padding:20px;background:var(--efkt-offwhite);border-radius:20px;display:flex;flex-direction:column;gap:8px">
+                <div style="font-size:14px;font-weight:600;color:var(--efkt-coral)">{{ t.region }}</div>
+                <div style="font-size:16px;font-weight:600">{{ t.name }}</div>
+                <a href="{{ t.mailHref }}" style="font-size:14px;font-weight:300">{{ t.mail }}</a>
+                <a href="{{ t.mobHref }}" style="font-size:14px;font-weight:300">mob: {{ t.mob }}</a>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="height:1px;background:var(--border-default)"></div>
+
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <sc-for list="{{ contactNotes }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex;gap:16px">
+                <i class="ph ph-{{ n.icon }}" style="font-size:24px;color:var(--efkt-coral)"></i>
+                <div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px">
+                  <div style="font-size:16px;font-weight:300;color:var(--text-body);text-wrap:pretty">{{ n.label }}</div>
+                  <a href="{{ n.href }}" style="font-size:16px;font-weight:600">{{ n.value }}</a>
+                  <sc-if value="{{ n.hasNote }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ n.note }}</div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:auto;padding:20px;background:var(--efkt-sand);border-radius:20px;font-size:16px;font-weight:600;text-wrap:pretty">{{ contactFooter }}</div>
+        </div>
+
+        <div style="height:100%;background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:24px">
+          <h2 style="margin:0;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300">Viktige <span style="font-weight:800">lenker</span></h2>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ links }}" as="l" hint-placeholder-count="7">
+              <a href="{{ l.url }}" target="_blank" style="display:flex;align-items:center;gap:16px;padding:20px;background:var(--efkt-offwhite);border-radius:20px;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-gray-100)">
+                <i class="ph ph-{{ l.icon }}" style="font-size:24px;color:var(--efkt-coral)"></i>
+                <span style="min-width:0;flex:1;display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:16px;font-weight:600;color:var(--text-body)">{{ l.label }}</span>
+                  <sc-if value="{{ l.hasSub }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ l.sub }}</span>
+                  </sc-if>
+                </span>
+                <i class="ph ph-arrow-up-right" style="font-size:20px;color:var(--efkt-coral)"></i>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ onCatalogue }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:64px 48px 0">
+      <h1 style="margin:0 0 12px;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Kurs<span style="font-weight:800">katalog</span></h1>
+      <div style="font-size:16px;font-weight:300;color:var(--text-muted);max-width:640px;text-wrap:pretty">Åpent for alle på teamet ditt. Meld deg på når du har tid.</div>
+    </section>
+    <section style="padding:32px 48px 96px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:24px;align-items:stretch">
+      <sc-for list="{{ catalogueCourses }}" as="c" hint-placeholder-count="3">
+        <div style="height:100%;border-radius:20px;overflow:hidden;background:var(--efkt-white);border:1px solid var(--border-default);display:flex;flex-direction:column">
+          <div style="position:relative;height:200px">
+            <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ c.slotId }}" src="{{ c.photo }}" shape="rect" placeholder="{{ c.slotHint }}"></image-slot></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0) 40%, rgba(12,14,57,0.7) 100%);pointer-events:none"></div>
+            <div style="position:absolute;inset:0;padding:24px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;pointer-events:none">
+              <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)">{{ c.category }}</div>
+              <div style="font-size:24px;line-height:1.15;letter-spacing:-0.03em;font-weight:800;color:var(--efkt-white)">{{ c.title }}</div>
+            </div>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:20px;flex:1">
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ c.desc }}</div>
+            <div style="margin-top:auto">
+              <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ c.enrol }}" hint-size="auto,50px">{{ c.cta }}</x-import>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ onNews }}" hint-placeholder-val="{{ false }}">
+    <section style="position:relative;height:480px;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ ns.slotId }}" src="{{ ns.photo }}" shape="rect" placeholder="{{ ns.slotHint }}"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0.55) 0%, rgba(12,14,57,0.15) 40%, rgba(12,14,57,0.85) 100%);pointer-events:none"></div>
+      <div style="position:relative;height:100%;padding:32px 48px 48px;display:flex;flex-direction:column">
+        <button onClick="{{ backHome }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.20);backdrop-filter:blur(8px);border-radius:25px;padding:10px 20px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white)">
+          <i class="ph ph-arrow-left" style="font-size:14px"></i> Dashboard
+        </button>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:16px;max-width:900px;pointer-events:none">
+          <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)">{{ ns.category }}</div>
+          <h1 style="margin:0;font-size:54px;line-height:1.05;letter-spacing:-0.06em;font-weight:300;color:var(--efkt-white);text-wrap:pretty">{{ ns.titleThin }} <span style="font-weight:800">{{ ns.titleFat }}</span></h1>
+          <div style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.9)">{{ ns.meta }}</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:64px 48px 96px;display:flex;justify-content:center">
+      <article style="width:100%;max-width:760px;display:flex;flex-direction:column;gap:28px">
+        <div style="font-size:20px;font-weight:300;line-height:1.5;color:var(--text-body);text-wrap:pretty">{{ ns.lead }}</div>
+        <div style="height:1px;background:var(--border-default)"></div>
+        <sc-for list="{{ nsBlocks }}" as="p" hint-placeholder-count="4">
+                <div>
+                  <sc-if value="{{ p.heading }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300;color:var(--text-body)">{{ p.thin }} <span style="font-weight:800">{{ p.fat }}</span></div>
+                  </sc-if>
+                  <sc-if value="{{ p.paragraph }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                  </sc-if>
+                  <sc-if value="{{ p.image }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <div style="height:380px;border-radius:20px;overflow:hidden;pointer-events:none"><image-slot id="{{ p.slotId }}" src="{{ p.src }}" shape="rounded" radius="20" placeholder="{{ p.hint }}"></image-slot></div>
+                      <sc-if value="{{ p.hasCaption }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ p.caption }}</div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.imagetext }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:{{ p.rowDir }};gap:24px;align-items:center;flex-wrap:wrap">
+                      <div style="flex:1;min-width:240px;height:260px;border-radius:20px;overflow:hidden;pointer-events:none"><image-slot id="{{ p.slotId }}" src="{{ p.src }}" shape="rounded" radius="20" placeholder="{{ p.hint }}"></image-slot></div>
+                      <div style="flex:1;min-width:240px;font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.quote }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:32px;background:var(--efkt-offwhite);border-radius:20px;display:flex;flex-direction:column;gap:12px">
+                      <i class="ph ph-quotes" style="font-size:32px;color:var(--efkt-coral)"></i>
+                      <div style="font-size:20px;font-weight:300;line-height:1.5;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                      <div style="font-size:14px;font-weight:600;color:var(--text-muted)">{{ p.who }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.list }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <sc-for list="{{ p.items }}" as="it" hint-placeholder-count="3">
+                        <div style="display:flex;gap:14px;align-items:flex-start">
+                          <i class="ph-bold ph-check" style="font-size:16px;color:var(--efkt-coral);margin-top:5px"></i>
+                          <span style="font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ it }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.button }}" hint-placeholder-val="{{ false }}">
+                    <a href="{{ p.url }}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:25px;background:var(--efkt-coral);color:var(--efkt-white);font-size:16px;font-weight:600;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-coral-hover)">{{ p.bLabel }} <i class="ph ph-arrow-up-right" style="font-size:16px"></i></a>
+                  </sc-if>
+                  <sc-if value="{{ p.divider }}" hint-placeholder-val="{{ false }}">
+                    <div style="height:1px;background:var(--border-default)"></div>
+                  </sc-if>
+                </div>
+              </sc-for>
+      </article>
+    </section>
+
+    <section style="padding:64px 48px 96px;background:var(--efkt-offwhite)">
+      <h2 style="margin:0 0 32px;font-size:32px;line-height:1.1;letter-spacing:-0.045em;font-weight:300">Flere <span style="font-weight:800">nyheter</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:24px;align-items:stretch">
+        <sc-for list="{{ nsMore }}" as="n" hint-placeholder-count="2">
+          <button onClick="{{ n.open }}" style="height:100%;padding:0;border:1px solid var(--border-default);border-radius:20px;overflow:hidden;background:var(--surface-card);cursor:pointer;font-family:var(--efkt-font);text-align:left;display:flex;flex-direction:column;box-shadow:0 4px 24px rgba(12,14,57,0.06);transition:box-shadow 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="box-shadow:0 8px 32px rgba(12,14,57,0.10)">
+            <span style="position:relative;display:block;height:180px;pointer-events:none"><image-slot id="{{ n.slotId }}" src="{{ n.photo }}" shape="rect" placeholder="{{ n.slotHint }}"></image-slot></span>
+            <span style="padding:24px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:14px;font-weight:600;color:var(--efkt-coral)">{{ n.category }}</span>
+              <span style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:var(--text-body);text-wrap:pretty">{{ n.title }}</span>
+              <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ n.date }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ onCourse }}" hint-placeholder-val="{{ false }}">
+    <section style="position:relative;height:440px;overflow:hidden">
+      <div style="position:absolute;inset:0;pointer-events:none"><image-slot id="{{ oc.slotId }}" src="{{ oc.photo }}" shape="rect" placeholder="{{ oc.slotHint }}"></image-slot></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0.55) 0%, rgba(12,14,57,0.20) 40%, rgba(12,14,57,0.85) 100%);pointer-events:none"></div>
+      <div style="position:relative;height:100%;padding:32px 48px 48px;display:flex;flex-direction:column;max-width:900px">
+        <button onClick="{{ backHome }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.20);backdrop-filter:blur(8px);border-radius:25px;padding:10px 20px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white)">
+          <i class="ph ph-arrow-left" style="font-size:14px"></i> Mine kurs
+        </button>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:16px;pointer-events:none">
+          <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)">{{ oc.category }}</div>
+          <h1 style="margin:0;font-size:54px;line-height:1.05;letter-spacing:-0.06em;font-weight:300;color:var(--efkt-white);text-wrap:pretty">{{ oc.titleThin }} <span style="font-weight:800">{{ oc.titleFat }}</span></h1>
+          <div style="font-size:20px;font-weight:300;color:rgba(255,255,255,0.9);max-width:640px;text-wrap:pretty">{{ oc.desc }}</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:40px 48px 0;max-width:960px">
+      <sc-if value="{{ oc.tracked }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:24px 28px;background:var(--efkt-offwhite);border-radius:20px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:12px">
+            <span style="font-size:32px;font-weight:800;letter-spacing:-0.04em">{{ oc.pctLabel }}</span>
+            <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ oc.counter }} · bestått ved {{ oc.pass }}</span>
+          </div>
+          <div style="height:8px;border-radius:4px;background:var(--efkt-border);overflow:hidden">
+            <div style="height:8px;border-radius:4px;width:{{ oc.barWidth }};background:{{ oc.barColor }}"></div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ oc.reference }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px 28px;background:var(--efkt-offwhite);border-radius:20px;font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Referansemateriale. Åpne hvilken som helst del når du trenger den — ingenting her spores eller vurderes.</div>
+      </sc-if>
+    </section>
+
+    <section style="padding:32px 48px 96px;max-width:960px;display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ ocModules }}" as="m" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:20px 24px;border:1px solid var(--border-default);border-radius:20px;background:var(--surface-card)">
+          <span style="width:56px;height:56px;min-width:56px;border-radius:12px;background:var(--efkt-offwhite);display:inline-flex;align-items:center;justify-content:center"><i class="ph ph-{{ m.icon }}" style="font-size:24px;color:var(--efkt-coral)"></i></span>
+          <div style="min-width:180px;flex:1">
+            <div style="font-size:16px;font-weight:600">{{ m.number }}. {{ m.title }}</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);margin-top:4px">{{ m.quizLine }}</div>
+          </div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Badge" tone="{{ m.tone }}" hint-size="90px,28px">{{ m.statusLabel }}</x-import>
+          <sc-if value="{{ m.actionable }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ m.open }}" hint-size="auto,50px">{{ m.cta }}</x-import>
+          </sc-if>
+          <sc-if value="{{ m.showQuiz }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
+              <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ m.openQuiz }}" iconRight="list-checks" hint-size="auto,50px">{{ m.quizCta }}</x-import>
+              <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ m.attemptsLine }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.locked }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:14px;font-weight:300;color:var(--text-muted);max-width:220px;text-wrap:pretty">Åpnes når forrige modul er bestått</span>
+          </sc-if>
+          <sc-if value="{{ m.gateWaiting }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:14px;font-weight:300;color:var(--text-muted);max-width:240px;text-wrap:pretty">{{ m.gateNote }}</span>
+          </sc-if>
+          <sc-if value="{{ m.canReset }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ m.reset }}" title="{{ m.resetLabel }}" style="width:44px;height:44px;min-width:44px;border-radius:12px;border:none;background:var(--efkt-offwhite);cursor:pointer;color:var(--efkt-navy);display:inline-flex;align-items:center;justify-content:center;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-border)">
+              <i class="ph ph-arrow-counter-clockwise" style="font-size:18px"></i>
+            </button>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ canResetCourse }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:20px;padding:24px;background:var(--efkt-offwhite);border-radius:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <i class="ph ph-arrow-counter-clockwise" style="font-size:24px;color:var(--efkt-coral)"></i>
+          <div style="min-width:0;flex:1;font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Vil du ta hele kurset om igjen? Du kan også nullstille én enkelt modul med knappen til høyre i hver rad.</div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ askResetCourse }}" hint-size="auto,50px">Nullstill kurset</x-import>
+        </div>
+      </sc-if>
+    </section>
+
+    <sc-if value="{{ confirmResetOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ cancelReset }}" style="position:fixed;inset:0;background:rgba(12,14,57,0.45);display:flex;align-items:center;justify-content:center;padding:24px;z-index:85">
+        <div style="width:480px;max-width:100%;background:var(--surface-card);border-radius:20px;box-shadow:0 24px 64px rgba(12,14,57,0.18);padding:32px;display:flex;flex-direction:column;gap:24px">
+          <h3 style="margin:0;font-size:24px;font-weight:600">Nullstille kurset?</h3>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ resetCourseLine }}</div>
+          <div style="display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ cancelReset }}" hint-size="auto,50px">Avbryt</x-import>
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ resetCourse }}" hint-size="auto,50px">Nullstill kurset</x-import>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ onProfile }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:48px 48px 0">
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+        <span style="width:96px;height:96px;min-width:96px;border-radius:50%;background:var(--efkt-mint);display:inline-flex;align-items:center;justify-content:center;font-size:32px;font-weight:600;color:var(--efkt-navy)">{{ pfInitials }}</span>
+        <div style="min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--text-muted);margin-bottom:12px">{{ pfJoined }} · {{ pfCountry }}</div>
+          <h1 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Min <span style="font-weight:800">profil</span></h1>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:32px 48px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+      <sc-for list="{{ pfStats }}" as="s" hint-placeholder-count="3">
+        <div style="background:var(--efkt-offwhite);border-radius:20px;padding:24px">
+          <div style="font-size:14px;font-weight:600;color:var(--text-muted);margin-bottom:12px">{{ s.label }}</div>
+          <div style="font-size:40px;line-height:1;font-weight:800;letter-spacing:-0.045em">{{ s.value }}</div>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted);margin-top:8px;text-wrap:pretty">{{ s.sub }}</div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section style="padding:32px 48px 96px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:start">
+
+      <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:24px">
+        <div>
+          <div style="font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:8px">Om deg</div>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Dette vises til teamlederen din og til kundesenteret.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:16px;font-weight:500">Profilbilde</div>
+          <div style="height:200px;border-radius:20px;overflow:hidden"><image-slot id="profile-photo" shape="rounded" radius="20" placeholder="Slipp et portrett her"></image-slot></div>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Kvadratisk JPG eller PNG, minst 400×400. Vises som rund miniatyr i toppfeltet.</div>
+        </div>
+
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Fullt navn" value="{{ pf.name }}" onChange="{{ setPfName }}" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="E-post" value="{{ pf.email }}" disabled="{{ true }}" hint="E-posten er knyttet til kontoen din og kan bare endres av en administrator." hint-size="100%,120px"></x-import>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Stilling og sted" value="{{ pf.title }}" onChange="{{ setPfTitle }}" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Mobil" value="{{ pf.phone }}" onChange="{{ setPfPhone }}" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Select" label="Region" options="{{ regions }}" value="{{ pf.region }}" onChange="{{ setPfRegion }}" hint-size="100%,80px"></x-import>
+
+        <div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Kort om deg" multiline="{{ true }}" value="{{ pf.bio }}" onChange="{{ setPfBio }}" hint-size="100%,180px"></x-import>
+          <div style="margin-top:8px;font-size:14px;font-weight:300;color:var(--text-muted)">{{ bioCount }}</div>
+        </div>
+
+        <div style="padding:20px;background:var(--efkt-offwhite);border-radius:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:14px;font-weight:600;color:var(--text-muted)">Tilhørighet</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ pfGroups }}" as="g" hint-placeholder-count="2">
+              <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Tag" hint-size="auto,32px">{{ g }}</x-import>
+            </sc-for>
+          </div>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Gruppene dine bestemmer hvilke kurs du får. Teamleder: {{ pfTeamleader }}. Ta kontakt med teamlederen din hvis noe er feil.</div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ pfSave }}" hint-size="auto,50px">Lagre endringer</x-import>
+          <sc-if value="{{ pfDirty }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ pfRevert }}" hint-size="auto,50px">Forkast</x-import>
+          </sc-if>
+          <sc-if value="{{ pfClean }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:14px;font-weight:300;color:var(--text-muted)">Ingen ulagrede endringer</span>
+          </sc-if>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px;min-width:0">
+
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:24px">
+          <div style="font-size:24px;font-weight:600;letter-spacing:-0.02em">Varsler</div>
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <sc-for list="{{ notifyRows }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex;align-items:flex-start;gap:20px">
+                <div style="min-width:0;flex:1">
+                  <div style="font-size:16px;font-weight:500">{{ n.label }}</div>
+                  <div style="font-size:14px;font-weight:300;color:var(--text-muted);margin-top:4px;text-wrap:pretty">{{ n.sub }}</div>
+                </div>
+                <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Switch" checked="{{ n.checked }}" onChange="{{ n.toggle }}" hint-size="52px,30px"></x-import>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:20px">
+          <div>
+            <div style="font-size:24px;font-weight:600;letter-spacing:-0.02em;margin-bottom:8px">Bytt passord</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Du blir logget ut av andre enheter når passordet endres.</div>
+          </div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Nåværende passord" type="password" value="{{ pwOld }}" onChange="{{ setPwOld }}" hint-size="100%,80px"></x-import>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Nytt passord" type="password" value="{{ pwNew }}" onChange="{{ setPwNew }}" hint-size="100%,80px"></x-import>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--efkt-offwhite);border-radius:20px">
+            <sc-for list="{{ pwRules }}" as="r" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px">
+                <i class="ph-bold ph-{{ r.icon }}" style="font-size:16px;color:{{ r.color }}"></i>
+                <span style="font-size:14px;font-weight:300;color:{{ r.textColor }}">{{ r.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Gjenta nytt passord" type="password" value="{{ pwRepeat }}" onChange="{{ setPwRepeat }}" hint="{{ pwMatchHint }}" hint-size="100%,100px"></x-import>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ pwSave }}" hint-size="auto,50px">Lagre nytt passord</x-import>
+        </div>
+
+        <div style="background:var(--surface-card);border:1px solid var(--border-default);border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px">
+          <div style="font-size:24px;font-weight:600;letter-spacing:-0.02em">Kursbevis</div>
+          <sc-if value="{{ pfNoCertificates }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Du får et kursbevis for hvert kurs du fullfører.</div>
+          </sc-if>
+          <sc-for list="{{ pfCertificates }}" as="c" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:16px;padding:20px;background:var(--efkt-offwhite);border-radius:20px">
+              <i class="ph ph-certificate" style="font-size:32px;color:var(--efkt-coral)"></i>
+              <div style="min-width:0;flex:1">
+                <div style="font-size:16px;font-weight:600;text-wrap:pretty">{{ c.title }}</div>
+                <div style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ c.category }} · {{ c.line }}</div>
+              </div>
+              <button onClick="{{ c.download }}" title="Last ned" style="width:40px;height:40px;min-width:40px;border-radius:10px;border:none;background:var(--efkt-white);cursor:pointer;color:var(--efkt-navy);transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-border)"><i class="ph ph-download-simple" style="font-size:18px"></i></button>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ onPlay }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ plRef }}" style="position:fixed;inset:0;z-index:70;background:var(--surface-dark);display:flex;flex-direction:column">
+
+      <div style="padding:14px 24px;display:flex;align-items:center;gap:20px;flex-shrink:0">
+        <button onClick="{{ plExit }}" style="display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.12);border-radius:25px;padding:10px 20px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.2)">
+          <i class="ph ph-arrow-left" style="font-size:14px"></i> Lukk
+        </button>
+        <div style="min-width:0;flex:1">
+          <div style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.65);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ pl.courseTitle }} · {{ pl.stepLabel }}</div>
+          <div style="font-size:16px;font-weight:600;color:var(--efkt-white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ pl.title }}</div>
+        </div>
+        <button onClick="{{ plReload }}" title="Last modulen på nytt" style="display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.12);border-radius:25px;padding:10px 20px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.2)">
+          <i class="ph ph-arrow-clockwise" style="font-size:16px"></i> Tilbake til modulen
+        </button>
+        <button onClick="{{ plToggleFs }}" title="{{ fsLabel }}" style="display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.12);border-radius:25px;padding:10px 20px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white);white-space:nowrap;flex-shrink:0;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.2)">
+          <i class="ph ph-{{ fsIcon }}" style="font-size:16px"></i> {{ fsLabel }}
+        </button>
+      </div>
+
+      <div style="padding:0 24px 12px;display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0">
+        <sc-for list="{{ plSteps }}" as="st" hint-placeholder-count="4">
+          <button onClick="{{ st.go }}" title="{{ st.title }}" style="width:34px;height:34px;border:{{ st.border }};border-radius:50%;background:{{ st.bg }};color:{{ st.color }};cursor:{{ st.cursor }};font-family:var(--efkt-font);font-size:14px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;transition:background 180ms cubic-bezier(0.4,0,0.2,1)">
+            <sc-if value="{{ st.locked }}" hint-placeholder-val="{{ false }}">
+              <i class="ph-bold ph-lock-simple" style="font-size:12px"></i>
+            </sc-if>
+            <sc-if value="{{ st.unlocked }}" hint-placeholder-val="{{ true }}">{{ st.number }}</sc-if>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="flex:1;min-height:0;margin:0 12px;border-radius:20px;overflow:hidden;background:var(--efkt-white);display:flex;flex-direction:column">
+        <sc-if value="{{ pl.isEmbed }}" hint-placeholder-val="{{ true }}">
+          <iframe key="{{ plReloadKey }}" src="{{ pl.embed }}" title="{{ pl.title }}" allowfullscreen="true" allow="fullscreen" style="flex:1;min-height:0;width:100%;border:none;display:block"></iframe>
+        </sc-if>
+
+        <sc-if value="{{ pl.isBuilt }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:48px;display:flex;justify-content:center">
+            <div style="width:100%;max-width:760px;display:flex;flex-direction:column;gap:28px">
+              <sc-for list="{{ plBlocks }}" as="p" hint-placeholder-count="4">
+                <div>
+                  <sc-if value="{{ p.heading }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300;color:var(--text-body)">{{ p.thin }} <span style="font-weight:800">{{ p.fat }}</span></div>
+                  </sc-if>
+                  <sc-if value="{{ p.paragraph }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                  </sc-if>
+                  <sc-if value="{{ p.image }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;gap:8px">
+                      <div style="height:380px;border-radius:20px;overflow:hidden;pointer-events:none"><image-slot id="{{ p.slotId }}" shape="rounded" radius="20" placeholder="{{ p.hint }}"></image-slot></div>
+                      <sc-if value="{{ p.hasCaption }}" hint-placeholder-val="{{ false }}">
+                        <div style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ p.caption }}</div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.imagetext }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:{{ p.rowDir }};gap:24px;align-items:center;flex-wrap:wrap">
+                      <div style="flex:1;min-width:240px;height:260px;border-radius:20px;overflow:hidden;pointer-events:none"><image-slot id="{{ p.slotId }}" shape="rounded" radius="20" placeholder="{{ p.hint }}"></image-slot></div>
+                      <div style="flex:1;min-width:240px;font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.quote }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:32px;background:var(--efkt-offwhite);border-radius:20px;display:flex;flex-direction:column;gap:12px">
+                      <i class="ph ph-quotes" style="font-size:32px;color:var(--efkt-coral)"></i>
+                      <div style="font-size:20px;font-weight:300;line-height:1.5;color:var(--text-body);text-wrap:pretty">{{ p.text }}</div>
+                      <div style="font-size:14px;font-weight:600;color:var(--text-muted)">{{ p.who }}</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.list }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;gap:14px">
+                      <sc-for list="{{ p.items }}" as="it" hint-placeholder-count="3">
+                        <div style="display:flex;gap:14px;align-items:flex-start">
+                          <i class="ph-bold ph-check" style="font-size:16px;color:var(--efkt-coral);margin-top:5px"></i>
+                          <span style="font-size:16px;font-weight:300;line-height:1.7;color:var(--text-body);text-wrap:pretty">{{ it }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ p.button }}" hint-placeholder-val="{{ false }}">
+                    <a href="{{ p.url }}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:25px;background:var(--efkt-coral);color:var(--efkt-white);font-size:16px;font-weight:600;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-coral-hover)">{{ p.bLabel }} <i class="ph ph-arrow-up-right" style="font-size:16px"></i></a>
+                  </sc-if>
+                  <sc-if value="{{ p.divider }}" hint-placeholder-val="{{ false }}">
+                    <div style="height:1px;background:var(--border-default)"></div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ pl.isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:48px;text-align:center">
+            <i class="ph ph-link-break" style="font-size:40px;color:var(--efkt-coral)"></i>
+            <div style="font-size:20px;font-weight:600">Innholdet mangler</div>
+            <div style="font-size:16px;font-weight:300;color:var(--text-muted);max-width:420px;text-wrap:pretty">Denne modulen har ingen lenke ennå. Si det til teamlederen din, så får administratoren lagt den inn.</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="padding:16px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;flex-shrink:0">
+        <sc-if value="{{ plHasPrev }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ plPrev }}" style="display:inline-flex;align-items:center;gap:8px;border:none;background:rgba(255,255,255,0.12);border-radius:25px;padding:14px 24px;cursor:pointer;font-family:var(--efkt-font);font-size:16px;font-weight:500;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.2)">
+            <i class="ph ph-arrow-left" style="font-size:16px"></i> Forrige
+          </button>
+        </sc-if>
+
+        <div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.65);text-wrap:pretty">{{ pl.quizLine }}</span>
+          <sc-if value="{{ pl.gated }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.5);text-wrap:pretty">{{ pl.gateLine }}</span>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ pl.gated }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ plConfirm }}" style="display:inline-flex;align-items:center;gap:12px;border:1.5px solid rgba(255,255,255,0.35);background:transparent;border-radius:25px;padding:13px 24px;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-white);text-align:left;max-width:320px;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.12)">
+            <sc-if value="{{ pl.confirmed }}" hint-placeholder-val="{{ false }}">
+              <i class="ph ph-check-circle" style="font-size:20px;color:var(--efkt-mint)"></i>
+            </sc-if>
+            <sc-if value="{{ pl.notConfirmed }}" hint-placeholder-val="{{ true }}">
+              <i class="ph ph-circle" style="font-size:20px;color:rgba(255,255,255,0.5)"></i>
+            </sc-if>
+            {{ pl.confirmLabel }}
+          </button>
+        </sc-if>
+
+        <sc-if value="{{ pl.showQuizBtn }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ plOpenQuiz }}" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:25px;padding:14px 32px;background:var(--efkt-coral);cursor:pointer;font-family:var(--efkt-font);font-size:16px;font-weight:600;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-coral-hover)">
+            {{ pl.quizCta }} <i class="ph ph-list-checks" style="font-size:16px"></i>
+          </button>
+        </sc-if>
+        <sc-if value="{{ pl.quizLocked }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ plOpenQuiz }}" style="display:inline-flex;align-items:center;gap:8px;border:none;border-radius:25px;padding:14px 32px;background:rgba(255,255,255,0.12);cursor:not-allowed;font-family:var(--efkt-font);font-size:16px;font-weight:600;color:rgba(255,255,255,0.45);white-space:nowrap">
+            Ta quizen <i class="ph ph-lock-simple" style="font-size:16px"></i>
+          </button>
+        </sc-if>
+        <sc-if value="{{ plHasNext }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ plNext }}" title="{{ plNextLabel }}" style="display:inline-flex;align-items:center;gap:8px;border:1.5px solid rgba(255,255,255,0.35);background:transparent;border-radius:25px;padding:13px 24px;cursor:pointer;font-family:var(--efkt-font);font-size:16px;font-weight:500;color:var(--efkt-white);white-space:nowrap;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:rgba(255,255,255,0.12)">
+            Neste <i class="ph ph-arrow-right" style="font-size:16px"></i>
+          </button>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ onQuiz }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:40px 48px 0;max-width:820px">
+      <button onClick="{{ qzBack }}" style="display:inline-flex;align-items:center;gap:8px;border:none;background:transparent;padding:0;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-coral)">
+        <i class="ph ph-arrow-left" style="font-size:16px"></i> {{ qz.courseTitle }}
+      </button>
+      <div style="font-size:14px;font-weight:600;color:var(--text-muted);margin:20px 0 12px">Quiz · {{ qz.moduleTitle }}</div>
+      <h1 style="margin:0 0 16px;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Test din <span style="font-weight:800">kunnskap</span></h1>
+      <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ qzIntro }}</div>
+    </section>
+
+    <sc-if value="{{ qzGraded }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:32px 48px 0;max-width:820px">
+        <div style="padding:32px;border-radius:20px;background:{{ qzResult.bg }};display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+          <span style="width:56px;height:56px;min-width:56px;border-radius:50%;background:var(--efkt-white);display:inline-flex;align-items:center;justify-content:center;color:{{ qzResult.iconColor }}"><i class="ph-bold ph-{{ qzResult.icon }}" style="font-size:24px"></i></span>
+          <div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+              <span style="font-size:40px;line-height:1;font-weight:800;letter-spacing:-0.045em">{{ qzResult.score }}</span>
+              <span style="font-size:20px;font-weight:600">{{ qzResult.heading }}</span>
+            </div>
+            <div style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ qzResult.line }} · bestått ved {{ qz.pass }}</div>
+            <div style="font-size:16px;font-weight:300;text-wrap:pretty">{{ qzResult.body }}</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ qzRetryLine }}</div>
+            <sc-if value="{{ qzIsLast }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:16px;font-weight:600;text-wrap:pretty">{{ qzCourseDone }}</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+          <sc-if value="{{ qzHasNext }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzNext }}" iconRight="arrow-right" hint-size="auto,50px">{{ qzNextLabel }}</x-import>
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ qzBack }}" hint-size="auto,50px">Tilbake til kursoversikten</x-import>
+          </sc-if>
+          <sc-if value="{{ qzIsLast }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzBack }}" iconRight="check" hint-size="auto,50px">Fullfør kurset</x-import>
+          </sc-if>
+          <sc-if value="{{ qzCanRetry }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzRetry }}" hint-size="auto,50px">Prøv quizen igjen</x-import>
+          </sc-if>
+          <sc-if value="{{ qzFailed }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ qzReview }}" iconRight="arrow-counter-clockwise" hint-size="auto,50px">{{ qzReviewLabel }}</x-import>
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ qzBack }}" hint-size="auto,50px">Tilbake til kurset</x-import>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <section style="padding:40px 48px 96px;max-width:820px;display:flex;flex-direction:column;gap:20px">
+      <sc-for list="{{ qzQuestions }}" as="q" hint-placeholder-count="4">
+        <div style="padding:28px;border:1px solid var(--border-default);border-radius:20px;background:var(--surface-card);display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;align-items:flex-start;gap:16px">
+            <span style="width:32px;height:32px;min-width:32px;border-radius:50%;background:var(--efkt-offwhite);display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">{{ q.number }}</span>
+            <div style="min-width:0;flex:1">
+              <div style="font-size:20px;font-weight:600;letter-spacing:-0.02em;text-wrap:pretty">{{ q.text }}</div>
+              <div style="font-size:14px;font-weight:300;color:var(--text-muted);margin-top:4px">{{ q.typeLine }}</div>
+            </div>
+            <sc-if value="{{ q.graded }}" hint-placeholder-val="{{ false }}">
+              <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:{{ q.resultColor }};white-space:nowrap">
+                <i class="ph-bold ph-{{ q.resultIcon }}" style="font-size:18px"></i>{{ q.resultLabel }}
+              </span>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ q.options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:16px;padding:20px;border:none;border-radius:20px;background:{{ o.bg }};cursor:pointer;font-family:var(--efkt-font);font-size:16px;font-weight:300;color:var(--text-body);text-align:left;transition:background 180ms cubic-bezier(0.4,0,0.2,1)">
+                <i class="ph-bold ph-{{ o.icon }}" style="font-size:22px;color:{{ o.iconColor }};flex-shrink:0"></i>
+                <span style="min-width:0;flex:1;text-wrap:pretty">{{ o.text }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ qzGraded }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:24px;background:var(--efkt-offwhite);border-radius:20px;position:sticky;bottom:24px">
+          <div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:16px;font-weight:600">{{ qzResult.heading }} · {{ qzResult.score }}</span>
+            <span style="font-size:14px;font-weight:300;color:var(--text-muted)">{{ qzResult.line }}</span>
+          </div>
+          <sc-if value="{{ qzHasNext }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzNext }}" iconRight="arrow-right" hint-size="auto,50px">{{ qzNextLabel }}</x-import>
+          </sc-if>
+          <sc-if value="{{ qzIsLast }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzBack }}" iconRight="check" hint-size="auto,50px">Fullfør kurset</x-import>
+          </sc-if>
+          <sc-if value="{{ qzCanRetry }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzRetry }}" hint-size="auto,50px">Prøv quizen igjen</x-import>
+          </sc-if>
+          <sc-if value="{{ qzFailed }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ qzReview }}" iconRight="arrow-counter-clockwise" hint-size="auto,50px">{{ qzReviewLabel }}</x-import>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ qzTaking }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:24px;background:var(--efkt-offwhite);border-radius:20px;position:sticky;bottom:24px">
+          <div style="min-width:0;flex:1;font-size:16px;font-weight:500">{{ qzAnsweredLine }}</div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ qzSubmit }}" iconRight="check" hint-size="auto,50px">{{ qzSubmitLabel }}</x-import>
+        </div>
+      </sc-if>
+    </section>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:20px 28px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:25px;box-shadow:0 8px 32px rgba(12,14,57,0.10);font-size:16px;font-weight:500;z-index:90">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--efkt-green)"></span>
+      {{ toast }}
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const ME = {
+  name: 'Silje Rud', first: 'Silje', initials: 'SR', title: 'Fotograf, Bergen',
+  email: 'silje.rud@efkt.no', phone: '+47 950 77 172',
+  region: 'Vest og Sør', teamleader: 'Sander Thu',
+  bio: 'Fotograferer boliger i Bergen og på Vestlandet. Har vært i EFKT siden januar 2025, og tar gjerne dronejobber langs kysten.',
+  joined: 'Medlem siden januar 2025',
+  groups: ['Photographers', 'Stylists'], country: 'Norge'
+};
+
+const REGIONS = {
+  'Norge': ['Nord', 'Midt og Innlandet', 'Vest og Sør', 'Østlandet'],
+  // Fyn hører til Vest
+  'Danmark': ['Øst', 'Vest']
+};
+
+const REGION_LEADS = {
+  'Nord': 'Daniel Mikkelsen',
+  'Midt og Innlandet': 'Aleksander Jacobsen',
+  'Vest og Sør': 'Sander Thu',
+  'Østlandet': 'Øyvind Heia',
+  'Øst': 'Nanna Hegaard Rødtnes',
+  'Vest': 'Jesper Kristian Ovesen'
+};
+
+const CATEGORIES = [
+  { name: 'Foto', icon: 'camera', desc: 'Interior, exterior and detail photography to the EFKT standard.' },
+  { name: 'Drone', icon: 'paper-plane-tilt', desc: 'Regulation, flight planning and aerial footage.' },
+  { name: 'Video', icon: 'video-camera', desc: 'Property film, walkthroughs and editing.' },
+  { name: 'Floorplan', icon: 'blueprint', desc: 'Measuring, drawing conventions and area calculation.' },
+  { name: 'Sales', icon: 'megaphone', desc: 'Advertising products, pitching and reporting to agents.' },
+  { name: 'Customer Service', icon: 'headset', desc: 'Order intake, coordination and handling the agent.' },
+  { name: 'Generell Internal', icon: 'buildings', desc: 'Onboarding, tools and everything every employee needs.' },
+  { name: 'Reference Materials', icon: 'books', desc: 'Guides, checklists and specs to look up while working.' }
+];
+
+const CONTACT_INTRO = 'For alt av spørsmål knyttet til gjennomføring av oppdrag, fototekniske, spørsmål til hvordan man skal produsere eller levere bestemte produkter kontakt din Teamleader:';
+
+const TEAMLEADERS = [
+  { region: 'Nord', name: 'Daniel Mikkelsen', mail: 'DMI@efkt.com', mob: '900 58 502' },
+  { region: 'Midt og Innlandet', name: 'Aleksander Jacobsen', mail: 'AJC@efkt.com', mob: '934 11 661' },
+  { region: 'Vest og Sør', name: 'Sander Thu', mail: 'SAT@efkt.com', mob: '950 77 172' },
+  { region: 'Østlandet', name: 'Øyvind Heia', mail: 'OHE@efkt.com', mob: '480 29 116' }
+];
+
+const CONTACT_NOTES = [
+  { icon: 'first-aid-kit', label: 'Sykdom meldes til booking via mail:', value: 'info.no@efkt.com', href: 'mailto:info.no@efkt.com',
+    note: 'Viktig at du også varsler de berørte boligselgerne og meglerne via SMS om at du er syk og at EFKT booking vil ta kontakt med dem' },
+  { icon: 'envelope-simple', label: 'Andre henvendelser til kundesenteret via mail:', value: 'info.no@efkt.com', href: 'mailto:info.no@efkt.com', note: '' },
+  { icon: 'phone', label: 'Vi oppfordrer dere til å ringe kun når det virkelig haster:', value: '210 80 500', href: 'tel:+4721080500', note: '' }
+];
+
+const CONTACT_FOOTER = 'Er du f.eks forsinket til neste oppdrag, ring boligselgeren direkte og informer så tidlig som mulig';
+
+const IMPORTANT_LINKS = [
+  { label: 'EFKT ACADEMY LOGIN', sub: '', url: 'https://efktacademy.talentlms.com/index', icon: 'graduation-cap' },
+  { label: 'LOGIN SPA', sub: '', url: 'https://sp.efkt.com/login', icon: 'sign-in' },
+  { label: 'VIVA ENGAGE', sub: '', url: 'https://engage.cloud.microsoft/main/feed', icon: 'chats-circle' },
+  { label: 'EFKT NORGE PÅ INSTAGRAM', sub: '', url: 'https://www.instagram.com/efkt_norge/', icon: 'instagram-logo' },
+  { label: 'LOGIN GAMMEL iWEB', sub: 'for interiørveiledere', url: 'https://web.efkt.com/people/sign_in', icon: 'browser' },
+  { label: 'SEND STORE FILER TIL OSS', sub: 'brukes til levering av videoprosjekter', url: 'https://app.massive.io/en/login', icon: 'upload-simple' },
+  { label: 'Backup system for filoverføring', sub: '', url: 'https://www.filemail.com/incoming/6915734024', icon: 'cloud-arrow-up' }
+];
+
+const NEWS_PHOTOS = { n1: 'assets/news-n1.png', n2: 'assets/news-n2.jpg', n3: 'assets/news-n3.jpg' };
+const NEWS = [
+  { id: 'n1', title: 'Ny leveringsfrist for videoprosjekter', category: 'Produksjon', date: '15. september 2026',
+    author: 'Øyvind Heia', lead: 'Fra 1. oktober skal alle videoprosjekter være levert innen 24 timer etter opptak. Bruk Massive til filoverføring.',
+    hint: 'Drop a video-shoot photo', pinned: true,
+    blocks: [
+      { id: 'b1', kind: 'heading', text: 'Ny frist fra 1. oktober', fat: 'oktober' },
+      { id: 'b2', kind: 'paragraph', text: 'Fra 1. oktober skal alle videoprosjekter være levert innen 24 timer etter opptak. Bruk Massive til filoverføring, og Filemail som backup dersom Massive er nede.' },
+      { id: 'b3', kind: 'list', items: 'Lever via app.massive.io\nMerk filene med oppdragsnummer\nVarsle teamleader ved forsinkelse' },
+      { id: 'b4', kind: 'button', label: 'Åpne Massive', url: 'https://app.massive.io/en/login' }
+    ] },
+  { id: 'n2', title: 'Oppdatert shot list for leiligheter', category: 'Foto', date: '11. september 2026',
+    author: 'Daniel Mikkelsen', lead: 'Rekkefølgen på rom er endret, og det er lagt til to obligatoriske detaljbilder.',
+    hint: 'Drop an apartment interior', pinned: false,
+    blocks: [
+      { id: 'b5', kind: 'paragraph', text: 'Rekkefølgen på rom er endret, og det er lagt til to obligatoriske detaljbilder. Den nye listen gjelder alle leilighetsoppdrag fra og med neste uke.' },
+      { id: 'b6', kind: 'image', hint: 'New shot list page', caption: 'Den nye rekkefølgen, side 1', src: 'assets/news-n2-b6.jpg' }
+    ] },
+  { id: 'n3', title: 'Dronekurs i Bergen 3. oktober', category: 'Drone', date: '8. september 2026',
+    author: 'Sander Thu', lead: 'Praktisk samling for alle med droneoppdrag på Vestlandet. Påmelding via din teamleader.',
+    hint: 'Drop an aerial photo', pinned: false,
+    blocks: [
+      { id: 'b7', kind: 'heading', text: 'Praktisk samling i Bergen', fat: 'Bergen' },
+      { id: 'b8', kind: 'paragraph', text: 'Praktisk samling for alle med droneoppdrag på Vestlandet. Påmelding via din teamleader.' }
+    ] }
+];
+
+function q(text, opts, correct, multi) {
+  return { text, multi: !!multi, options: opts.map((o, i) => ({ text: o, correct: Array.isArray(correct) ? correct.includes(i) : correct === i })) };
+}
+function quiz(pass, a, b, c) {
+  const gated = typeof a === 'boolean';
+  const questions = gated ? b : a;
+  const retries = gated ? c : b;
+  return { pass, questions, retries: retries === undefined ? 0 : retries, feedback: true, shuffle: false,
+           gate: gated ? a : true, minSeconds: 10 };
+}
+function mod(id, title, url, quizObj, hint, source, blocks) {
+  return { id, title, url, quiz: quizObj || null, hint, source: source || 'embed', blocks: blocks || [] };
+}
+
+// Google Slides "publish to web" links end in /pub — /embed is the frameable form.
+function embedUrl(url) {
+  const u = String(url || '').trim();
+  if (!u) return '';
+  const withProto = /^https?:\/\//.test(u) ? u : 'https://' + u;
+  return withProto
+    .replace('/pub?', '/embed?')
+    .replace(/\/pub$/, '/embed')
+    .replace('/edit?', '/embed?')
+    .replace(/\/edit$/, '/embed');
+}
+
+// Photos promoted out of the slot sidecar into real files.
+const PHOTOS = { c10: 'assets/photo-c10.jpg', c1: 'assets/photo-c1.webp', c2: 'assets/photo-c2.webp', c5: 'assets/photo-c5.webp',
+                 c7: 'assets/photo-c7.webp', c9: 'assets/photo-c9.webp' };
+function photoOf(id) { return PHOTOS[id] || ''; }
+
+let DROPPED = null; // slot ids that hold a dropped image, read once from the slot store
+function mapBlocks(blocks, prefix, hideEmptyImages) {
+  return (blocks || [])
+    .filter(b => !(hideEmptyImages && (b.kind === 'image' || b.kind === 'imagetext') && !b.src
+      && !(DROPPED && DROPPED.has(prefix + '-' + b.id))))
+    .map(b => {
+      const words = (b.text || '').split(' ');
+      const fatWord = b.fat || words[words.length - 1] || '';
+      const thin = b.kind === 'heading' && b.fat && b.text.indexOf(b.fat) >= 0
+        ? b.text.slice(0, b.text.indexOf(b.fat)).trim()
+        : words.slice(0, -1).join(' ');
+      return {
+        heading: b.kind === 'heading', paragraph: b.kind === 'paragraph', image: b.kind === 'image',
+        imagetext: b.kind === 'imagetext', quote: b.kind === 'quote', list: b.kind === 'list',
+        button: b.kind === 'button', divider: b.kind === 'divider',
+        thin, fat: fatWord, text: b.text || '',
+        caption: b.caption || '', hasCaption: !!b.caption,
+        slotId: prefix + '-' + b.id, src: b.src || '', hint: b.hint || 'Slipp et bilde',
+        who: b.who || '', items: (b.items || '').split('\n').filter(Boolean),
+        bLabel: b.label || '', url: b.url || '',
+        rowDir: b.side === 'right' ? 'row-reverse' : 'row'
+      };
+    });
+}
+
+const COURSES = [
+  { id: 'c10', title: 'Fotograf: Velkommen til EFKT Norge', category: 'Foto', selfEnrol: false,
+    desc: 'Grunnkurset alle nye fotografer i Norge tar før første oppdrag: selskapet, produktene, fototeknikk, system, sikkerhet og fakturering.', pass: 80,
+    hint: 'Drop an EFKT team or Nordic interior photo',
+    modules: [
+      mod('n1', 'Velkommen til EFKT', 'https://docs.google.com/presentation/d/e/2PACX-1vRDe3qiwZwR4BfQCN5B8qbJGM-P8CGsF6j8F64YARNHnUTHDHD0zEFwf7pxRE52Jnt89_eUPKRb0jQB/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hva er EFKTs tagline?', ['Fra visning til nøkkel', 'Den komplette pakken fra «Til salg» til «Solgt»', 'Bilder som selger', 'Vi skaper bolig'], 1),
+        q('Hvem er EFKTs kunder?', ['Boligkjøpere', 'Eiendomsmeglere', 'Byggefirmaer', 'Kommuner'], 1)
+      ], 2), 'EFKT team photo'),
+      mod('n2', 'Om Boligfoto', 'https://docs.google.com/presentation/d/e/2PACX-1vRnIta-5kzxNXOGp6fkcichK2HD9yG1BK-YNsJirhR-_zL_3xemtvXLLbOipLYeY8lR9JHImvMaMxPA/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hva er hovedoppgaven til et boligbilde?', ['Vise boligen ærlig og innbydende', 'Skjule feil ved boligen', 'Vise fotografens stil', 'Fylle annonsen'], 0),
+        q('Hvem eier bildene du leverer?', ['Fotografen', 'EFKT', 'Boligselgeren', 'Megleren personlig'], 1)
+      ], 2), 'Bright living room'),
+      mod('n3', 'Våre fotoprodukter', 'https://docs.google.com/presentation/d/e/2PACX-1vQu_cqO-g1ZJxdZw2kGFSONAD5bTV1rei2J4cydtWhFQslECn_dG_rZ1UJ2suRf0cwi_64um9HF9sCK/pub?start=false&loop=false&delayms=30000', quiz(80, [
+        q('Hvilke av disse er EFKT-fotoprodukter?', ['Stillbilder', 'Drone', 'Video', 'Trykte brosjyrer'], [0, 1, 2], true),
+        q('Hvor finner du hva som er bestilt på et oppdrag?', ['I e-posten fra megleren', 'I oppdraget i systemet', 'Du spør boligselgeren', 'Du velger selv'], 1)
+      ], 2), 'Product line-up'),
+      mod('n4', 'Komposisjon og Bildeuttrykk', 'https://docs.google.com/presentation/d/e/2PACX-1vToZm6cZ4z2Tt75PhAoHRB6703Gsr74esxUPXCcmGB1QfRFDFiG9-M7wgvMMDOUIUVExCT0Qgx4VrMZ/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hvordan holdes vertikale linjer rette?', ['Kamera i vater', 'Vidvinkel nedenfra', 'Beskjæring i etterkant', 'Det er ikke viktig'], 0),
+        q('Hva er hovedregelen for valg av ståsted i et rom?', ['Så nær vegg som mulig', 'Vis rommets form og sammenheng', 'Alltid fra døren', 'Midt i rommet'], 1)
+      ], 2), 'Composed interior'),
+      mod('n5', 'Fototeknisk og Rutiner', 'https://docs.google.com/presentation/d/e/2PACX-1vRO08eS-KUAVk8VNmkcDn81oyRFG3EGjkW0XSbtONt2D8QaXRuZD2SFx-8ZZzXFtH-dtPcSyzFQ8f7n/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hva brukes stativ til?', ['Bare ved video', 'Lengre lukkertid i dårlig lys', 'Aldri innendørs', 'Kun ved HDR'], 1),
+        q('Hvilken hvitbalanse brukes ved blandet lys?', ['Auto', 'Manuell måling', 'Dagslys 5500K alltid', 'Skygge'], 1)
+      ], 2), 'Camera on tripod'),
+      mod('n6', 'Systemveiledning', 'https://docs.google.com/presentation/d/e/2PACX-1vQFohuCNAOrzJLfjqjJa8LR4LvPXxt3EBh2sfu5s6afUTXRfD49ItXIFFdtGsfHZYyUTYn_RsntvWML/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hvor registrerer du at et oppdrag er utført?', ['På SMS til megleren', 'I systemet på oppdraget', 'I en egen loggbok', 'Ingen registrering'], 1),
+        q('Hva gjør du hvis et oppdrag mangler informasjon?', ['Gjetter og fotograferer', 'Kontakter kundesenteret', 'Avlyser', 'Venter til neste dag'], 1)
+      ], 2), 'Laptop with the portal'),
+      mod('n7', 'Generell Informasjon', 'https://docs.google.com/presentation/d/e/2PACX-1vQCmCXKuqKZ2iAWvJRXWdpCzfwKgeDIa99b_gfu49JhHNB4UEbsxlrA5UfY9nOF2tGWcvipDo5GO-ZD/pub?start=false&loop=false&delayms=60000', quiz(80, [
+        q('Hvem melder du sykdom til?', ['Teamlederen din på SMS', 'Booking på info.no@efkt.com', 'Megleren', 'Ingen'], 1),
+        q('Hva gjør du hvis du er forsinket til neste oppdrag?', ['Ringer boligselgeren direkte så tidlig som mulig', 'Sender e-post til kundesenteret', 'Venter og ser', 'Avlyser oppdraget'], 0)
+      ], 2), 'Office'),
+      mod('n8', 'Konvertering av råfiler til DNG', 'https://docs.google.com/presentation/d/e/2PACX-1vTSgOu2ZIbC3gVCpQMo4xcpa0BSqmio8gR_UkXifqqaALrVS6V7HisrDswYnXxLSG8b00_NLD5lBkU8/pub?start=false&loop=false&delayms=5000', quiz(80, [
+        q('Hvorfor konverteres råfiler til DNG?', ['Mindre filer og standardisert format', 'Bedre farger', 'Kravet fra megleren', 'For å låse filene'], 0),
+        q('Når gjøres konverteringen?', ['Før levering', 'Etter at megleren har godkjent', 'Aldri', 'Under opptak'], 0)
+      ], 2), 'Files on screen'),
+      mod('n9', 'Sikkerhet', 'https://docs.google.com/presentation/d/e/2PACX-1vTZIUrJ0slb2TrZuwluggKHVX308SL_ER1vcu975Ol0qF6KuhwswrY0LcUF83JbJmtSDfTJY0bD0ID1/pub?start=false&loop=false&delayms=3000', quiz(80, [
+        q('Hva gjør du før du går opp i en stige på oppdrag?', ['Sikrer den og vurderer om det er nødvendig', 'Ber boligselgeren holde', 'Går raskt opp', 'Bruker den alltid'], 0),
+        q('Hvem har ansvaret for din egen sikkerhet på oppdrag?', ['Megleren', 'Du selv', 'Boligselgeren', 'EFKT sentralt'], 1)
+      ], 2), 'Photographer on site'),
+      mod('n10', 'Honorar og Fakturering', 'https://docs.google.com/presentation/d/e/2PACX-1vQGB1BwvTxTUS8-qLn-JTeqeDZJRv3MtVJ7A7B92GMCXjmfLmiKfhAstvc4QKWmyGbo14quZcojOKG8/pub?start=false&loop=false&delayms=5000', quiz(80, [
+        q('Når sender du faktura?', ['Etter hvert enkelt oppdrag', 'Etter avtalt periode', 'Når du trenger penger', 'Årlig'], 1),
+        q('Hva må en faktura inneholde?', ['Bare beløp', 'Oppdragsnummer og periode', 'Bilder av boligen', 'Meglerens navn alene'], 1)
+      ], 2), 'Invoice on a desk'),
+      mod('n11', 'Siste Steg', 'https://docs.google.com/presentation/d/e/2PACX-1vRn1K004-5Yc-XSzEXPt1VCg_VHEoQ3eZUllYv4K-xYZqirSinpngk4LwPAZFFDmHnJZM1NnpmNwvyn/pub?start=false&loop=false&delayms=3000', quiz(80, [
+        q('Hva skjer når du har fullført dette kurset?', ['Du kan begynne på oppdrag', 'Ingenting', 'Du må ta det igjen', 'Du får nytt kamera'], 0),
+        q('Hvem kontakter du ved faglige spørsmål?', ['Kundesenteret', 'Teamlederen din', 'Megleren', 'En kollega'], 1)
+      ], 2), 'Sold sign')
+    ] },
+  { id: 'c1', title: 'Interior photography standard', category: 'Foto', selfEnrol: false,
+    desc: 'The EFKT shot list, lighting and white balance for occupied homes.', pass: 80,
+    hint: 'Drop a bright living-room interior',
+    modules: [
+      mod('m1', 'Shot list and room order', 'https://docs.google.com/presentation/d/e/2PACX-1vToZm6cZ4z2Tt75PhAoHRB6703Gsr74esxUPXCcmGB1QfRFDFiG9-M7wgvMMDOUIUVExCT0Qgx4VrMZ/pub?start=false&loop=false&delayms=3000', quiz(80, [
+        q('I hvilken rekkefølge fotograferes rommene i en bolig?', ['Stue, kjøkken, bad, soverom', 'Soverom først, alltid', 'Rekkefølgen er valgfri', 'Etter hva boligselgeren ber om'], 0),
+        q('Hvor mange bilder skal minimum leveres av et kjøkken?', ['Ett oversiktsbilde', 'To bilder: oversikt og detalj', 'Fire bilder', 'Så mange du vil'], 1),
+        q('Hva gjør du hvis et rom er for mørkt for håndholdt opptak?', ['Hever ISO til 6400', 'Bruker stativ og lengre lukkertid', 'Hopper over rommet', 'Bruker blits direkte mot taket'], 1),
+        q('Hvilke av disse hører til i en standard shot list?', ['Fasade', 'Utsikt fra stuevinduet', 'Naboens hage', 'Bad'], [0, 1, 3], true),
+        q('Når er en shot list ferdig?', ['Når du har 20 bilder', 'Når alle punktene på listen er dekket', 'Når du er fornøyd', 'Etter 45 minutter'], 1)
+      ], 2), 'Living room wide shot'),
+      mod('m2', 'Lighting an empty room', 'https://docs.google.com/presentation/d/e/2PACX-1vToZm6cZ4z2Tt75PhAoHRB6703Gsr74esxUPXCcmGB1QfRFDFiG9-M7wgvMMDOUIUVExCT0Qgx4VrMZ/pub?start=false&loop=false&delayms=3000', quiz(80, [
+        q('Hva er hovedregelen for lys i et tomt rom?', ['Alt kunstlys på', 'Dagslys som hovedlys', 'Blits i alle rom', 'Mørklegg og lys opp med LED'], 1),
+        q('Når slår du av takbelysningen?', ['Alltid', 'Når den gir gule fargekast', 'Aldri', 'Bare om kvelden'], 1),
+        q('Hva brukes stativ til?', ['Bare ved video', 'Lengre lukkertid i dårlig lys', 'Aldri innendørs', 'Kun ved HDR'], 1)
+      ], 2), 'Empty room, daylight'),
+      mod('m3', 'White balance and colour', '', quiz(85, [
+        q('Hvilken hvitbalanse brukes ved blandet lys?', ['Auto', 'Manuell måling med gråkort', 'Dagslys 5500K alltid', 'Skygge'], 1),
+        q('Hva er akseptabelt fargeavvik i levering?', ['Ingen krav', 'Naturlig hvitbalanse uten synlige kast', 'Varm tone er alltid best', 'Kaldt er tryggest'], 1)
+      ], 1), 'Kitchen detail', 'built', [
+        { id: 'wb1', kind: 'heading', text: 'Hvitbalanse og farge', fat: 'farge' },
+        { id: 'wb2', kind: 'paragraph', text: 'Blandet lys er regelen, ikke unntaket: dagslys fra vinduet, varmt kunstlys i taket og kanskje en LED-stripe under kjøkkenskapene. Auto-hvitbalanse gjetter, og gjetter ulikt fra bilde til bilde i samme rom.' },
+        { id: 'wb3', kind: 'list', items: 'Mål hvitbalansen manuelt med gråkort i hvert rom\nSlå av takbelysning som gir gule kast\nHold samme verdi gjennom hele rommet\nSjekk veggfarger mot virkeligheten før levering' },
+        { id: 'wb4', kind: 'image', hint: 'Slipp et kjøkkenbilde med blandet lys', caption: 'Dagslys fra venstre, varmt kunstlys i taket — mål før du skyter' },
+        { id: 'wb5', kind: 'quote', text: 'En boligselger ser aldri histogrammet. De ser at stuen deres har feil farge.', who: 'Sander Thu, teamleder Vest og Sør' },
+        { id: 'wb6', kind: 'paragraph', text: 'Akseptabelt avvik er naturlig hvitbalanse uten synlige kast. Er du i tvil, lever nøytralt — en varm tone er lettere å legge til i etterarbeid enn å fjerne.' }
+      ]),
+      mod('m4', 'Delivery and naming', '', quiz(80, [
+        q('Hva merkes filene med?', ['Fotografens navn', 'Oppdragsnummer', 'Dato', 'Adressen med mellomrom'], 1),
+        q('Hvor leveres videoprosjekter?', ['På e-post', 'Via Massive', 'På minnepinne', 'I Konekt-chatten'], 1)
+      ], 2), 'Laptop with images', 'built', [
+        { id: 'mb1', kind: 'heading', text: 'Levering og filnavn', fat: 'filnavn' },
+        { id: 'mb2', kind: 'paragraph', text: 'Alle filer merkes med oppdragsnummer, ikke adresse. Bruk Massive til video, og Filemail som backup dersom Massive er nede.' },
+        { id: 'mb3', kind: 'image', hint: 'Slipp et skjermbilde av mappestrukturen', caption: 'Mappestrukturen slik den skal se ut ved levering' },
+        { id: 'mb4', kind: 'list', items: 'Lever innen 24 timer etter opptak\nMerk filene med oppdragsnummer\nVarsle teamleder ved forsinkelse' },
+        { id: 'mb5', kind: 'quote', text: 'Feil filnavn koster oss en time per oppdrag i opprydding.', who: 'Sander Thu, teamleder Vest og Sør' },
+        { id: 'mb6', kind: 'button', label: 'Åpne Massive', url: 'https://app.massive.io/en/login' }
+      ])
+    ] },
+  { id: 'c7', title: 'Exterior and facade', category: 'Foto', selfEnrol: false,
+    desc: 'Time of day, angles and weather for the shot that sells the address.', pass: 80,
+    hint: 'Drop a house facade in evening light',
+    modules: [
+      mod('m5', 'Reading the light', 'academy.efkt.com/photo/light', quiz(80, [
+        q('Når er fasadelys best?', ['Midt på dagen', 'Den blå timen og tidlig morgen', 'Alltid i overskyet vær', 'Rett etter regn'], 1),
+        q('Hva gjør du ved direkte motlys på fasaden?', ['Skyter likevel', 'Venter eller flytter vinkel', 'Bruker blits', 'Øker eksponering to trinn'], 1)
+      ], 2), 'Facade at dusk'),
+      mod('m6', 'Angles and lines', 'academy.efkt.com/photo/angles', quiz(80, [
+        q('Hvordan holdes vertikale linjer rette?', ['Kamera i vater', 'Vidvinkel nedenfra', 'Beskjæring i etterkant', 'Det er ikke viktig'], 0)
+      ], 2), 'Garden view')
+    ] },
+  { id: 'c2', title: 'Drone operation and safety', category: 'Drone', selfEnrol: false,
+    desc: 'Rules, flight planning and the footage we expect from every drone job.', pass: 90,
+    hint: 'Drop an aerial shot of a property',
+    modules: [
+      mod('m7', 'Danish drone regulation', 'academy.efkt.com/drone/rules', quiz(90, [
+        q('Hvor høyt kan du fly uten særskilt tillatelse?', ['50 meter', '120 meter', '150 meter', 'Ingen grense'], 1),
+        q('Hva kreves for flyging nær lufthavn?', ['Ingenting', 'Klarering fra lufttrafikktjenesten', 'Kun varsling til naboer', 'Flyging er alltid forbudt'], 1),
+        q('Hvem har ansvaret for flygingen?', ['EFKT', 'Fartøysjefen — deg', 'Boligselgeren', 'Megleren'], 1)
+      ], 1), 'Drone in flight'),
+      mod('m8', 'Flight planning', 'academy.efkt.com/drone/planning', quiz(90, [
+        q('Hva sjekkes før hver flyging?', ['Vær, luftrom og batteri', 'Kun batteri', 'Kun vær', 'Ingenting hvis du har fløyet der før'], 0)
+      ], 1), 'Map planning'),
+      mod('m9', 'Footage handover', 'academy.efkt.com/drone/handover', null, 'Aerial still')
+    ] },
+  { id: 'c8', title: 'Property film in one visit', category: 'Video', selfEnrol: true,
+    desc: 'A repeatable walkthrough you can shoot and cut the same day.', pass: 75,
+    hint: 'Drop a video-shoot behind the scenes',
+    modules: [
+      mod('m10', 'Planning the walkthrough', 'academy.efkt.com/video/plan', quiz(75, [
+        q('Hvor starter en walkthrough?', ['I hagen', 'Ved inngangen', 'På soverommet', 'Der du står'], 1)
+      ], 3), 'Hallway shot'),
+      mod('m11', 'Stabilised movement', 'academy.efkt.com/video/move', null, 'Gimbal in use'),
+      mod('m12', 'Cutting to two minutes', 'academy.efkt.com/video/edit', null, 'Edit timeline')
+    ] },
+  { id: 'c9', title: 'Styling before the shoot', category: 'Foto', selfEnrol: true,
+    desc: 'What to move, what to remove and what to leave alone in a lived-in home.', pass: 75,
+    hint: 'Drop a styled dining table',
+    modules: [
+      mod('m13', 'Reading a room', 'academy.efkt.com/style/read', quiz(75, [
+        q('Hva fjernes alltid før opptak?', ['All pynt', 'Personlige bilder og rot på flater', 'Møbler', 'Gardiner'], 1)
+      ], 3), 'Styled shelf'),
+      mod('m14', 'The 20-minute reset', 'academy.efkt.com/style/reset', quiz(75, [
+        q('Hva er første steg i en 20-minutters reset?', ['Flytte sofaen', 'Rydde flater', 'Skifte sengetøy', 'Vaske gulv'], 1)
+      ], 3), 'Bedroom styling')
+    ] },
+  { id: 'c5', title: 'Welcome to EFKT', category: 'Generell Internal', selfEnrol: false,
+    desc: 'Who we are, how we work and what the agent expects from us.', pass: 70,
+    hint: 'Drop a team or office photo',
+    modules: [
+      mod('m15', 'The company', 'academy.efkt.com/intro/company', quiz(70, [
+        q('Hva er EFKTs tagline?', ['Fra visning til nøkkel', 'Den komplette pakken fra «Til salg» til «Solgt»', 'Bilder som selger', 'Vi skaper bolig'], 1)
+      ], 3), 'Office'),
+      mod('m16', "From For Sale to Sold", 'academy.efkt.com/intro/journey', null, 'Sold sign')
+    ] },
+  { id: 'r1', title: 'Camera and lens specifications', category: 'Reference Materials', selfEnrol: false,
+    desc: 'Approved bodies, lenses and settings per property type.', pass: 0, reference: true,
+    hint: 'Camera gear', icon: 'camera',
+    modules: [
+      mod('m17', 'Approved equipment list', 'academy.efkt.com/ref/gear', null, 'Camera body'),
+      mod('m18', 'Settings per room type', 'academy.efkt.com/ref/settings', null, 'Lens detail')
+    ] },
+  { id: 'r2', title: 'Delivery and file naming', category: 'Reference Materials', selfEnrol: false,
+    desc: 'Formats, resolutions and the naming convention Konekt expects.', pass: 0, reference: true,
+    hint: 'Files on screen', icon: 'folders',
+    modules: [mod('m19', 'Naming convention', 'academy.efkt.com/ref/naming', null, 'Folder structure')] },
+  { id: 'r3', title: 'Shot list cheat sheet', category: 'Reference Materials', selfEnrol: false,
+    desc: 'One page per property type, printable for the car.', pass: 0, reference: true,
+    hint: 'Printed sheet', icon: 'list-checks',
+    modules: [mod('m20', 'All property types', 'academy.efkt.com/ref/shotlist', null, 'Checklist')] }
+];
+
+const ASSIGNED = ['c10', 'c1', 'c7', 'c2', 'c5', 'c9', 'r1', 'r2', 'r3'];
+
+
+class Component extends DCLogic {
+  componentDidMount() {
+    fetch('.image-slots.state.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : {})
+      .then(j => { DROPPED = new Set(Object.keys(j || {}).filter(k => j[k] && j[k].u)); this.forceUpdate(); })
+      .catch(() => {});
+    this._fsHandler = () => this.setState({ fullscreen: !!document.fullscreenElement });
+    document.addEventListener('fullscreenchange', this._fsHandler);
+    this.startDwellTicker();
+    try {
+      const raw = localStorage.getItem('efkt-academy-learner');
+      if (raw) {
+        const saved = JSON.parse(raw);
+        this.setState({
+          enrolled: saved.enrolled || [],
+          seen: { ...this.state.seen, ...(saved.seen || {}) },
+          results: { ...this.state.results, ...(saved.results || {}) },
+          profile: { ...this.state.profile, ...(saved.profile || {}) },
+          savedProfile: { ...this.state.savedProfile, ...(saved.profile || {}) },
+          notify: { ...this.state.notify, ...(saved.notify || {}) }
+        });
+      }
+    } catch (e) {}
+  }
+
+  componentDidUpdate() {
+    try {
+      localStorage.setItem('efkt-academy-learner', JSON.stringify({
+        enrolled: this.state.enrolled,
+        seen: this.state.seen,
+        results: this.state.results,
+        profile: this.state.savedProfile,
+        notify: this.state.notify
+      }));
+    } catch (e) {}
+  }
+
+  state = {
+    view: 'home', course: null, newsId: null, enrolled: [], toast: '',
+    profile: { name: ME.name, title: ME.title, phone: ME.phone, region: ME.region, bio: ME.bio },
+    savedProfile: { name: ME.name, title: ME.title, phone: ME.phone, region: ME.region, bio: ME.bio },
+    notify: { news: true, assigned: true, reminders: false },
+    pwOld: '', pwNew: '', pwRepeat: '',
+    // moduleId -> true once the linked content has been opened
+    seen: { n1: true, n2: true, n3: true, n4: true, m1: true, m2: true, m7: true, m8: true, m9: true, m15: true },
+    // moduleId -> { attempts, passed, score }
+    results: {
+      n1: { attempts: 1, passed: true, score: 100 },
+      n2: { attempts: 1, passed: true, score: 100 },
+      n3: { attempts: 2, passed: true, score: 100 },
+      m1: { attempts: 1, passed: true, score: 100 },
+      m2: { attempts: 2, passed: true, score: 100 },
+      m7: { attempts: 1, passed: true, score: 100 },
+      m8: { attempts: 1, passed: true, score: 100 },
+      m15: { attempts: 1, passed: true, score: 100 }
+    },
+    quizModule: null,
+    answers: {},
+    graded: null,
+    playModule: null,
+    fullscreen: false,
+    confirmReset: false,
+    dwell: {},
+    confirmed: {},
+    reloads: {}
+  };
+
+  toggleFullscreen() {
+    const el = this._player;
+    if (document.fullscreenElement) {
+      const done = () => this.setState({ fullscreen: false });
+      try {
+        const p = document.exitFullscreen && document.exitFullscreen();
+        if (p && p.then) p.then(done).catch(done); else done();
+      } catch (e) { done(); }
+      return;
+    }
+    if (!el || !el.requestFullscreen || !document.fullscreenEnabled) {
+      // Blocked by permissions policy — the player already fills the viewport.
+      this.flash('Nettleseren tillater ikke fullskjerm her — spilleren dekker allerede hele vinduet');
+      return;
+    }
+    try {
+      const p = el.requestFullscreen();
+      if (p && p.then) {
+        p.then(() => this.setState({ fullscreen: true }))
+         .catch(() => this.flash('Nettleseren blokkerte fullskjerm'));
+      } else {
+        this.setState({ fullscreen: true });
+      }
+    } catch (e) {
+      this.flash('Nettleseren blokkerte fullskjerm');
+    }
+  }
+
+  // Counts attention time on the module that is open in the player.
+  // Pauses on a hidden tab so parking it in the background cannot unlock a quiz.
+  startDwellTicker() {
+    if (this._dwellTimer) return;
+    this._dwellTimer = setInterval(() => {
+      const st = this.state;
+      if (st.view !== 'play' || !st.playModule) return;
+      if (typeof document !== 'undefined' && document.hidden) return;
+      const id = st.playModule;
+      this.setState(s => ({ dwell: { ...(s.dwell || {}), [id]: ((s.dwell || {})[id] || 0) + 1 } }));
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    if (this._fsHandler) document.removeEventListener('fullscreenchange', this._fsHandler);
+    if (this._dwellTimer) clearInterval(this._dwellTimer);
+  }
+
+  // Progress is now derived from real quiz results, in module order.
+  depth(c) {
+    let n = 0;
+    for (const m of c.modules) {
+      const r = this.state.results[m.id];
+      const done = m.quiz ? (r && r.passed) : !!this.state.seen[m.id];
+      if (done) n++; else break;
+    }
+    return n;
+  }
+
+  grade(m) {
+    const qz = m.quiz;
+    const picks = this.state.answers;
+    let right = 0;
+    qz.questions.forEach((qq, i) => {
+      const chosen = picks[i] || [];
+      const correct = qq.options.map((o, j) => o.correct ? j : -1).filter(j => j >= 0);
+      const ok = chosen.length === correct.length && correct.every(j => chosen.includes(j));
+      if (ok) right++;
+    });
+    const score = Math.round((right / qz.questions.length) * 100);
+    return { right, total: qz.questions.length, score, passed: score >= qz.pass };
+  }
+
+  // Opens a print-ready kursbevis in a new window; the browser's print dialog saves it as PDF.
+  certificate(course) {
+    const p = this.state.savedProfile;
+    const d = new Date();
+    const date = d.getDate() + '. ' +
+      ['januar','februar','mars','april','mai','juni','juli','august','september','oktober','november','desember'][d.getMonth()] +
+      ' ' + d.getFullYear();
+    const esc = str => String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const html = [
+      '<!DOCTYPE html><html lang="no"><head><meta charset="utf-8">',
+      '<title>Kursbevis - ' + esc(course.title) + '</title>',
+      '<link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/fonts.css">',
+      '<link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/colors.css">',
+      '<style>',
+      '@page { size: A4 landscape; margin: 0 }',
+      'body { margin:0; font-family:"Be Vietnam Pro",sans-serif; color:#373B54; background:#F8F8FA;',
+      ' display:flex; align-items:center; justify-content:center; min-height:100vh; padding:40px }',
+      '.sheet { width:1000px; max-width:100%; background:#fff; border-radius:20px; padding:80px;',
+      ' box-shadow:0 4px 24px rgba(12,14,57,0.06); display:flex; flex-direction:column; gap:40px }',
+      '.eyebrow { font-size:14px; font-weight:600; color:#63667E; letter-spacing:0 }',
+      'h1 { margin:0; font-size:54px; line-height:1.05; letter-spacing:-0.06em; font-weight:300 }',
+      'h1 b { font-weight:800 }',
+      '.name { font-size:40px; font-weight:800; letter-spacing:-0.045em; margin:0 }',
+      '.meta { display:flex; gap:64px; flex-wrap:wrap; padding-top:24px; border-top:1px solid #E9E9EC }',
+      '.meta div { display:flex; flex-direction:column; gap:6px }',
+      '.label { font-size:14px; font-weight:600; color:#63667E }',
+      '.val { font-size:20px; font-weight:600 }',
+      '.rule { height:4px; width:80px; background:#F1554C; border-radius:2px }',
+      '@media print { body { background:#fff; padding:0 } .sheet { box-shadow:none; border-radius:0 } }',
+      '</style></head><body><div class="sheet">',
+      '<div class="eyebrow">EFKT Academy</div>',
+      '<div class="rule"></div>',
+      '<h1>Kurs<b>bevis</b></h1>',
+      '<div style="font-size:20px;font-weight:300;color:#63667E">Dette bekrefter at</div>',
+      '<p class="name">' + esc(p.name) + '</p>',
+      '<div style="font-size:20px;font-weight:300;color:#63667E;max-width:640px">har gjennomført og bestått alle moduler i kurset</div>',
+      '<p style="margin:0;font-size:32px;font-weight:600;letter-spacing:-0.03em">' + esc(course.title) + '</p>',
+      '<div class="meta">',
+      '<div><span class="label">Kategori</span><span class="val">' + esc(course.category) + '</span></div>',
+      '<div><span class="label">Moduler bestått</span><span class="val">' + course.modules.length + '</span></div>',
+      '<div><span class="label">Bestått ved</span><span class="val">' + course.pass + '%</span></div>',
+      '<div><span class="label">Dato</span><span class="val">' + date + '</span></div>',
+      '</div></div></body></html>'
+    ].join('');
+    const w = window.open('', '_blank');
+    if (!w) { this.flash('Tillat popup-vinduer for å laste ned kursbeviset'); return; }
+    w.document.write(html);
+    w.document.close();
+    setTimeout(() => { try { w.print(); } catch (e) {} }, 400);
+    this.flash('Kursbevis for ' + course.title + ' åpnet — lagre som PDF');
+  }
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 2600);
+  }
+
+  myCourses() {
+    return COURSES.filter(c => ASSIGNED.includes(c.id) || this.state.enrolled.includes(c.id));
+  }
+
+  progress(c) {
+    if (c.reference) return { passed: 0, pct: 0 };
+    const passed = this.depth(c);
+    return { passed, pct: c.modules.length ? Math.round((passed / c.modules.length) * 100) : 0 };
+  }
+
+  card(c, where) {
+    const p = this.progress(c);
+    const done = p.pct === 100;
+    const started = p.pct > 0 && !done;
+    return {
+      title: c.title, desc: c.desc, category: c.category,
+      slotId: 'course-' + c.id + '-thumb', slotHint: c.hint, photo: photoOf(c.id),
+      pctLabel: p.pct + '%',
+      barWidth: p.pct + '%',
+      barColor: done ? 'var(--efkt-green)' : 'var(--efkt-coral)',
+      counter: p.passed + ' / ' + c.modules.length + ' moduler',
+      showBar: !c.reference,
+      statusLabel: done ? 'Fullført' : started ? 'I gang' : 'Ikke startet',
+      statusIcon: done ? 'check' : started ? 'dot-outline' : 'play',
+      statusBg: done ? 'var(--efkt-green)' : started ? 'var(--efkt-coral)' : 'var(--efkt-navy)',
+      statusFg: 'var(--efkt-white)',
+      cta: done ? 'Se igjen' : started ? 'Fortsett' : 'Start kurset',
+      nextLabel: started ? 'Fortsett med modul ' + (p.passed + 1) : 'Start kurset',
+      open: () => this.setState({ view: 'course', course: c.id })
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const v = {};
+    v.logoStyle = { width: '110px', height: 'auto', flexShrink: 0 };
+    const sp = s.savedProfile;
+    v.me = {
+      ...ME,
+      name: sp.name,
+      title: sp.title,
+      first: sp.name.split(' ')[0],
+      initials: sp.name.split(' ').map(x => x[0]).join('').slice(0, 2).toUpperCase()
+    };
+    v.onProfile = s.view === 'profile';
+    v.goProfile = () => this.setState({ view: 'profile', course: null });
+    v.toast = s.toast;
+    v.onHome = s.view === 'home';
+    v.onCatalogue = s.view === 'catalogue';
+    v.onCourse = s.view === 'course';
+    v.onNews = s.view === 'news';
+    const story = v.onNews ? NEWS.find(n => n.id === s.newsId) : null;
+    if (story) {
+      const w = story.title.split(' ');
+      v.ns = {
+        title: story.title, titleThin: w.slice(0, -1).join(' '), titleFat: w[w.length - 1],
+        category: story.category, lead: story.lead,
+        meta: story.date + ' · ' + story.author,
+        slotId: 'news-' + story.id + '-hero', photo: NEWS_PHOTOS[story.id] || '', slotHint: story.hint
+      };
+      v.nsBlocks = mapBlocks(story.blocks, 'news-' + story.id, true);
+      v.nsMore = NEWS.filter(n => n.id !== story.id).map(n => ({
+        title: n.title, category: n.category, date: n.date,
+        slotId: 'news-' + n.id + '-hero', photo: NEWS_PHOTOS[n.id] || '', slotHint: n.hint,
+        open: () => { this.setState({ view: 'news', newsId: n.id }); window.scrollTo(0, 0); }
+      }));
+    }
+    v.backHome = () => this.setState({ view: 'home', course: null });
+
+    v.tabs = [
+      { key: 'home', label: 'Mine kurs' },
+      { key: 'catalogue', label: 'Kurskatalog' }
+    ].map(t => ({
+      label: t.label,
+      weight: s.view === t.key ? '600' : '300',
+      color: s.view === t.key ? 'var(--efkt-white)' : 'rgba(255,255,255,0.65)',
+      go: () => this.setState({ view: t.key, course: null })
+    }));
+
+    if (v.onProfile) {
+      const p = s.profile;
+      v.pf = { name: p.name, title: p.title, phone: p.phone, region: p.region, bio: p.bio, email: ME.email };
+      v.pfInitials = v.me.initials;
+      v.pfJoined = ME.joined;
+      v.pfGroups = ME.groups;
+      v.pfCountry = ME.country;
+      v.pfTeamleader = REGION_LEADS[p.region] || ME.teamleader;
+      v.regions = REGIONS[ME.country] || REGIONS['Norge'];
+      v.bioCount = p.bio.length + ' / 280 tegn';
+
+      const set = fields => this.setState(st => ({ profile: { ...st.profile, ...fields } }));
+      v.setPfName = e => set({ name: e.target.value });
+      v.setPfTitle = e => set({ title: e.target.value });
+      v.setPfPhone = e => set({ phone: e.target.value });
+      v.setPfRegion = e => set({ region: e.target.value });
+      v.setPfBio = e => set({ bio: e.target.value.slice(0, 280) });
+
+      v.pfDirty = JSON.stringify(p) !== JSON.stringify(sp);
+      v.pfClean = !v.pfDirty;
+      v.pfSave = () => {
+        if (!p.name.trim()) { this.flash('Navnet kan ikke være tomt'); return; }
+        this.setState(st => ({ savedProfile: { ...st.profile } }));
+        this.flash('Profilen er lagret');
+      };
+      v.pfRevert = () => this.setState(st => ({ profile: { ...st.savedProfile } }));
+
+      v.notifyRows = [
+        { key: 'news', label: 'Nyheter på dashboardet', sub: 'E-post når det legges ut en nyhet for gruppen din' },
+        { key: 'assigned', label: 'Nye kurs', sub: 'E-post når du får tildelt et kurs' },
+        { key: 'reminders', label: 'Påminnelser', sub: 'Ukentlig påminnelse om kurs du ikke har fullført' }
+      ].map(n => ({
+        label: n.label, sub: n.sub,
+        checked: s.notify[n.key],
+        toggle: () => {
+          this.setState(st => ({ notify: { ...st.notify, [n.key]: !st.notify[n.key] } }));
+          this.flash('Varslingsvalg oppdatert');
+        }
+      }));
+
+      v.pwOld = s.pwOld; v.pwNew = s.pwNew; v.pwRepeat = s.pwRepeat;
+      v.setPwOld = e => this.setState({ pwOld: e.target.value });
+      v.setPwNew = e => this.setState({ pwNew: e.target.value });
+      v.setPwRepeat = e => this.setState({ pwRepeat: e.target.value });
+      const rules = [
+        { label: 'Minst 10 tegn', ok: s.pwNew.length >= 10 },
+        { label: 'Store og små bokstaver', ok: /[a-zæøå]/.test(s.pwNew) && /[A-ZÆØÅ]/.test(s.pwNew) },
+        { label: 'Minst ett tall', ok: /[0-9]/.test(s.pwNew) },
+        { label: 'Minst ett spesialtegn', ok: /[^A-Za-zÆØÅæøå0-9]/.test(s.pwNew) }
+      ];
+      v.pwRules = rules.map(r => ({
+        label: r.label,
+        icon: r.ok ? 'check' : 'circle',
+        color: r.ok ? 'var(--efkt-green)' : 'var(--efkt-muted)',
+        textColor: r.ok ? 'var(--text-body)' : 'var(--text-muted)'
+      }));
+      v.pwMatchHint = s.pwRepeat.length === 0 ? 'Skriv det nye passordet en gang til.'
+        : s.pwNew === s.pwRepeat ? 'Passordene er like.' : 'Passordene er ikke like.';
+      v.pwSave = () => {
+        if (!s.pwOld) { this.flash('Skriv inn det nåværende passordet'); return; }
+        if (rules.some(r => !r.ok)) { this.flash('Det nye passordet oppfyller ikke kravene'); return; }
+        if (s.pwNew !== s.pwRepeat) { this.flash('Passordene er ikke like'); return; }
+        this.setState({ pwOld: '', pwNew: '', pwRepeat: '' });
+        this.flash('Passordet er endret');
+      };
+
+      const all = this.myCourses().filter(cc => !cc.reference);
+      const done = all.filter(cc => this.progress(cc).pct === 100);
+      v.pfStats = [
+        { label: 'Fullførte kurs', value: String(done.length), sub: 'av ' + all.length + ' tildelte' },
+        { label: 'Moduler bestått', value: String(all.reduce((a, cc) => a + this.progress(cc).passed, 0)), sub: 'med quiz bestått' },
+        { label: 'Gruppene dine', value: String(ME.groups.length), sub: ME.groups.join(' · ') }
+      ];
+      v.pfCertificates = done.map(cc => ({
+        title: cc.title, category: cc.category,
+        line: cc.modules.length + ' moduler bestått',
+        download: () => this.certificate(cc)
+      }));
+      v.pfNoCertificates = done.length === 0;
+    }
+
+    const mine = this.myCourses();
+    const tracked = mine.filter(c => !c.reference);
+    const current = tracked.filter(c => { const p = this.progress(c); return p.pct > 0 && p.pct < 100; });
+    const doneCount = tracked.filter(c => this.progress(c).pct === 100).length;
+
+    v.heroLine = current.length
+      ? 'Du har ' + current.length + (current.length === 1 ? ' kurs' : ' kurs') + ' i gang og ' + (tracked.length - current.length - doneCount) + ' som venter på å bli startet.'
+      : 'Alt du er tildelt er oppdatert.';
+    v.hasCurrent = current.length > 0;
+    v.currentCourses = current.map(c => this.card(c, 'wide'));
+    v.currentLine = doneCount + ' av ' + tracked.length + ' tildelte kurs fullført';
+
+    v.sections = CATEGORIES.filter(k => k.name !== 'Reference Materials').map(k => {
+      const list = mine.filter(c => c.category === k.name);
+      if (!list.length) return null;
+      const words = k.name.split(' ');
+      const ps = list.map(c => this.progress(c));
+      const full = ps.filter(p => p.pct === 100).length;
+      return {
+        icon: k.icon, desc: k.desc,
+        thin: words.length > 1 ? words.slice(0, -1).join(' ') : '',
+        fat: words[words.length - 1],
+        progressLine: full + ' av ' + list.length + ' fullført',
+        courses: list.map(c => this.card(c, 'tile'))
+      };
+    }).filter(Boolean);
+
+    const refs = mine.filter(c => c.category === 'Reference Materials');
+    v.hasReference = refs.length > 0;
+    v.referenceCourses = refs.map(c => ({
+      title: c.title, icon: c.icon || 'file-text',
+      slotId: 'course-' + c.id + '-thumb', photo: photoOf(c.id),
+      meta: c.modules.length + (c.modules.length === 1 ? ' del' : ' deler') + ' · alltid tilgjengelig',
+      open: () => this.setState({ view: 'course', course: c.id })
+    }));
+
+    v.catalogueCourses = COURSES.filter(c => c.selfEnrol && !ASSIGNED.includes(c.id)).map(c => {
+      const isIn = s.enrolled.includes(c.id);
+      return {
+        title: c.title, desc: c.desc, category: c.category,
+        slotId: 'course-' + c.id + '-thumb', slotHint: c.hint, photo: photoOf(c.id),
+        cta: isIn ? 'Påmeldt' : 'Meld meg på',
+        enrol: () => {
+          if (isIn) { this.setState({ view: 'course', course: c.id }); return; }
+          this.setState(st => ({ enrolled: st.enrolled.concat([c.id]) }));
+          this.flash('Påmeldt ' + c.title);
+        }
+      };
+    });
+
+    const featured = NEWS.find(n => n.pinned) || NEWS[0];
+    v.featured = featured ? {
+      title: featured.title, lead: featured.lead, category: featured.category,
+      date: featured.date, author: featured.author,
+      slotId: 'news-' + featured.id + '-hero', slotHint: featured.hint, photo: NEWS_PHOTOS[featured.id] || '',
+      open: () => { this.setState({ view: 'news', newsId: featured.id }); window.scrollTo(0, 0); }
+    } : null;
+    v.hasNews = NEWS.length > 0;
+    v.newsList = NEWS.filter(n => n !== featured).map(n => ({
+      title: n.title, lead: n.lead, category: n.category, date: n.date, author: n.author,
+      slotId: 'news-' + n.id + '-hero', slotHint: n.hint, photo: NEWS_PHOTOS[n.id] || '',
+      open: () => { this.setState({ view: 'news', newsId: n.id }); window.scrollTo(0, 0); }
+    }));
+
+    v.contactIntro = CONTACT_INTRO;
+    v.teamleaders = TEAMLEADERS.map(t => ({
+      region: t.region, name: t.name, mail: t.mail, mob: t.mob,
+      mailHref: 'mailto:' + t.mail,
+      mobHref: 'tel:+47' + t.mob.replace(/ /g, '')
+    }));
+    v.contactNotes = CONTACT_NOTES.map(n => ({ ...n, hasNote: !!n.note }));
+    v.contactFooter = CONTACT_FOOTER;
+    v.links = IMPORTANT_LINKS.map(l => ({ ...l, hasSub: !!l.sub }));
+
+    const c = s.course ? COURSES.find(x => x.id === s.course) : null;
+    if (c) {
+      const p = this.progress(c);
+      const words = c.title.split(' ');
+      v.oc = {
+        titleThin: words.slice(0, -1).join(' '), titleFat: words[words.length - 1],
+        category: c.category, desc: c.desc,
+        slotId: 'course-' + c.id + '-thumb', slotHint: c.hint, photo: photoOf(c.id),
+        tracked: !c.reference, reference: !!c.reference,
+        pctLabel: p.pct + '%', barWidth: p.pct + '%',
+        barColor: p.pct === 100 ? 'var(--efkt-green)' : 'var(--efkt-coral)',
+        counter: p.passed + ' av ' + c.modules.length + ' moduler bestått',
+        pass: c.pass + '%'
+      };
+      const anyDone = c.modules.some(m => s.results[m.id] || s.seen[m.id]);
+      v.canResetCourse = anyDone && !c.reference;
+      v.resetCourse = () => {
+        this.setState(st => {
+          const results = { ...st.results };
+          const seen = { ...st.seen };
+          c.modules.forEach(m => { delete results[m.id]; delete seen[m.id]; });
+          return { results, seen, confirmReset: false };
+        });
+        this.flash('Fremdriften i «' + c.title + '» er nullstilt');
+      };
+      v.confirmResetOpen = !!s.confirmReset;
+      v.askResetCourse = () => this.setState({ confirmReset: true });
+      v.cancelReset = () => this.setState({ confirmReset: false });
+      v.resetCourseLine = 'Alle ' + c.modules.length + ' moduler settes til ikke startet. Quizresultatene dine slettes, og du starter kurset forfra.';
+
+      v.ocModules = c.modules.map((m, i) => {
+        const passed = i < p.passed;
+        const currentOne = i === p.passed;
+        const locked = !c.reference && i > p.passed;
+        const r = s.results[m.id];
+        const seen = !!s.seen[m.id];
+        const attemptsLeft = m.quiz && m.quiz.retries ? Math.max(0, m.quiz.retries + 1 - ((r && r.attempts) || 0)) : null;
+        const failed = r && !r.passed;
+        return {
+          number: i + 1, title: m.title,
+          icon: c.reference ? 'file-text' : passed ? 'check-circle' : locked ? 'lock-simple' : 'play-circle',
+          statusLabel: c.reference ? 'Reference'
+            : passed ? 'Bestått' + (r ? ' ' + r.score + '%' : '')
+            : failed ? 'Ikke bestått ' + r.score + '%'
+            : currentOne && seen ? 'Quiz gjenstår'
+            : currentOne ? 'Ikke startet' : 'Låst',
+          tone: passed ? 'mint' : failed ? 'sand' : currentOne && !c.reference ? 'sand' : 'neutral',
+          quizLine: c.reference ? m.url
+            : m.quiz ? m.quiz.questions.length + ' spørsmål · bestått ved ' + m.quiz.pass + '%'
+            : 'Ingen quiz — fullføres når du har åpnet innholdet',
+          actionable: !locked,
+          locked,
+          // Content first, then the quiz.
+          showQuiz: !locked && !!m.quiz && seen
+            && (!(m.quiz && m.quiz.gate) || passed
+                || (((s.dwell || {})[m.id] || 0) >= (m.quiz.minSeconds || 60) && !!(s.confirmed || {})[m.id])),
+          gateWaiting: !locked && !!m.quiz && seen && !!(m.quiz && m.quiz.gate) && !passed
+            && !((((s.dwell || {})[m.id] || 0) >= (m.quiz.minSeconds || 60)) && !!(s.confirmed || {})[m.id]),
+          gateNote: 'Åpne modulen og bekreft at du har vært gjennom alle slidene for å ta quizen',
+          cta: c.reference ? 'Åpne' : passed ? 'Åpne igjen' : seen ? 'Åpne igjen' : 'Åpne innhold',
+          quizCta: passed ? 'Se resultatet' : failed ? 'Prøv igjen' : 'Ta quizen',
+          attemptsLine: attemptsLeft === null ? 'Ubegrenset antall forsøk'
+            : attemptsLeft > 0 ? attemptsLeft + (attemptsLeft === 1 ? ' forsøk igjen' : ' forsøk igjen')
+            : 'Ingen forsøk igjen — kontakt teamlederen din',
+          quizBlocked: attemptsLeft === 0 && !passed,
+          open: () => this.setState({ view: 'play', playModule: m.id }),
+          openQuiz: () => {
+            if (attemptsLeft === 0 && !passed) {
+              this.flash('Ingen forsøk igjen — gå gjennom modulen på nytt først');
+              return;
+            }
+            this.setState({ view: 'quiz', quizModule: m.id, answers: {}, graded: null });
+          },
+          canReset: !!(r || seen) && !c.reference,
+          resetLabel: passed ? 'Ta modulen om igjen' : 'Nullstill',
+          reset: () => {
+            this.setState(st => {
+              const results = { ...st.results };
+              const seenN = { ...st.seen };
+              // Later modules depend on this one, so they reset with it.
+              c.modules.slice(i).forEach(x => { delete results[x.id]; delete seenN[x.id]; });
+              return { results, seen: seenN };
+            });
+            this.flash(i === c.modules.length - 1
+              ? '«' + m.title + '» er nullstilt'
+              : '«' + m.title + '» og modulene etter er nullstilt');
+          }
+        };
+      });
+    }
+
+    v.onPlay = s.view === 'play';
+    v.dwellHas = false;
+    if (s.view === 'play' && c) {
+      const idx = c.modules.findIndex(m => m.id === s.playModule);
+      const m = c.modules[idx];
+      if (m) {
+        const r = s.results[m.id];
+        const passed = r && r.passed;
+        v.pl = {
+          courseTitle: c.title,
+          title: m.title,
+          stepLabel: 'Modul ' + (idx + 1) + ' av ' + c.modules.length,
+          isEmbed: m.source !== 'built' && !!m.url,
+          isBuilt: m.source === 'built',
+          isEmpty: m.source !== 'built' && !m.url,
+          embed: embedUrl(m.url),
+          hasQuiz: !!m.quiz,
+          quizLine: m.quiz
+            ? m.quiz.questions.length + ' spørsmål · bestått ved ' + m.quiz.pass + '%'
+            : 'Ingen quiz — modulen fullføres når du har sett innholdet',
+          quizCta: passed ? 'Se resultatet' : (r && !r.passed) ? 'Prøv quizen igjen' : 'Ta quizen',
+          doneCta: passed ? 'Fullført' : 'Marker som sett'
+        };
+        // Google Slides embeds are cross-origin: we cannot read the current slide.
+        // The honest substitute is time on the module plus an explicit confirmation.
+        const gate = m.quiz && m.quiz.gate;
+        const need = gate ? (m.quiz.minSeconds || 60) : 0;
+        const spent = (s.dwell && s.dwell[m.id]) || 0;
+        const timeMet = spent >= need;
+        const confirmed = !!(s.confirmed && s.confirmed[m.id]);
+        const openable = !gate || passed || (timeMet && confirmed);
+
+        v.dwellHas = !!gate && !passed;
+        v.pl.gated = !!gate && !passed;
+        v.pl.quizOpenable = openable;
+        v.pl.timeMet = timeMet;
+        v.pl.confirmed = confirmed;
+        v.pl.canConfirm = timeMet && !confirmed;
+        v.pl.notConfirmed = !confirmed;
+        v.pl.showQuizBtn = !!m.quiz && openable;
+        v.pl.quizLocked = !!m.quiz && !openable;
+        const remain = Math.max(0, need - spent);
+        v.pl.gateLine = timeMet
+          ? (confirmed ? 'Bekreftet — quizen er åpen.' : 'Bekreft at du har vært gjennom alle slidene for å åpne quizen.')
+          : 'Quizen åpnes om ' + (remain >= 60 ? Math.ceil(remain / 60) + ' min' : remain + ' sek') + '. Bla gjennom alle slidene i mellomtiden.';
+        v.pl.confirmLabel = confirmed ? 'Bekreftet — hele modulen gjennomgått' : 'Jeg har vært gjennom alle slidene';
+        v.plConfirm = () => {
+          if (!timeMet) { this.flash('Bruk litt mer tid på modulen først'); return; }
+          this.setState(st => ({ confirmed: { ...st.confirmed, [m.id]: !(st.confirmed || {})[m.id] } }));
+        };
+        v.plRef = el => { this._player = el; };
+        v.plFullscreen = s.fullscreen;
+        v.fsLabel = s.fullscreen ? 'Avslutt fullskjerm' : 'Fullskjerm';
+        v.fsIcon = s.fullscreen ? 'corners-in' : 'corners-out';
+        v.plToggleFs = () => this.toggleFullscreen();
+        v.plReloadKey = 'emb-' + m.id + '-' + ((s.reloads || {})[m.id] || 0);
+        v.plReload = () => {
+          this.setState(st => ({ reloads: { ...st.reloads, [m.id]: (((st.reloads) || {})[m.id] || 0) + 1 } }));
+          this.flash('Modulen er lastet inn på nytt');
+        };
+        v.plExit = () => {
+          if (document.fullscreenElement && document.exitFullscreen) { try { document.exitFullscreen(); } catch (e) {} }
+          this.setState({ view: 'course', playModule: null, fullscreen: false });
+        };
+
+        // Module strip: jump between unlocked modules without leaving the player.
+        const depth = this.depth(c);
+        v.plSteps = c.modules.map((x, i) => {
+          const done = i < depth;
+          const locked = i > depth;
+          const here = i === idx;
+          return {
+            number: i + 1,
+            locked,
+            unlocked: !locked,
+            title: x.title + (locked ? ' — låst' : done ? ' — bestått' : here ? ' — du er her' : ''),
+            bg: here ? 'var(--efkt-coral)' : done ? 'var(--efkt-mint)' : locked ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.18)',
+            color: here ? 'var(--efkt-white)' : done ? 'var(--efkt-navy)' : locked ? 'rgba(255,255,255,0.35)' : 'var(--efkt-white)',
+            border: locked ? '1px dashed rgba(255,255,255,0.22)' : 'none',
+            cursor: locked ? 'not-allowed' : 'pointer',
+            go: () => locked
+              ? this.flash('Fullfør forrige modul først')
+              : this.setState({ playModule: x.id })
+          };
+        });
+
+        const prev = idx > 0 ? c.modules[idx - 1] : null;
+        const next = idx < c.modules.length - 1 ? c.modules[idx + 1] : null;
+        v.plHasPrev = !!prev;
+        v.plPrev = () => prev && this.setState({ playModule: prev.id });
+        v.plHasNext = !!next && idx < depth;
+        v.plNext = () => next && this.setState({ playModule: next.id });
+        v.plNextLabel = next ? 'Neste: ' + next.title : '';
+
+        v.plMarkSeen = () => {
+          this.setState(st => ({ seen: { ...st.seen, [m.id]: true } }));
+          if (m.quiz) { this.setState({ view: 'quiz', quizModule: m.id, answers: {}, graded: null, fullscreen: false }); return; }
+          this.flash('«' + m.title + '» er fullført');
+        };
+        v.plOpenQuiz = () => {
+          if (gate && !openable) {
+            this.flash(timeMet ? 'Bekreft at du har vært gjennom alle slidene' : 'Bruk litt mer tid på modulen først');
+            return;
+          }
+          this.setState(st => ({ seen: { ...st.seen, [m.id]: true } }));
+          this.setState({ view: 'quiz', quizModule: m.id, answers: {}, graded: null, fullscreen: false });
+        };
+        v.plOpenExternal = () => this.flash('Innholdet spilles inne i kurset — ingen popup nødvendig');
+
+        // Built modules render through the same block vocabulary as the news feed.
+        v.plBlocks = mapBlocks(m.blocks, 'play-' + m.id, false);
+      }
+    }
+
+    v.onQuiz = s.view === 'quiz';
+    if (s.view === 'quiz' && c) {
+      const m = c.modules.find(x => x.id === s.quizModule);
+      if (m && m.quiz) {
+        const qz = m.quiz;
+        const r = s.results[m.id];
+        const g = s.graded;
+        v.qz = {
+          moduleTitle: m.title, courseTitle: c.title,
+          pass: qz.pass + '%',
+          count: qz.questions.length,
+          countLabel: qz.questions.length + ' spørsmål',
+          needed: Math.ceil(qz.questions.length * qz.pass / 100)
+        };
+        const hereIdx = c.modules.findIndex(x => x.id === m.id);
+        const isLastMod = hereIdx === c.modules.length - 1;
+        v.qzIntro = 'Du må ha ' + v.qz.needed + ' av ' + qz.questions.length + ' riktige for å bestå. Består du, fullføres modulen «' + m.title + '»'
+          + (isLastMod ? ', og hele kurset er ferdig.' : ' og neste modul åpnes.');
+        v.qzGraded = !!g;
+        v.qzTaking = !g;
+
+        const answered = Object.keys(s.answers).filter(k => (s.answers[k] || []).length > 0).length;
+        v.qzAnsweredLine = answered + ' av ' + qz.questions.length + ' besvart';
+        v.qzCanSubmit = answered === qz.questions.length;
+        v.qzSubmitLabel = v.qzCanSubmit ? 'Lever svar' : 'Svar på alle spørsmålene';
+
+        v.qzQuestions = qz.questions.map((qq, i) => {
+          const chosen = s.answers[i] || [];
+          const correctIdx = qq.options.map((o, j) => o.correct ? j : -1).filter(j => j >= 0);
+          const wasRight = g && chosen.length === correctIdx.length && correctIdx.every(j => chosen.includes(j));
+          return {
+            number: i + 1, text: qq.text,
+            typeLine: qq.multi ? 'Flere riktige svar' : 'Ett riktig svar',
+            graded: !!g,
+            resultIcon: wasRight ? 'check-circle' : 'x-circle',
+            resultColor: wasRight ? 'var(--efkt-green)' : 'var(--efkt-coral)',
+            resultLabel: wasRight ? 'Riktig' : 'Feil',
+            options: qq.options.map((o, j) => {
+              const isChosen = chosen.includes(j);
+              const reveal = g && qz.feedback;
+              const bg = reveal
+                ? (o.correct ? 'var(--efkt-mint)' : isChosen ? 'var(--efkt-blush)' : 'var(--efkt-offwhite)')
+                : (isChosen ? 'var(--efkt-mint)' : 'var(--efkt-offwhite)');
+              return {
+                text: o.text,
+                bg,
+                icon: reveal
+                  ? (o.correct ? 'check-circle' : isChosen ? 'x-circle' : qq.multi ? 'square' : 'circle')
+                  : (isChosen ? (qq.multi ? 'check-square' : 'check-circle') : (qq.multi ? 'square' : 'circle')),
+                iconColor: reveal
+                  ? (o.correct ? 'var(--efkt-green)' : isChosen ? 'var(--efkt-coral)' : 'var(--efkt-muted)')
+                  : (isChosen ? 'var(--efkt-navy)' : 'var(--efkt-muted)'),
+                pick: () => {
+                  if (g) return;
+                  this.setState(st => {
+                    const cur = st.answers[i] || [];
+                    const next = qq.multi
+                      ? (cur.includes(j) ? cur.filter(x => x !== j) : cur.concat([j]))
+                      : [j];
+                    return { answers: { ...st.answers, [i]: next } };
+                  });
+                }
+              };
+            })
+          };
+        });
+
+        v.qzSubmit = () => {
+          if (!v.qzCanSubmit) { this.flash('Svar på alle spørsmålene først'); return; }
+          const res = this.grade(m);
+          this.setState(st => ({
+            graded: res,
+            results: { ...st.results, [m.id]: { attempts: ((st.results[m.id] || {}).attempts || 0) + 1, passed: res.passed, score: res.score } }
+          }));
+        };
+
+        if (g) {
+          v.qzResult = {
+            score: g.score + '%',
+            line: g.right + ' av ' + g.total + ' riktige',
+            passed: g.passed,
+            failed: !g.passed,
+            heading: g.passed ? 'Bestått' : 'Ikke bestått',
+            bg: g.passed ? 'var(--efkt-mint)' : 'var(--efkt-blush)',
+            icon: g.passed ? 'check' : 'x',
+            iconColor: g.passed ? 'var(--efkt-green)' : 'var(--efkt-coral)',
+            body: g.passed
+              ? 'Modulen «' + m.title + '» er fullført.'
+              : 'Du trengte ' + v.qz.needed + ' riktige. Gå gjennom modulen på nytt og prøv igjen.'
+          };
+          const used = ((s.results[m.id] || {}).attempts) || 0;
+          const left = qz.retries ? Math.max(0, qz.retries + 1 - used) : null;
+          v.qzRetryLine = g.passed ? '' : left === null ? 'Du kan prøve så mange ganger du vil.'
+            : left > 0 ? 'Du har ' + left + (left === 1 ? ' forsøk igjen.' : ' forsøk igjen.')
+            : 'Du har brukt alle forsøkene på rad. Gå gjennom modulen på nytt, så nullstilles forsøkene.';
+          v.qzCanRetry = !g.passed && (left === null || left > 0);
+          v.qzOutOfTries = !g.passed && left !== null && left <= 0;
+          v.qzFailed = !g.passed;
+          v.qzRetry = () => this.setState({ answers: {}, graded: null });
+          // Re-reading the material is always open, and it clears the attempt counter.
+          v.qzReview = () => this.setState(st => ({
+            view: 'play', playModule: m.id, quizModule: null, answers: {}, graded: null,
+            results: { ...st.results, [m.id]: { attempts: 0, passed: false, score: (st.results[m.id] || {}).score || 0 } }
+          }));
+          v.qzReviewLabel = v.qzOutOfTries ? 'Gå gjennom modulen på nytt' : 'Gå gjennom modulen';
+
+          const here = c.modules.findIndex(x => x.id === m.id);
+          const nextMod = here >= 0 && here < c.modules.length - 1 ? c.modules[here + 1] : null;
+          v.qzHasNext = g.passed && !!nextMod;
+          v.qzIsLast = g.passed && !nextMod;
+          v.qzNextLabel = nextMod ? 'Neste: ' + nextMod.title : '';
+          v.qzNext = () => nextMod && this.setState({
+            view: 'play', playModule: nextMod.id, quizModule: null, answers: {}, graded: null
+          });
+          v.qzCourseDone = v.qzIsLast
+            ? 'Det var siste modul — kurset «' + c.title + '» er fullført.'
+            : '';
+        }
+        v.qzBack = () => this.setState({ view: 'course', quizModule: null, playModule: null, answers: {}, graded: null });
+        v.qzBackToPlayer = () => this.setState({ view: 'play', playModule: m.id, quizModule: null, answers: {}, graded: null });
+      }
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

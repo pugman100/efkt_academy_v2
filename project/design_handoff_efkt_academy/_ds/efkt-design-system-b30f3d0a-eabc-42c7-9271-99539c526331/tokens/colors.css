@@ -1,0 +1,64 @@
+:root{
+/* ---- Base palette (source: EFKT designprompt v2.0, §1.1) ---- */
+--efkt-navy:#373B54;            /* the dark colour. Standard for ALL text */
+--efkt-coral:#F1554C;           /* primary accent. Max 10% of the surface */
+--efkt-coral-hover:#DD4E45;     /* 8% darker coral — hover/active only */
+--efkt-deep-navy:#0C0E39;       /* backgrounds, photo scrims, depth. NEVER text */
+--efkt-coral-light-logo:#EA7A73;/* logo wordmark lower plane only */
+--efkt-coral-light-mark:#F0837D;/* standalone mark/favicon lower plane only */
+
+/* Neutrals — carry 60% of the surface */
+--efkt-white:#FFFFFF;
+--efkt-offwhite:#F8F8FA;
+--efkt-gray-100:#F6F6F6;
+--efkt-border:#E9E9EC;
+--efkt-divider:#E2E2E2;
+--efkt-muted:#63667E;
+
+/* Soft accents — whole section backgrounds only. Never text or icon colour.
+   Max ONE per section/slide. */
+--efkt-sand:#FBEDD5;
+--efkt-gold:#F0C374;
+--efkt-mint:#E1EBE8;
+--efkt-green:#85BAA1;
+--efkt-blush:#FBCCC9;
+
+/* ---- Semantic aliases ---- */
+--text-heading:var(--efkt-navy);
+--text-body:var(--efkt-navy);
+--text-muted:var(--efkt-muted);
+--text-on-dark:var(--efkt-white);
+--text-on-coral:var(--efkt-white);
+--text-link:var(--efkt-coral);
+--text-link-hover:var(--efkt-coral-hover);
+
+--surface-page:var(--efkt-white);
+--surface-section:var(--efkt-offwhite);
+--surface-card:var(--efkt-white);
+--surface-card-alt:var(--efkt-offwhite);
+--surface-row:var(--efkt-gray-100);
+--surface-dark:var(--efkt-deep-navy);
+--surface-accent:var(--efkt-coral);
+
+--border-default:var(--efkt-border);
+--border-dashed:var(--efkt-divider);
+--border-accent:var(--efkt-coral);
+
+--icon-primary:var(--efkt-coral);      /* content-bearing icon */
+--icon-secondary:var(--efkt-navy);     /* supporting icon */
+
+/* Photo scrim (the sanctioned Deep Navy use) */
+--scrim-from:rgba(12,14,57,0);
+--scrim-to:rgba(12,14,57,0.65);
+
+/* Chart series order */
+--chart-1:var(--efkt-coral);
+--chart-2:var(--efkt-navy);
+--chart-3:var(--efkt-green);
+--chart-4:var(--efkt-gold);
+--chart-5:var(--efkt-muted);
+--chart-6:var(--efkt-blush);
+--chart-positive:var(--efkt-green);
+--chart-negative:var(--efkt-coral);
+--chart-grid:var(--efkt-border);
+}

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/tokens/base.css">
+  <link rel="stylesheet" href="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+  <script src="_ds/efkt-design-system-b30f3d0a-eabc-42c7-9271-99539c526331/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: var(--efkt-white); }
+    a { color: var(--text-link); text-decoration: none; }
+    a:hover { color: var(--text-link-hover); }
+  </style>
+</helmet>
+
+<div style="font-family:var(--efkt-font);color:var(--text-body);min-height:100vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr))">
+
+  <aside style="position:relative;min-height:680px;overflow:hidden">
+    <div style="position:absolute;inset:0"><image-slot id="login-hero" shape="rect" placeholder="Drop a Nordic interior"></image-slot></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(12,14,57,0.72) 0%, rgba(12,14,57,0.38) 40%, rgba(12,14,57,0.88) 100%);pointer-events:none"></div>
+    <div style="position:relative;height:100%;padding:48px;display:flex;flex-direction:column;gap:32px;pointer-events:none">
+      <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Logo" variant="white" base="assets/logo/" width="120" style="{{ logoStyle }}" hint-size="120px,40px"></x-import>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:16px;max-width:420px">
+        <h1 style="margin:0;font-size:54px;line-height:1.05;letter-spacing:-0.06em;font-weight:300;color:var(--efkt-white)">Photographer <span style="font-weight:800">Dashboard</span></h1>
+        <div style="font-size:20px;font-weight:300;color:rgba(255,255,255,0.9);text-wrap:pretty">Kurs, nyheter og alt du trenger for oppdragene dine.</div>
+      </div>
+    </div>
+  </aside>
+
+  <main style="padding:48px;display:flex;flex-direction:column;justify-content:center;min-width:0">
+    <div style="width:100%;max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+
+      <sc-if value="{{ onLogin }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Logg <span style="font-weight:800">inn</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Bruk e-postadressen du fikk invitasjonen på.</div>
+        </div>
+
+        <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;padding:20px;background:var(--efkt-blush);border-radius:20px">
+            <i class="ph ph-warning-circle" style="font-size:24px;color:var(--efkt-coral)"></i>
+            <div style="min-width:0;flex:1;font-size:14px;font-weight:500;text-wrap:pretty">{{ loginError }}</div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="E-post" placeholder="navn@efkt.com" value="{{ email }}" onChange="{{ setEmail }}" hint-size="100%,80px"></x-import>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Passord" type="password" value="{{ password }}" onChange="{{ setPassword }}" hint-size="100%,80px"></x-import>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+            <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Checkbox" checked="{{ remember }}" onChange="{{ toggleRemember }}" label="Husk meg" hint-size="auto,24px"></x-import>
+            <button onClick="{{ goForgot }}" style="border:none;background:transparent;padding:0;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-coral)">Glemt passord?</button>
+          </div>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ submitLogin }}" iconRight="arrow-right" hint-size="auto,50px">Logg inn</x-import>
+        </div>
+
+        <div style="height:1px;background:var(--border-default)"></div>
+        <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Ansatt i EFKT? Du kan også <a href="#sso" onClick="{{ ssoNote }}">logge inn med Microsoft</a>.</div>
+      </sc-if>
+
+      <sc-if value="{{ onForgot }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ backToLogin }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:none;background:transparent;padding:0;cursor:pointer;font-family:var(--efkt-font);font-size:14px;font-weight:500;color:var(--efkt-coral)">
+          <i class="ph ph-arrow-left" style="font-size:16px"></i> Tilbake til innlogging
+        </button>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Glemt <span style="font-weight:800">passord</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Skriv inn e-postadressen din. Vi sender en lenke du kan sette nytt passord med. Lenken er gyldig i 60 minutter.</div>
+        </div>
+        <sc-if value="{{ forgotError }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;padding:20px;background:var(--efkt-blush);border-radius:20px">
+            <i class="ph ph-warning-circle" style="font-size:24px;color:var(--efkt-coral)"></i>
+            <div style="min-width:0;flex:1;font-size:14px;font-weight:500;text-wrap:pretty">{{ forgotError }}</div>
+          </div>
+        </sc-if>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="E-post" placeholder="navn@efkt.com" value="{{ email }}" onChange="{{ setEmail }}" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ sendReset }}" iconRight="paper-plane-tilt" hint-size="auto,50px">Send lenke</x-import>
+      </sc-if>
+
+      <sc-if value="{{ onSent }}" hint-placeholder-val="{{ false }}">
+        <span style="width:56px;height:56px;border-radius:50%;background:var(--efkt-mint);display:inline-flex;align-items:center;justify-content:center;color:var(--efkt-navy)"><i class="ph ph-envelope-simple" style="font-size:24px"></i></span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Sjekk <span style="font-weight:800">e-posten</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">{{ sentLine }}</div>
+        </div>
+
+        <div style="border:1px solid var(--border-default);border-radius:20px;overflow:hidden">
+          <div style="padding:20px 24px;background:var(--efkt-offwhite);display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:14px;font-weight:600;color:var(--text-muted)">Forhåndsvisning av e-posten</div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted)">Fra: no-reply@efkt.com</div>
+          </div>
+          <div style="padding:28px 24px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:20px;font-weight:300;letter-spacing:-0.02em">Sett nytt <span style="font-weight:800">passord</span></div>
+            <div style="font-size:14px;font-weight:300;color:var(--text-body);line-height:1.6;text-wrap:pretty">Noen har bedt om nytt passord til Photographer Dashboard. Trykk på knappen under for å velge et nytt. Lenken utløper om 60 minutter.</div>
+            <button onClick="{{ openLink }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border:none;border-radius:25px;background:var(--efkt-coral);color:var(--efkt-white);font-family:var(--efkt-font);font-size:16px;font-weight:600;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)" style-hover="background:var(--efkt-coral-hover)">Sett nytt passord <i class="ph ph-arrow-right" style="font-size:16px"></i></button>
+            <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Ba du ikke om dette? Da kan du se bort fra e-posten — passordet ditt er uendret.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ resend }}" hint-size="auto,50px">{{ resendLabel }}</x-import>
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" variant="secondary" onClick="{{ backToLogin }}" hint-size="auto,50px">Tilbake til innlogging</x-import>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ onReset }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Sett nytt <span style="font-weight:800">passord</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">For {{ email }}. Velg noe du ikke bruker andre steder.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Nytt passord" type="password" value="{{ pw1 }}" onChange="{{ setPw1 }}" hint-size="100%,80px"></x-import>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:6px">
+              <sc-for list="{{ strengthBars }}" as="b" hint-placeholder-count="4">
+                <div style="flex:1;height:6px;border-radius:3px;background:{{ b.color }};transition:background 180ms cubic-bezier(0.4,0,0.2,1)"></div>
+              </sc-for>
+            </div>
+            <div style="font-size:14px;font-weight:500;color:var(--text-muted)">{{ strengthLabel }}</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--efkt-offwhite);border-radius:20px">
+            <sc-for list="{{ rules }}" as="r" hint-placeholder-count="4">
+              <div style="display:flex;align-items:center;gap:12px">
+                <i class="ph-bold ph-{{ r.icon }}" style="font-size:16px;color:{{ r.color }}"></i>
+                <span style="font-size:14px;font-weight:300;color:{{ r.textColor }}">{{ r.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Input" label="Gjenta passordet" type="password" value="{{ pw2 }}" onChange="{{ setPw2 }}" hint="{{ matchHint }}" hint-size="100%,100px"></x-import>
+
+          <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ submitReset }}" iconRight="check" hint-size="auto,50px">Lagre passord</x-import>
+          <div style="font-size:14px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Du blir logget ut av andre enheter når passordet endres.</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ onExpired }}" hint-placeholder-val="{{ false }}">
+        <span style="width:56px;height:56px;border-radius:50%;background:var(--efkt-blush);display:inline-flex;align-items:center;justify-content:center;color:var(--efkt-coral)"><i class="ph ph-clock-countdown" style="font-size:24px"></i></span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Lenken er <span style="font-weight:800">utløpt</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Lenker for nytt passord er gyldige i 60 minutter. Be om en ny, eller kontakt teamlederen din hvis det fortsetter.</div>
+        </div>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ goForgot }}" iconRight="arrow-right" hint-size="auto,50px">Be om ny lenke</x-import>
+      </sc-if>
+
+      <sc-if value="{{ onDone }}" hint-placeholder-val="{{ false }}">
+        <span style="width:56px;height:56px;border-radius:50%;background:var(--efkt-mint);display:inline-flex;align-items:center;justify-content:center;color:var(--efkt-navy)"><i class="ph-bold ph-check" style="font-size:24px"></i></span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:40px;line-height:1.1;letter-spacing:-0.065em;font-weight:300">Passordet er <span style="font-weight:800">endret</span></h2>
+          <div style="font-size:16px;font-weight:300;color:var(--text-muted);text-wrap:pretty">Du kan logge inn med det nye passordet nå. Vi har sendt en bekreftelse til {{ email }}.</div>
+        </div>
+        <x-import component-from-global-scope="EFKTDesignSystem_b30f3d.Button" onClick="{{ backToLogin }}" iconRight="arrow-right" hint-size="auto,50px">Logg inn</x-import>
+      </sc-if>
+
+      <div style="padding-top:8px;display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:14px;font-weight:600;color:var(--text-muted)">Se stegene:</span>
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="6">
+          <button onClick="{{ s.go }}" style="padding:8px 16px;border-radius:25px;border:1px solid {{ s.border }};background:{{ s.bg }};color:{{ s.color }};font-family:var(--efkt-font);font-size:14px;font-weight:500;cursor:pointer;transition:background 180ms cubic-bezier(0.4,0,0.2,1)">{{ s.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:20px 28px;background:var(--surface-card);border:1px solid var(--border-default);border-radius:25px;box-shadow:0 8px 32px rgba(12,14,57,0.10);font-size:16px;font-weight:500;z-index:50">
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--efkt-green)"></span>
+      {{ toast }}
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const KNOWN = ['anders.bak@efkt.com', 'silje.rud@efkt.no', 'matthew.pugsley@efkt.com'];
+
+const RULES = [
+  { key: 'len', label: 'Minst 10 tegn', test: p => p.length >= 10 },
+  { key: 'case', label: 'Både store og små bokstaver', test: p => /[a-zæøå]/.test(p) && /[A-ZÆØÅ]/.test(p) },
+  { key: 'num', label: 'Minst ett tall', test: p => /[0-9]/.test(p) },
+  { key: 'sym', label: 'Minst ett spesialtegn', test: p => /[^A-Za-zÆØÅæøå0-9]/.test(p) }
+];
+
+class Component extends DCLogic {
+  state = {
+    step: 'login',
+    email: 'anders.bak@efkt.com',
+    password: '',
+    remember: true,
+    pw1: '', pw2: '',
+    attempts: 0,
+    resends: 0,
+    loginError: '',
+    forgotError: '',
+    toast: ''
+  };
+
+  flash(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: '' }), 2600);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const v = {};
+    v.logoStyle = { alignSelf: 'flex-start', width: '120px', height: 'auto' };
+
+    v.onLogin = s.step === 'login';
+    v.onForgot = s.step === 'forgot';
+    v.onSent = s.step === 'sent';
+    v.onReset = s.step === 'reset';
+    v.onExpired = s.step === 'expired';
+    v.onDone = s.step === 'done';
+
+    v.email = s.email;
+    v.password = s.password;
+    v.remember = s.remember;
+    v.pw1 = s.pw1;
+    v.pw2 = s.pw2;
+    v.toast = s.toast;
+    v.loginError = s.loginError;
+    v.forgotError = s.forgotError;
+
+    v.setEmail = e => this.setState({ email: e.target.value, loginError: '', forgotError: '' });
+    v.setPassword = e => this.setState({ password: e.target.value, loginError: '' });
+    v.toggleRemember = () => this.setState(st => ({ remember: !st.remember }));
+    v.setPw1 = e => this.setState({ pw1: e.target.value });
+    v.setPw2 = e => this.setState({ pw2: e.target.value });
+
+    v.backToLogin = () => this.setState({ step: 'login', password: '', pw1: '', pw2: '', loginError: '', attempts: 0 });
+    v.goForgot = () => this.setState({ step: 'forgot', forgotError: '', resends: 0 });
+    v.ssoNote = e => { e.preventDefault(); this.flash('Microsoft-innlogging er ikke koblet opp i denne prototypen'); };
+
+    v.submitLogin = () => {
+      if (!s.email.trim() || !s.password) {
+        this.setState({ loginError: 'Fyll inn både e-post og passord.' });
+        return;
+      }
+      let tests = [];
+      try { tests = JSON.parse(localStorage.getItem('efkt-lms-test-users') || '[]'); } catch (e) {}
+      const hit = tests.find(u => u.email === s.email.trim().toLowerCase() && u.password === s.password);
+      if (hit) {
+        this.flash('Velkommen, ' + hit.name.split(' ')[0]);
+        const dest = hit.role === 'Administrator' ? 'LMS Admin.dc.html' : 'LMS Learner.dc.html';
+        setTimeout(() => { window.location.href = dest; }, 700);
+        return;
+      }
+      const n = s.attempts + 1;
+      if (n >= 3) {
+        this.setState({ attempts: n, loginError: 'Tre forsøk uten hell. Bruk «Glemt passord?» for å sette et nytt — kontoen låses etter fem forsøk.' });
+        return;
+      }
+      this.setState({ attempts: n, loginError: 'Feil e-post eller passord. Forsøk ' + n + ' av 5.' });
+    };
+
+    v.sendReset = () => {
+      const mail = s.email.trim().toLowerCase();
+      if (!mail || mail.indexOf('@') < 1) {
+        this.setState({ forgotError: 'Skriv inn en gyldig e-postadresse.' });
+        return;
+      }
+      this.setState({ step: 'sent', forgotError: '' });
+    };
+
+    // The same wording regardless of whether the address exists — no account enumeration.
+    v.sentLine = 'Finnes det en konto på ' + s.email + ', ligger lenken der om et øyeblikk. Sjekk også søppelpost.';
+    v.resendLabel = s.resends === 0 ? 'Send på nytt' : 'Sendt ' + s.resends + (s.resends === 1 ? ' gang' : ' ganger');
+    v.resend = () => {
+      if (s.resends >= 3) { this.flash('Grensen er nådd. Kontakt teamlederen din.'); return; }
+      this.setState(st => ({ resends: st.resends + 1 }));
+      this.flash('Ny lenke sendt til ' + s.email);
+    };
+    v.openLink = () => this.setState({ step: 'reset', pw1: '', pw2: '' });
+
+    const p = s.pw1;
+    const passed = RULES.filter(r => r.test(p));
+    v.rules = RULES.map(r => {
+      const ok = r.test(p);
+      return {
+        label: r.label,
+        icon: ok ? 'check' : 'circle',
+        color: ok ? 'var(--efkt-green)' : 'var(--efkt-muted)',
+        textColor: ok ? 'var(--text-body)' : 'var(--text-muted)'
+      };
+    });
+
+    const score = p.length === 0 ? 0 : passed.length;
+    const barColor = score >= 4 ? 'var(--efkt-green)' : score >= 3 ? 'var(--efkt-gold)' : 'var(--efkt-coral)';
+    v.strengthBars = [0, 1, 2, 3].map(i => ({ color: i < score ? barColor : 'var(--efkt-border)' }));
+    v.strengthLabel = p.length === 0 ? 'Ikke fylt ut'
+      : score >= 4 ? 'Sterkt passord'
+      : score >= 3 ? 'Greit — legg til ett krav mer'
+      : score >= 1 ? 'For svakt' : 'For svakt';
+
+    v.matchHint = s.pw2.length === 0 ? 'Skriv passordet en gang til.'
+      : s.pw1 === s.pw2 ? 'Passordene er like.' : 'Passordene er ikke like.';
+
+    v.submitReset = () => {
+      if (passed.length < RULES.length) { this.flash('Passordet oppfyller ikke alle kravene'); return; }
+      if (s.pw1 !== s.pw2) { this.flash('Passordene er ikke like'); return; }
+      this.setState({ step: 'done', pw1: '', pw2: '', password: '', attempts: 0 });
+    };
+
+    v.steps = [
+      { key: 'login', label: 'Innlogging' },
+      { key: 'forgot', label: 'Glemt passord' },
+      { key: 'sent', label: 'E-post sendt' },
+      { key: 'reset', label: 'Nytt passord' },
+      { key: 'expired', label: 'Utløpt lenke' },
+      { key: 'done', label: 'Ferdig' }
+    ].map(st => ({
+      label: st.label,
+      bg: s.step === st.key ? 'var(--efkt-navy)' : 'var(--efkt-white)',
+      color: s.step === st.key ? 'var(--efkt-white)' : 'var(--text-body)',
+      border: s.step === st.key ? 'var(--efkt-navy)' : 'var(--border-default)',
+      go: () => this.setState({ step: st.key, loginError: '', forgotError: '' })
+    }));
+
+    return v;
+  }
+}
+</script>
+</body>
+</html>
