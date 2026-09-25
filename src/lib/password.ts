@@ -1,5 +1,8 @@
 import bcrypt from 'bcryptjs';
 
+// Client-safe rules live in password-rules.ts; re-exported here for server code.
+export { PASSWORD_RULES, passwordRules, passwordOk } from './password-rules';
+
 export const PASSWORD_MIN = 8;
 
 export async function hashPassword(pw: string): Promise<string> {
@@ -9,19 +12,6 @@ export async function hashPassword(pw: string): Promise<string> {
 export async function verifyPassword(pw: string, hash: string | null | undefined): Promise<boolean> {
   if (!hash) return false;
   return bcrypt.compare(pw, hash);
-}
-
-/** Rules shown next to the new-password field. */
-export function passwordRules(pw: string) {
-  return [
-    { key: 'length', label: 'Minst 8 tegn', ok: pw.length >= PASSWORD_MIN },
-    { key: 'letter', label: 'Minst én bokstav', ok: /[A-Za-zÆØÅæøå]/.test(pw) },
-    { key: 'digit', label: 'Minst ett tall', ok: /\d/.test(pw) },
-  ];
-}
-
-export function passwordOk(pw: string): boolean {
-  return passwordRules(pw).every((r) => r.ok);
 }
 
 /** Readable one-off password for admin-created test accounts. */
