@@ -1,0 +1,13 @@
+/* Admin people area: hover states the inline prototype styles can't express. */
+.pp-softbtn { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; border: none; background: var(--efkt-offwhite); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.pp-softbtn:hover:not(:disabled) { background: var(--efkt-border); }
+.pp-softbtn:disabled { opacity: .4; cursor: not-allowed; }
+.pp-removebtn { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; border: none; background: var(--efkt-white); cursor: pointer; color: var(--efkt-coral); display: inline-flex; align-items: center; justify-content: center; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.pp-removebtn:hover:not(:disabled) { background: var(--efkt-blush); }
+.pp-removebtn:disabled { opacity: .4; cursor: not-allowed; }
+.pp-hoverbg { transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.pp-hoverbg:hover { background: var(--efkt-offwhite) !important; }
+.pp-pick { transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.pp-pick:hover { filter: brightness(0.98); }
+.pp-bulk { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; align-items: start; }
+@media (max-width: 1100px) { .pp-bulk { grid-template-columns: 1fr; } }
