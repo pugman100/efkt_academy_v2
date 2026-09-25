@@ -1,0 +1,43 @@
+/* Admin news area — hover states the inline styles can't express. */
+.nw-filter { padding: 10px 20px; border-radius: 25px; border: 1px solid var(--border-default); background: var(--efkt-white); color: var(--text-body); font-family: var(--efkt-font); font-size: 14px; font-weight: 500; cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-filter:hover { background: var(--efkt-offwhite); }
+.nw-filter[aria-pressed='true'] { background: var(--efkt-navy); border-color: var(--efkt-navy); color: var(--efkt-white); }
+
+.nw-row { background: var(--efkt-white); transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-row:hover { background: var(--efkt-offwhite); }
+
+.nw-act { width: 40px; height: 40px; border-radius: 10px; border: none; background: var(--efkt-offwhite); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-act:hover:not(:disabled) { background: var(--efkt-border); }
+.nw-act[aria-pressed='true'] { color: var(--efkt-coral); }
+.nw-act--danger { color: var(--efkt-coral); }
+.nw-act--danger:hover:not(:disabled) { background: var(--efkt-blush); }
+.nw-act:disabled { opacity: .4; cursor: default; }
+
+.nw-palette { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px dashed var(--border-dashed); border-radius: 12px; background: var(--efkt-offwhite); cursor: pointer; font-family: var(--efkt-font); font-size: 14px; font-weight: 500; color: var(--text-body); text-align: left; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-palette:hover { background: var(--efkt-gray-100); }
+
+.nw-blockrow { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid var(--border-default); border-radius: 12px; background: var(--efkt-white); cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-blockrow:hover { background: var(--efkt-offwhite); }
+.nw-blockrow[aria-current='true'] { background: var(--efkt-offwhite); border-color: var(--efkt-coral); }
+
+.nw-mini { width: 36px; height: 36px; border-radius: 10px; border: none; background: var(--efkt-white); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-mini:hover:not(:disabled) { background: var(--efkt-gray-100); }
+.nw-mini:disabled { opacity: .35; cursor: default; }
+.nw-mini--danger { color: var(--efkt-coral); }
+
+.nw-hero-hit { pointer-events: auto; cursor: text; display: flex; flex-direction: column; gap: 12px; margin: -8px; padding: 8px; border-radius: 12px; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-hero-hit:hover { background: rgba(255,255,255,0.12); }
+
+.nw-prev { margin: -12px; padding: 12px; border-radius: 16px; outline: 2px solid transparent; cursor: pointer; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.nw-prev:hover { background: var(--efkt-offwhite); }
+.nw-prev[aria-current='true'] { outline-color: var(--efkt-coral); cursor: default; }
+.nw-prev[aria-current='true']:hover { background: transparent; }
+.nw-prev a { pointer-events: none; }
+
+/* Inline (in-preview) editors: dashed coral box that keeps the block's own typography. */
+.nw-inline { font-family: var(--efkt-font); color: var(--text-body); background: var(--efkt-white); border: 1px dashed var(--efkt-coral); border-radius: 12px; padding: 8px 12px; width: 100%; box-sizing: border-box; outline: none; resize: none; field-sizing: content; }
+.nw-inline--hero { color: var(--efkt-white); background: rgba(12,14,57,0.35); border-color: rgba(255,255,255,0.9); }
+.nw-inline--hero::placeholder { color: rgba(255,255,255,0.6); }
+
+.nw-drop { position: relative; border-radius: 20px; overflow: hidden; cursor: pointer; }
+.nw-drop[data-over='true'] { outline: 2px dashed var(--efkt-coral); outline-offset: -2px; }
