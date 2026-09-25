@@ -1,11 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { requireUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { ContinueTile, CourseTile, type TileData } from '@/components/learner/CourseTile';
 import { FeaturedNews, NewsRow, NEWS_SELECT } from '@/components/learner/News';
-import { courseThumb, dashboardSettings, myCourses, NEWS_ORDER, visibleNewsWhere } from '@/components/learner/server';
+import { Photo } from '@/components/ui/Photo';
+import { courseThumb, dashboardBanner, dashboardSettings, myCourses, NEWS_ORDER, visibleNewsWhere } from '@/components/learner/server';
 
 export const metadata: Metadata = { title: 'Photographer Dashboard' };
 
@@ -15,11 +15,12 @@ const GRID = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(mi
 
 export default async function Dashboard() {
   const user = await requireUser();
-  const [mine, news, settings, regions] = await Promise.all([
+  const [mine, news, settings, regions, banner] = await Promise.all([
     myCourses(user),
     db.newsStory.findMany({ where: visibleNewsWhere(user), orderBy: NEWS_ORDER, take: 4, select: NEWS_SELECT }),
     dashboardSettings(),
     db.region.findMany({ where: { country: user.country }, orderBy: { order: 'asc' } }),
+    dashboardBanner(),
   ]);
 
   const tile = (m: (typeof mine)[number]): TileData => ({
@@ -67,7 +68,7 @@ export default async function Dashboard() {
   return (
     <>
       <section style={{ position: 'relative', minHeight: 520, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <img src="/assets/photo-hero.webp" alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <Photo {...banner} style={{ position: 'absolute', inset: 0 }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(12,14,57,0.45) 0%, rgba(12,14,57,0.42) 30%, rgba(12,14,57,0.78) 62%, rgba(12,14,57,0.92) 100%)' }} />
         <div className="lr-pad-hero" style={{ position: 'relative', flex: 1, padding: 48, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 16, maxWidth: 760 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--efkt-white)' }}>Photographer Dashboard</div>

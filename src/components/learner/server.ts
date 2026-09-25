@@ -143,3 +143,15 @@ export async function linkedCourses(user: CurrentUser, blocks: { kind: string; c
   for (const r of rows) out[r.id] = { ...r, href: (await canAccessCourse(user, r.id)) ? `/courses/${r.id}` : null };
   return out;
 }
+
+/** Dashboard hero banner uploaded by admins (Setting "dashboardBanner"), else the stock photo. */
+export async function dashboardBanner() {
+  const row = await db.setting.findUnique({ where: { key: 'dashboardBanner' } });
+  const v = (row?.value ?? {}) as { imageId?: string | null; x?: number; y?: number; scale?: number };
+  return {
+    src: fileUrl(v.imageId) ?? '/assets/photo-hero.webp',
+    x: typeof v.x === 'number' ? v.x : 50,
+    y: typeof v.y === 'number' ? v.y : 50,
+    scale: typeof v.scale === 'number' ? v.scale : 1,
+  };
+}
