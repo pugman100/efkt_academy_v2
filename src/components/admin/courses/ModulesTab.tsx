@@ -93,7 +93,7 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
           <Stat label="Modules" value={stats.modules} />
           <Stat label="With quiz" value={stats.withQuiz} />
           <Stat label="Pass score" value={stats.pass} />
-          <Stat label="Enrolled" value={stats.enrolled} />
+          <Stat label="Enrolled" value={`${stats.enrolled} ${stats.enrolled === 1 ? 'learner' : 'learners'}`} />
         </div>
       </div>
 

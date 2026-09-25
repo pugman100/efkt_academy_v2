@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useTransition } from 'react';
 import type { Country, CourseStatus } from '@prisma/client';
 import { Badge, Button, ButtonLink, Tag, useToast } from '@/components/ui';
-import { COUNTRY_SHORT, COURSE_STATUS_LABEL, COURSE_STATUS_TONE } from '@/lib/labels';
+import { COURSE_STATUS_LABEL, COURSE_STATUS_TONE } from '@/lib/labels';
 import { setCourseStatus } from '@/app/(admin)/admin/courses/actions';
 import './courses.css';
 
@@ -41,7 +41,7 @@ export function CourseHeader({
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             {categories.map((k) => <Tag key={k}>{k}</Tag>)}
             <Badge tone={COURSE_STATUS_TONE[course.status]}>{COURSE_STATUS_LABEL[course.status]}</Badge>
-            <Tag>{COUNTRY_SHORT[course.country]}</Tag>
+            <Tag>{course.country}</Tag>
             <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{metaLine}</span>
           </div>
         </div>

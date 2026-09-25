@@ -113,7 +113,7 @@ async function assignment(course: CourseFull, scope: 'All' | 'Denmark' | 'Norway
   const inScope = scope === 'All' ? {} : { country: scope };
   const [groups, people] = await Promise.all([
     db.group.findMany({
-      orderBy: { name: 'asc' },
+      orderBy: { createdAt: 'asc' },
       select: { id: true, name: true, _count: { select: { users: { where: { status: 'ACTIVE', ...inScope } } } } },
     }),
     db.user.findMany({

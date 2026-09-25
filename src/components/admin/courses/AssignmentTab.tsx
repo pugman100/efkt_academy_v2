@@ -126,16 +126,21 @@ export function AssignmentTab({
           <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-muted)' }}>Arvet fra {categories.join(', ')}</div>
           {inheritedNames.length ? (
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {inheritedNames.map((g) => <Tag key={g}>{g}</Tag>)}
+              {inheritedNames.map((g) => (
+                <span key={g} title={'via category ' + inherited.filter((x) => x.group === g).map((x) => x.category).join(', ')}>
+                  <Tag>{g}</Tag>
+                </span>
+              ))}
             </div>
           ) : (
             <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>No groups have these categories yet.</div>
           )}
-          {inherited.length ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>
-              {inherited.map((g) => (
-                <span key={g.category + g.id}>via category {g.category} → {g.group}</span>
-              ))}
+          {categories.length > 1 && inherited.length ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>
+              {categories.map((k) => {
+                const gs = inherited.filter((g) => g.category === k).map((g) => g.group);
+                return gs.length ? <span key={k}>via {k} → {gs.join(', ')}</span> : null;
+              })}
             </div>
           ) : null}
         </div>
