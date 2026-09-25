@@ -1,0 +1,2641 @@
+{
+ "categories": [
+  {
+   "name": "Foto",
+   "description": "Interior, exterior and detail photography standards.",
+   "icon": "camera",
+   "order": 0,
+   "groups": [
+    "Photographers",
+    "Stylists"
+   ]
+  },
+  {
+   "name": "Drone",
+   "description": "Regulation, flight planning and aerial footage.",
+   "icon": "paper-plane-tilt",
+   "order": 1,
+   "groups": [
+    "Photographers"
+   ]
+  },
+  {
+   "name": "Video",
+   "description": "Property film, walkthroughs and editing.",
+   "icon": "video-camera",
+   "order": 2,
+   "groups": [
+    "Photographers"
+   ]
+  },
+  {
+   "name": "Reference Materials",
+   "description": "Guides, checklists and specs to look up while working.",
+   "icon": "books",
+   "order": 3,
+   "groups": [
+    "Photographers",
+    "Stylists",
+    "Employees: Sales",
+    "Employees: Production",
+    "Employees: Customer Service",
+    "Admin",
+    "Customers"
+   ]
+  },
+  {
+   "name": "Floorplan",
+   "description": "Measuring, drawing conventions and area calculation.",
+   "icon": "blueprint",
+   "order": 4,
+   "groups": [
+    "Employees: Production"
+   ]
+  },
+  {
+   "name": "Sales",
+   "description": "Advertising products, pitching and reporting to agents.",
+   "icon": "megaphone",
+   "order": 5,
+   "groups": [
+    "Employees: Sales"
+   ]
+  },
+  {
+   "name": "Customer Service",
+   "description": "Order intake, coordination and handling the agent.",
+   "icon": "headset",
+   "order": 6,
+   "groups": [
+    "Employees: Customer Service"
+   ]
+  },
+  {
+   "name": "Generell Internal",
+   "description": "Onboarding, tools and everything every employee needs.",
+   "icon": "buildings",
+   "order": 7,
+   "groups": [
+    "Photographers",
+    "Stylists",
+    "Employees: Sales",
+    "Employees: Production",
+    "Employees: Customer Service",
+    "Admin"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "name": "Photographers",
+   "description": "Everyone who shoots stills, drone or video on site.",
+   "icon": "camera"
+  },
+  {
+   "name": "Stylists",
+   "description": "Styling and preparing homes before the shoot.",
+   "icon": "flower-tulip"
+  },
+  {
+   "name": "Employees: Sales",
+   "description": "Account managers and everyone selling EFKT products.",
+   "icon": "megaphone"
+  },
+  {
+   "name": "Employees: Production",
+   "description": "Post-production, floor plans and delivery.",
+   "icon": "blueprint"
+  },
+  {
+   "name": "Employees: Customer Service",
+   "description": "Order intake, coordination and agent support.",
+   "icon": "headset"
+  },
+  {
+   "name": "Admin",
+   "description": "Academy owners and platform administrators.",
+   "icon": "shield-check"
+  },
+  {
+   "name": "Customers",
+   "description": "Estate agents and agency staff outside EFKT.",
+   "icon": "handshake"
+  }
+ ],
+ "regions": [
+  {
+   "name": "Nord",
+   "country": "Norway",
+   "order": 0,
+   "leadName": "Daniel Mikkelsen",
+   "leadEmail": "DMI@efkt.com",
+   "leadMobile": "900 58 502"
+  },
+  {
+   "name": "Midt og Innlandet",
+   "country": "Norway",
+   "order": 1,
+   "leadName": "Aleksander Jacobsen",
+   "leadEmail": "AJC@efkt.com",
+   "leadMobile": "934 11 661"
+  },
+  {
+   "name": "Vest og Sør",
+   "country": "Norway",
+   "order": 2,
+   "leadName": "Sander Thu",
+   "leadEmail": "SAT@efkt.com",
+   "leadMobile": "950 77 172"
+  },
+  {
+   "name": "Østlandet",
+   "country": "Norway",
+   "order": 3,
+   "leadName": "Øyvind Heia",
+   "leadEmail": "OHE@efkt.com",
+   "leadMobile": "480 29 116"
+  },
+  {
+   "name": "Øst",
+   "country": "Denmark",
+   "order": 4,
+   "leadName": "Nanna Hegaard Rødtnes",
+   "leadEmail": "NHR@efkt.com",
+   "leadMobile": ""
+  },
+  {
+   "name": "Vest",
+   "country": "Denmark",
+   "order": 5,
+   "leadName": "Jesper Kristian Ovesen",
+   "leadEmail": "JKO@efkt.com",
+   "leadMobile": ""
+  }
+ ],
+ "users": [
+  {
+   "name": "Matthew Pugsley",
+   "email": "mpu@efkt.com",
+   "role": "ADMIN",
+   "country": "Denmark",
+   "groups": [
+    "Admin"
+   ],
+   "jobTitle": "Administrator",
+   "region": "Øst",
+   "joined": "Joined January 2024",
+   "last": "Today"
+  },
+  {
+   "name": "Anders Bak",
+   "email": "anders.bak@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Photographers"
+   ],
+   "jobTitle": "Photographer",
+   "region": "Øst",
+   "joined": "Joined March 2025",
+   "last": "Today",
+   "pending": false
+  },
+  {
+   "name": "Mikkel Due",
+   "email": "mikkel.due@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Photographers"
+   ],
+   "jobTitle": "Photographer",
+   "region": "Vest",
+   "joined": "Joined 9 days ago",
+   "last": "2 days ago",
+   "pending": false
+  },
+  {
+   "name": "Line Sørensen",
+   "email": "line.sorensen@efkt.com",
+   "role": "TEAM_LEAD",
+   "country": "Denmark",
+   "groups": [
+    "Photographers",
+    "Employees: Production"
+   ],
+   "jobTitle": "Lead photographer",
+   "region": "Øst",
+   "joined": "Joined June 2024",
+   "last": "Yesterday",
+   "pending": false
+  },
+  {
+   "name": "Rikke Dahl",
+   "email": "rikke.dahl@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Stylists",
+    "Employees: Production"
+   ],
+   "jobTitle": "Draftsman",
+   "region": "Vest",
+   "joined": "Joined February 2026",
+   "last": "Today",
+   "pending": false
+  },
+  {
+   "name": "Camilla Lund",
+   "email": "camilla.lund@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Stylists"
+   ],
+   "jobTitle": "Activation specialist",
+   "region": "Vest",
+   "joined": "Joined August 2025",
+   "last": "Yesterday",
+   "pending": false
+  },
+  {
+   "name": "Jonas Friis",
+   "email": "jonas.friis@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Employees: Production"
+   ],
+   "jobTitle": "Draftsman",
+   "region": "Vest",
+   "joined": "Joined October 2024",
+   "last": "5 days ago",
+   "pending": false
+  },
+  {
+   "name": "Thomas Bech",
+   "email": "thomas.bech@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Employees: Customer Service"
+   ],
+   "jobTitle": "Activation specialist",
+   "region": "Vest",
+   "joined": "Joined April 2025",
+   "last": "1 week ago",
+   "pending": false
+  },
+  {
+   "name": "Peter Holm",
+   "email": "peter.holm@efkt.com",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Employees: Sales"
+   ],
+   "jobTitle": "Key account manager",
+   "region": "Øst",
+   "joined": "Joined May 2024",
+   "last": "2 weeks ago",
+   "pending": false
+  },
+  {
+   "name": "Nadia Iversen",
+   "email": "nadia.iversen@efkt.com",
+   "role": "ADMIN",
+   "country": "Denmark",
+   "groups": [
+    "Admin",
+    "Employees: Sales"
+   ],
+   "jobTitle": "Academy owner",
+   "region": "Øst",
+   "joined": "Joined January 2024",
+   "last": "Today",
+   "pending": false
+  },
+  {
+   "name": "Silje Rud",
+   "email": "silje.rud@efkt.no",
+   "role": "LEARNER",
+   "country": "Norway",
+   "groups": [
+    "Photographers"
+   ],
+   "jobTitle": "Fotograf, Bergen",
+   "region": "Vest og Sør",
+   "joined": "Joined January 2025",
+   "last": "3 days ago",
+   "pending": false,
+   "bio": "Fotograferer boliger i Bergen og på Vestlandet. Har vært i EFKT siden januar 2025, og tar gjerne dronejobber langs kysten.",
+   "phone": "+47 950 77 172"
+  },
+  {
+   "name": "Ove Halvorsen",
+   "email": "ove.halvorsen@efkt.no",
+   "role": "TEAM_LEAD",
+   "country": "Norway",
+   "groups": [
+    "Photographers",
+    "Employees: Production"
+   ],
+   "jobTitle": "Lead photographer NO",
+   "region": "Østlandet",
+   "joined": "Invited 9 days ago",
+   "last": "Never",
+   "pending": true
+  },
+  {
+   "name": "Ida Løkken",
+   "email": "ida.lokken@efkt.no",
+   "role": "LEARNER",
+   "country": "Norway",
+   "groups": [
+    "Stylists"
+   ],
+   "jobTitle": "Stylist",
+   "region": "Midt og Innlandet",
+   "joined": "Joined July 2025",
+   "last": "3 days ago",
+   "pending": false
+  },
+  {
+   "name": "Lars Wiik",
+   "email": "lars.wiik@efkt.no",
+   "role": "LEARNER",
+   "country": "Norway",
+   "groups": [
+    "Employees: Sales"
+   ],
+   "jobTitle": "Account manager",
+   "region": "Østlandet",
+   "joined": "Invited 6 weeks ago",
+   "last": "Never",
+   "pending": true
+  },
+  {
+   "name": "Emil Krogh",
+   "email": "emil.krogh@efkt.no",
+   "role": "LEARNER",
+   "country": "Norway",
+   "groups": [
+    "Employees: Customer Service"
+   ],
+   "jobTitle": "Coordinator",
+   "region": "Nord",
+   "joined": "Invited today",
+   "last": "Never",
+   "pending": true
+  },
+  {
+   "name": "Birgitte Toft",
+   "email": "bt@boligmaegler.dk",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Customers"
+   ],
+   "jobTitle": "Estate agent",
+   "region": "Øst",
+   "joined": "Joined May 2026",
+   "last": "Yesterday",
+   "pending": false
+  },
+  {
+   "name": "Henrik Storm",
+   "email": "hs@stormbolig.dk",
+   "role": "LEARNER",
+   "country": "Denmark",
+   "groups": [
+    "Customers"
+   ],
+   "jobTitle": "Agency owner",
+   "region": "Vest",
+   "joined": "Joined June 2026",
+   "last": "1 week ago",
+   "pending": false
+  },
+  {
+   "name": "Marte Sundby",
+   "email": "marte@sundbyeiendom.no",
+   "role": "LEARNER",
+   "country": "Norway",
+   "groups": [
+    "Customers"
+   ],
+   "jobTitle": "Estate agent",
+   "region": "Østlandet",
+   "joined": "Joined August 2026",
+   "last": "Today",
+   "pending": false
+  }
+ ],
+ "invites": [
+  {
+   "email": "mikkel.due@efkt.com",
+   "name": "Mikkel Due",
+   "role": "LEARNER",
+   "groups": [
+    "Photographers"
+   ],
+   "status": "ACCEPTED",
+   "sent": "12 days ago",
+   "reminded": 0
+  },
+  {
+   "email": "trine.holst@efkt.com",
+   "name": "Trine Holst",
+   "role": "LEARNER",
+   "groups": [
+    "Employees: Customer Service"
+   ],
+   "status": "PENDING",
+   "sent": "2 days ago",
+   "reminded": 0
+  },
+  {
+   "email": "ove.halvorsen@efkt.no",
+   "name": "Ove Halvorsen",
+   "role": "TEAM_LEAD",
+   "groups": [
+    "Photographers"
+   ],
+   "status": "PENDING",
+   "sent": "9 days ago",
+   "reminded": 1
+  },
+  {
+   "email": "lars.wiik@efkt.no",
+   "name": "Lars Wiik",
+   "role": "LEARNER",
+   "groups": [
+    "Employees: Sales"
+   ],
+   "status": "EXPIRED",
+   "sent": "6 weeks ago",
+   "reminded": 2
+  },
+  {
+   "email": "sofie.brandt@efkt.com",
+   "name": "Sofie Brandt",
+   "role": "ADMIN",
+   "groups": [
+    "Admin"
+   ],
+   "status": "ACCEPTED",
+   "sent": "3 weeks ago",
+   "reminded": 0
+  },
+  {
+   "email": "emil.krogh@efkt.com",
+   "name": "Emil Krogh",
+   "role": "LEARNER",
+   "groups": [
+    "Employees: Customer Service"
+   ],
+   "status": "PENDING",
+   "sent": "Today",
+   "reminded": 0
+  }
+ ],
+ "bank": [
+  {
+   "category": "Foto",
+   "text": "Hvilken hvitbalanse brukes ved blandet lys?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Auto",
+     "correct": false
+    },
+    {
+     "text": "Manuell måling med gråkort",
+     "correct": true
+    },
+    {
+     "text": "Dagslys 5500K alltid",
+     "correct": false
+    },
+    {
+     "text": "Skygge",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Foto",
+   "text": "Hva gjør du hvis et rom er for mørkt for håndholdt opptak?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Hever ISO til 6400",
+     "correct": false
+    },
+    {
+     "text": "Bruker stativ og lengre lukkertid",
+     "correct": true
+    },
+    {
+     "text": "Hopper over rommet",
+     "correct": false
+    },
+    {
+     "text": "Bruker blits direkte mot taket",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Foto",
+   "text": "Hvilke av disse hører til i en standard shot list?",
+   "multi": true,
+   "options": [
+    {
+     "text": "Fasade",
+     "correct": true
+    },
+    {
+     "text": "Utsikt fra stuevinduet",
+     "correct": true
+    },
+    {
+     "text": "Naboens hage",
+     "correct": false
+    },
+    {
+     "text": "Bad",
+     "correct": true
+    }
+   ]
+  },
+  {
+   "category": "Drone",
+   "text": "Hvor høyt kan du fly uten særskilt tillatelse?",
+   "multi": false,
+   "options": [
+    {
+     "text": "50 meter",
+     "correct": false
+    },
+    {
+     "text": "120 meter",
+     "correct": true
+    },
+    {
+     "text": "150 meter",
+     "correct": false
+    },
+    {
+     "text": "Ingen grense",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Drone",
+   "text": "Hvem har ansvaret for flygingen?",
+   "multi": false,
+   "options": [
+    {
+     "text": "EFKT",
+     "correct": false
+    },
+    {
+     "text": "Fartøysjefen — deg",
+     "correct": true
+    },
+    {
+     "text": "Boligselgeren",
+     "correct": false
+    },
+    {
+     "text": "Megleren",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Generell Internal",
+   "text": "Hva er EFKTs tagline?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Fra visning til nøkkel",
+     "correct": false
+    },
+    {
+     "text": "Den komplette pakken fra «Til salg» til «Solgt»",
+     "correct": true
+    },
+    {
+     "text": "Bilder som selger",
+     "correct": false
+    },
+    {
+     "text": "Vi skaper bolig",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Generell Internal",
+   "text": "Hvem melder du sykdom til?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Teamlederen din på SMS",
+     "correct": false
+    },
+    {
+     "text": "Booking på info.no@efkt.com",
+     "correct": true
+    },
+    {
+     "text": "Megleren",
+     "correct": false
+    },
+    {
+     "text": "Ingen — du bare møter ikke opp",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Customer Service",
+   "text": "Hva gjør du hvis du er forsinket til neste oppdrag?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Ringer boligselgeren direkte så tidlig som mulig",
+     "correct": true
+    },
+    {
+     "text": "Sender e-post til kundesenteret",
+     "correct": false
+    },
+    {
+     "text": "Venter og ser",
+     "correct": false
+    },
+    {
+     "text": "Avlyser oppdraget",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Floorplan",
+   "text": "Hvordan tegnes en dør som slår inn?",
+   "multi": false,
+   "options": [
+    {
+     "text": "Rett strek",
+     "correct": false
+    },
+    {
+     "text": "Bue som viser slagretning",
+     "correct": true
+    },
+    {
+     "text": "To parallelle streker",
+     "correct": false
+    },
+    {
+     "text": "Ingen markering",
+     "correct": false
+    }
+   ]
+  },
+  {
+   "category": "Video",
+   "text": "Hvor leveres videoprosjekter?",
+   "multi": false,
+   "options": [
+    {
+     "text": "På e-post",
+     "correct": false
+    },
+    {
+     "text": "Via Massive",
+     "correct": true
+    },
+    {
+     "text": "På minnepinne",
+     "correct": false
+    },
+    {
+     "text": "I Konekt-chatten",
+     "correct": false
+    }
+   ]
+  }
+ ],
+ "news": [
+  {
+   "key": "n1",
+   "title": "Ny leveringsfrist for videoprosjekter",
+   "lead": "Fra 1. oktober skal alle videoprosjekter være levert innen 24 timer etter opptak.",
+   "category": "Produksjon",
+   "authorName": "Øyvind Heia",
+   "date": "15. september 2026",
+   "status": "PUBLISHED",
+   "pinned": true,
+   "country": "Norway",
+   "groups": [
+    "Photographers"
+   ],
+   "blocks": [
+    {
+     "id": "b1",
+     "kind": "heading",
+     "text": "Ny frist fra 1. oktober",
+     "fat": "oktober"
+    },
+    {
+     "id": "b2",
+     "kind": "paragraph",
+     "text": "Fra 1. oktober skal alle videoprosjekter være levert innen 24 timer etter opptak. Bruk Massive til filoverføring, og Filemail som backup dersom Massive er nede."
+    },
+    {
+     "id": "b3",
+     "kind": "list",
+     "items": "Lever via app.massive.io\nMerk filene med oppdragsnummer\nVarsle teamleader ved forsinkelse"
+    },
+    {
+     "id": "b4",
+     "kind": "button",
+     "label": "Åpne Massive",
+     "url": "https://app.massive.io/en/login"
+    }
+   ]
+  },
+  {
+   "key": "n2",
+   "title": "Oppdatert shot list for leiligheter",
+   "lead": "Rekkefølgen på rom er endret, og det er lagt til to obligatoriske detaljbilder.",
+   "category": "Foto",
+   "authorName": "Daniel Mikkelsen",
+   "date": "11. september 2026",
+   "status": "PUBLISHED",
+   "pinned": false,
+   "country": "Both",
+   "groups": [
+    "Photographers",
+    "Stylists"
+   ],
+   "blocks": [
+    {
+     "id": "b5",
+     "kind": "paragraph",
+     "text": "Rekkefølgen på rom er endret, og det er lagt til to obligatoriske detaljbilder. Den nye listen gjelder alle leilighetsoppdrag fra og med neste uke.\n\n• Fasadebilder\n• Utsikt\n• Balkong / Terrasse\n• Kjøkken\n• Stue\n•Entre\n• Bad\n• Soverom\n"
+    },
+    {
+     "id": "b6",
+     "kind": "image",
+     "hint": "New shot list page",
+     "caption": "Den nye rekkefølgen, side 1"
+    }
+   ]
+  },
+  {
+   "key": "n3",
+   "title": "Dronekurs i Bergen 3. oktober",
+   "lead": "Praktisk samling for alle med droneoppdrag på Vestlandet.",
+   "category": "Drone",
+   "authorName": "Sander Thu",
+   "date": "8. september 2026",
+   "status": "DRAFT",
+   "pinned": false,
+   "country": "Norway",
+   "groups": [
+    "Photographers"
+   ],
+   "blocks": [
+    {
+     "id": "b7",
+     "kind": "heading",
+     "text": "Praktisk samling i Bergen",
+     "fat": "Bergen"
+    },
+    {
+     "id": "b8",
+     "kind": "paragraph",
+     "text": "Praktisk samling for alle med droneoppdrag på Vestlandet. Påmelding via din teamleader."
+    }
+   ]
+  }
+ ],
+ "courses": [
+  {
+   "key": "c10",
+   "title": "Fotograf: Velkommen til EFKT Norge",
+   "description": "Grunnkurset alle nye fotografer i Norge tar før første oppdrag: selskapet, produktene, fototeknikk, system, sikkerhet og fakturering.",
+   "categories": [
+    "Foto"
+   ],
+   "status": "PUBLISHED",
+   "updated": "I dag",
+   "groups": [
+    "Photographers"
+   ],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Norway",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Velkommen til EFKT",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vRDe3qiwZwR4BfQCN5B8qbJGM-P8CGsF6j8F64YARNHnUTHDHD0zEFwf7pxRE52Jnt89_eUPKRb0jQB/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva er EFKTs tagline?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Fra visning til nøkkel",
+          "correct": false
+         },
+         {
+          "text": "Den komplette pakken fra «Til salg» til «Solgt»",
+          "correct": true
+         },
+         {
+          "text": "Bilder som selger",
+          "correct": false
+         },
+         {
+          "text": "Vi skaper bolig",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvem er EFKTs kunder?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Boligkjøpere",
+          "correct": false
+         },
+         {
+          "text": "Eiendomsmeglere",
+          "correct": true
+         },
+         {
+          "text": "Byggefirmaer",
+          "correct": false
+         },
+         {
+          "text": "Kommuner",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Om Boligfoto",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vRnIta-5kzxNXOGp6fkcichK2HD9yG1BK-YNsJirhR-_zL_3xemtvXLLbOipLYeY8lR9JHImvMaMxPA/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva er hovedoppgaven til et boligbilde?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Vise boligen ærlig og innbydende",
+          "correct": true
+         },
+         {
+          "text": "Skjule feil ved boligen",
+          "correct": false
+         },
+         {
+          "text": "Vise fotografens stil",
+          "correct": false
+         },
+         {
+          "text": "Fylle annonsen",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvem eier bildene du leverer?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Fotografen",
+          "correct": false
+         },
+         {
+          "text": "EFKT",
+          "correct": true
+         },
+         {
+          "text": "Boligselgeren",
+          "correct": false
+         },
+         {
+          "text": "Megleren personlig",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Våre fotoprodukter",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vQu_cqO-g1ZJxdZw2kGFSONAD5bTV1rei2J4cydtWhFQslECn_dG_rZ1UJ2suRf0cwi_64um9HF9sCK/pub?start=false&loop=false&delayms=30000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvilke av disse er EFKT-fotoprodukter?",
+        "multi": true,
+        "options": [
+         {
+          "text": "Stillbilder",
+          "correct": true
+         },
+         {
+          "text": "Drone",
+          "correct": true
+         },
+         {
+          "text": "Video",
+          "correct": true
+         },
+         {
+          "text": "Trykte brosjyrer",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvor finner du hva som er bestilt på et oppdrag?",
+        "multi": false,
+        "options": [
+         {
+          "text": "I e-posten fra megleren",
+          "correct": false
+         },
+         {
+          "text": "I oppdraget i systemet",
+          "correct": true
+         },
+         {
+          "text": "Du spør boligselgeren",
+          "correct": false
+         },
+         {
+          "text": "Du velger selv",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Komposisjon og Bildeuttrykk",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vToZm6cZ4z2Tt75PhAoHRB6703Gsr74esxUPXCcmGB1QfRFDFiG9-M7wgvMMDOUIUVExCT0Qgx4VrMZ/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvordan holdes vertikale linjer rette?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Kamera i vater",
+          "correct": true
+         },
+         {
+          "text": "Vidvinkel nedenfra",
+          "correct": false
+         },
+         {
+          "text": "Beskjæring i etterkant",
+          "correct": false
+         },
+         {
+          "text": "Det er ikke viktig",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva er hovedregelen for valg av ståsted i et rom?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Så nær vegg som mulig",
+          "correct": false
+         },
+         {
+          "text": "Vis rommets form og sammenheng",
+          "correct": true
+         },
+         {
+          "text": "Alltid fra døren",
+          "correct": false
+         },
+         {
+          "text": "Midt i rommet",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Fototeknisk og Rutiner",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vRO08eS-KUAVk8VNmkcDn81oyRFG3EGjkW0XSbtONt2D8QaXRuZD2SFx-8ZZzXFtH-dtPcSyzFQ8f7n/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva brukes stativ til?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Bare ved video",
+          "correct": false
+         },
+         {
+          "text": "Lengre lukkertid i dårlig lys",
+          "correct": true
+         },
+         {
+          "text": "Aldri innendørs",
+          "correct": false
+         },
+         {
+          "text": "Kun ved HDR",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvilken hvitbalanse brukes ved blandet lys?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Auto",
+          "correct": false
+         },
+         {
+          "text": "Manuell måling",
+          "correct": true
+         },
+         {
+          "text": "Dagslys 5500K alltid",
+          "correct": false
+         },
+         {
+          "text": "Skygge",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Systemveiledning",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vQFohuCNAOrzJLfjqjJa8LR4LvPXxt3EBh2sfu5s6afUTXRfD49ItXIFFdtGsfHZYyUTYn_RsntvWML/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvor registrerer du at et oppdrag er utført?",
+        "multi": false,
+        "options": [
+         {
+          "text": "På SMS til megleren",
+          "correct": false
+         },
+         {
+          "text": "I systemet på oppdraget",
+          "correct": true
+         },
+         {
+          "text": "I en egen loggbok",
+          "correct": false
+         },
+         {
+          "text": "Ingen registrering",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva gjør du hvis et oppdrag mangler informasjon?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Gjetter og fotograferer",
+          "correct": false
+         },
+         {
+          "text": "Kontakter kundesenteret",
+          "correct": true
+         },
+         {
+          "text": "Avlyser",
+          "correct": false
+         },
+         {
+          "text": "Venter til neste dag",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Generell Informasjon",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vQCmCXKuqKZ2iAWvJRXWdpCzfwKgeDIa99b_gfu49JhHNB4UEbsxlrA5UfY9nOF2tGWcvipDo5GO-ZD/pub?start=false&loop=false&delayms=60000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvem melder du sykdom til?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Teamlederen din på SMS",
+          "correct": false
+         },
+         {
+          "text": "Booking på info.no@efkt.com",
+          "correct": true
+         },
+         {
+          "text": "Megleren",
+          "correct": false
+         },
+         {
+          "text": "Ingen",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva gjør du hvis du er forsinket til neste oppdrag?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Ringer boligselgeren direkte så tidlig som mulig",
+          "correct": true
+         },
+         {
+          "text": "Sender e-post til kundesenteret",
+          "correct": false
+         },
+         {
+          "text": "Venter og ser",
+          "correct": false
+         },
+         {
+          "text": "Avlyser oppdraget",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Konvertering av råfiler til DNG",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vTSgOu2ZIbC3gVCpQMo4xcpa0BSqmio8gR_UkXifqqaALrVS6V7HisrDswYnXxLSG8b00_NLD5lBkU8/pub?start=false&loop=false&delayms=5000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvorfor konverteres råfiler til DNG?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Mindre filer og standardisert format",
+          "correct": true
+         },
+         {
+          "text": "Bedre farger",
+          "correct": false
+         },
+         {
+          "text": "Kravet fra megleren",
+          "correct": false
+         },
+         {
+          "text": "For å låse filene",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Når gjøres konverteringen?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Før levering",
+          "correct": true
+         },
+         {
+          "text": "Etter at megleren har godkjent",
+          "correct": false
+         },
+         {
+          "text": "Aldri",
+          "correct": false
+         },
+         {
+          "text": "Under opptak",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Sikkerhet",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vTZIUrJ0slb2TrZuwluggKHVX308SL_ER1vcu975Ol0qF6KuhwswrY0LcUF83JbJmtSDfTJY0bD0ID1/pub?start=false&loop=false&delayms=3000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva gjør du før du går opp i en stige på oppdrag?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Sikrer den og vurderer om det er nødvendig",
+          "correct": true
+         },
+         {
+          "text": "Ber boligselgeren holde",
+          "correct": false
+         },
+         {
+          "text": "Går raskt opp",
+          "correct": false
+         },
+         {
+          "text": "Bruker den alltid",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvem har ansvaret for din egen sikkerhet på oppdrag?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Megleren",
+          "correct": false
+         },
+         {
+          "text": "Du selv",
+          "correct": true
+         },
+         {
+          "text": "Boligselgeren",
+          "correct": false
+         },
+         {
+          "text": "EFKT sentralt",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Honorar og Fakturering",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vQGB1BwvTxTUS8-qLn-JTeqeDZJRv3MtVJ7A7B92GMCXjmfLmiKfhAstvc4QKWmyGbo14quZcojOKG8/pub?start=false&loop=false&delayms=5000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Når sender du faktura?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Etter hvert enkelt oppdrag",
+          "correct": false
+         },
+         {
+          "text": "Etter avtalt periode",
+          "correct": true
+         },
+         {
+          "text": "Når du trenger penger",
+          "correct": false
+         },
+         {
+          "text": "Årlig",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva må en faktura inneholde?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Bare beløp",
+          "correct": false
+         },
+         {
+          "text": "Oppdragsnummer og periode",
+          "correct": true
+         },
+         {
+          "text": "Bilder av boligen",
+          "correct": false
+         },
+         {
+          "text": "Meglerens navn alene",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Siste Steg",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vRn1K004-5Yc-XSzEXPt1VCg_VHEoQ3eZUllYv4K-xYZqirSinpngk4LwPAZFFDmHnJZM1NnpmNwvyn/pub?start=false&loop=false&delayms=3000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva skjer når du har fullført dette kurset?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Du kan begynne på oppdrag",
+          "correct": true
+         },
+         {
+          "text": "Ingenting",
+          "correct": false
+         },
+         {
+          "text": "Du må ta det igjen",
+          "correct": false
+         },
+         {
+          "text": "Du får nytt kamera",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvem kontakter du ved faglige spørsmål?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Kundesenteret",
+          "correct": false
+         },
+         {
+          "text": "Teamlederen din",
+          "correct": true
+         },
+         {
+          "text": "Megleren",
+          "correct": false
+         },
+         {
+          "text": "En kollega",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "key": "c1",
+   "title": "Interior photography standard",
+   "description": "The EFKT shot list, lighting and white balance for occupied homes.",
+   "categories": [
+    "Foto",
+    "Reference Materials"
+   ],
+   "status": "PUBLISHED",
+   "updated": "2 days ago",
+   "groups": [
+    "Photographers",
+    "Stylists"
+   ],
+   "users": [
+    "Nadia Iversen"
+   ],
+   "selfEnrol": true,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Shot list and room order",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vToZm6cZ4z2Tt75PhAoHRB6703Gsr74esxUPXCcmGB1QfRFDFiG9-M7wgvMMDOUIUVExCT0Qgx4VrMZ/pub?start=false&loop=false&delayms=3000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "I hvilken rekkefølge fotograferes rommene i en bolig?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Stue, kjøkken, bad, soverom",
+          "correct": true
+         },
+         {
+          "text": "Soverom først, alltid",
+          "correct": false
+         },
+         {
+          "text": "Rekkefølgen er valgfri",
+          "correct": false
+         },
+         {
+          "text": "Etter hva boligselgeren ber om",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvor mange bilder skal minimum leveres av et kjøkken?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Ett oversiktsbilde",
+          "correct": false
+         },
+         {
+          "text": "To bilder: oversikt og detalj",
+          "correct": true
+         },
+         {
+          "text": "Fire bilder",
+          "correct": false
+         },
+         {
+          "text": "Så mange du vil",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva gjør du hvis et rom er for mørkt for håndholdt opptak?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Hever ISO til 6400",
+          "correct": false
+         },
+         {
+          "text": "Bruker stativ og lengre lukkertid",
+          "correct": true
+         },
+         {
+          "text": "Hopper over rommet",
+          "correct": false
+         },
+         {
+          "text": "Bruker blits direkte mot taket",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hvilke av disse hører til i en standard shot list?",
+        "multi": true,
+        "options": [
+         {
+          "text": "Fasade",
+          "correct": true
+         },
+         {
+          "text": "Utsikt fra stuevinduet",
+          "correct": true
+         },
+         {
+          "text": "Naboens hage",
+          "correct": false
+         },
+         {
+          "text": "Bad",
+          "correct": true
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Lighting an empty room",
+     "source": "EMBED",
+     "url": "https://docs.google.com/presentation/d/e/2PACX-1vLighting/pub?start=false&loop=false&delayms=3000",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva er hovedregelen for lys i et tomt rom?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Alt kunstlys på",
+          "correct": false
+         },
+         {
+          "text": "Dagslys som hovedlys",
+          "correct": true
+         },
+         {
+          "text": "Blits i alle rom",
+          "correct": false
+         },
+         {
+          "text": "Mørklegg og lys opp med LED",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Når slår du av takbelysningen?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Alltid",
+          "correct": false
+         },
+         {
+          "text": "Når den gir gule fargekast",
+          "correct": true
+         },
+         {
+          "text": "Aldri",
+          "correct": false
+         },
+         {
+          "text": "Bare om kvelden",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "White balance and colour",
+     "source": "EMBED",
+     "url": "academy.efkt.com/photo/wb",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 85,
+      "retries": 1,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvilken hvitbalanse brukes ved blandet lys?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Auto",
+          "correct": false
+         },
+         {
+          "text": "Manuell måling med gråkort",
+          "correct": true
+         },
+         {
+          "text": "Dagslys 5500K alltid",
+          "correct": false
+         },
+         {
+          "text": "Skygge",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva er akseptabelt fargeavvik i levering?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Ingen krav",
+          "correct": false
+         },
+         {
+          "text": "Naturlig hvitbalanse uten synlige kast",
+          "correct": true
+         },
+         {
+          "text": "Varm tone er alltid best",
+          "correct": false
+         },
+         {
+          "text": "Kaldt er tryggest",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Delivery and naming",
+     "source": "BUILT",
+     "url": "",
+     "blocks": [
+      {
+       "id": "mb1",
+       "kind": "heading",
+       "text": "Levering og filnavn",
+       "fat": "filnavn"
+      },
+      {
+       "id": "mb2",
+       "kind": "paragraph",
+       "text": "Alle filer merkes med oppdragsnummer, ikke adresse. Bruk Massive til video, og Filemail som backup dersom Massive er nede."
+      },
+      {
+       "id": "mb3",
+       "kind": "list",
+       "items": "Lever innen 24 timer etter opptak\nMerk filene med oppdragsnummer\nVarsle teamleder ved forsinkelse"
+      },
+      {
+       "id": "mb4",
+       "kind": "button",
+       "label": "Åpne Massive",
+       "url": "https://app.massive.io/en/login"
+      }
+     ],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva merkes filene med?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Fotografens navn",
+          "correct": false
+         },
+         {
+          "text": "Oppdragsnummer",
+          "correct": true
+         },
+         {
+          "text": "Dato",
+          "correct": false
+         },
+         {
+          "text": "Adressen med mellomrom",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "key": "c2",
+   "title": "Drone operation and safety",
+   "description": "Rules, flight planning and the footage we expect from every drone job.",
+   "categories": [
+    "Drone",
+    "Video"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [
+    "Photographers"
+   ],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Danish drone regulation",
+     "source": "EMBED",
+     "url": "academy.efkt.com/drone/rules",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 90,
+      "retries": 1,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvor høyt kan du fly uten særskilt tillatelse?",
+        "multi": false,
+        "options": [
+         {
+          "text": "50 meter",
+          "correct": false
+         },
+         {
+          "text": "120 meter",
+          "correct": true
+         },
+         {
+          "text": "150 meter",
+          "correct": false
+         },
+         {
+          "text": "Ingen grense",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva kreves for flyging nær lufthavn?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Ingenting",
+          "correct": false
+         },
+         {
+          "text": "Klarering fra lufttrafikktjenesten",
+          "correct": true
+         },
+         {
+          "text": "Kun varsling til naboer",
+          "correct": false
+         },
+         {
+          "text": "Flyging er alltid forbudt",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Flight planning",
+     "source": "EMBED",
+     "url": "academy.efkt.com/drone/planning",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 90,
+      "retries": 1,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva sjekkes før hver flyging?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Vær, luftrom og batteri",
+          "correct": true
+         },
+         {
+          "text": "Kun batteri",
+          "correct": false
+         },
+         {
+          "text": "Kun vær",
+          "correct": false
+         },
+         {
+          "text": "Ingenting hvis du har fløyet der før",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Footage handover",
+     "source": "EMBED",
+     "url": "academy.efkt.com/drone/handover",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c3",
+   "title": "Floor plan conventions",
+   "description": "Measuring, drawing and labelling floor plans to the EFKT standard.",
+   "categories": [
+    "Floorplan"
+   ],
+   "status": "PUBLISHED",
+   "updated": "3 weeks ago",
+   "groups": [
+    "Employees: Production"
+   ],
+   "users": [],
+   "selfEnrol": true,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Measuring on site",
+     "source": "EMBED",
+     "url": "academy.efkt.com/plans/measuring",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 85,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvor måles romhøyde fra?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Gulvbelegg til himling",
+          "correct": true
+         },
+         {
+          "text": "Bjelkelag til himling",
+          "correct": false
+         },
+         {
+          "text": "Fra dørterskel",
+          "correct": false
+         },
+         {
+          "text": "Midt i rommet fra gulv til tak",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Drawing conventions",
+     "source": "EMBED",
+     "url": "academy.efkt.com/plans/drawing",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 85,
+      "retries": 2,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvordan tegnes en dør som slår inn?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Rett strek",
+          "correct": false
+         },
+         {
+          "text": "Bue som viser slagretning",
+          "correct": true
+         },
+         {
+          "text": "To parallelle streker",
+          "correct": false
+         },
+         {
+          "text": "Ingen markering",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Area calculation",
+     "source": "EMBED",
+     "url": "academy.efkt.com/plans/area",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c4",
+   "title": "Property ads that perform",
+   "description": "Building, budgeting and reporting on property ads for agents.",
+   "categories": [
+    "Sales",
+    "Customer Service"
+   ],
+   "status": "PUBLISHED",
+   "updated": "4 days ago",
+   "groups": [
+    "Employees: Sales",
+    "Employees: Customer Service"
+   ],
+   "users": [
+    "Camilla Lund"
+   ],
+   "selfEnrol": true,
+   "country": "Denmark",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Audience and budget",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ads/audience",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 75,
+      "retries": 3,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva styrer budsjettet på en boligannonse?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Prisantydning og målgruppe",
+          "correct": true
+         },
+         {
+          "text": "Alltid fast beløp",
+          "correct": false
+         },
+         {
+          "text": "Meglerens preferanse",
+          "correct": false
+         },
+         {
+          "text": "Antall bilder",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Creative that converts",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ads/creative",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    },
+    {
+     "title": "Reading the report",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ads/reporting",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c5",
+   "title": "Welcome to EFKT",
+   "description": "Who we are, how we work and what the agent expects from us.",
+   "categories": [
+    "Generell Internal"
+   ],
+   "status": "PUBLISHED",
+   "updated": "Yesterday",
+   "groups": [
+    "Photographers",
+    "Stylists",
+    "Employees: Sales",
+    "Employees: Production",
+    "Employees: Customer Service"
+   ],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "The company",
+     "source": "EMBED",
+     "url": "academy.efkt.com/intro/company",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 70,
+      "retries": 3,
+      "shuffle": true,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva er EFKTs tagline?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Fra visning til nøkkel",
+          "correct": false
+         },
+         {
+          "text": "Den komplette pakken fra «Til salg» til «Solgt»",
+          "correct": true
+         },
+         {
+          "text": "Bilder som selger",
+          "correct": false
+         },
+         {
+          "text": "Vi skaper bolig",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "From For Sale to Sold",
+     "source": "EMBED",
+     "url": "academy.efkt.com/intro/journey",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c6",
+   "title": "Konekt for coordinators",
+   "description": "Order intake, scheduling and delivery inside the Konekt portal.",
+   "categories": [
+    "Customer Service",
+    "Generell Internal"
+   ],
+   "status": "DRAFT",
+   "updated": "2 weeks ago",
+   "groups": [],
+   "users": [
+    "Peter Holm"
+   ],
+   "selfEnrol": false,
+   "country": "Norway",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Order intake",
+     "source": "EMBED",
+     "url": "academy.efkt.com/konekt/intake",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c7",
+   "title": "Exterior and facade",
+   "description": "Time of day, angles and weather for the shot that sells the address.",
+   "categories": [
+    "Foto"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Reading the light",
+     "source": "EMBED",
+     "url": "academy.efkt.com/photo/light",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": false,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Når er fasadelys best?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Midt på dagen",
+          "correct": false
+         },
+         {
+          "text": "Den blå timen og tidlig morgen",
+          "correct": true
+         },
+         {
+          "text": "Alltid i overskyet vær",
+          "correct": false
+         },
+         {
+          "text": "Rett etter regn",
+          "correct": false
+         }
+        ]
+       },
+       {
+        "text": "Hva gjør du ved direkte motlys på fasaden?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Skyter likevel",
+          "correct": false
+         },
+         {
+          "text": "Venter eller flytter vinkel",
+          "correct": true
+         },
+         {
+          "text": "Bruker blits",
+          "correct": false
+         },
+         {
+          "text": "Øker eksponering to trinn",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Angles and lines",
+     "source": "EMBED",
+     "url": "academy.efkt.com/photo/angles",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 80,
+      "retries": 2,
+      "shuffle": false,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvordan holdes vertikale linjer rette?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Kamera i vater",
+          "correct": true
+         },
+         {
+          "text": "Vidvinkel nedenfra",
+          "correct": false
+         },
+         {
+          "text": "Beskjæring i etterkant",
+          "correct": false
+         },
+         {
+          "text": "Det er ikke viktig",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "key": "c8",
+   "title": "Property film in one visit",
+   "description": "A repeatable walkthrough you can shoot and cut the same day.",
+   "categories": [
+    "Video"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": true,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Planning the walkthrough",
+     "source": "EMBED",
+     "url": "academy.efkt.com/video/plan",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 75,
+      "retries": 3,
+      "shuffle": false,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hvor starter en walkthrough?",
+        "multi": false,
+        "options": [
+         {
+          "text": "I hagen",
+          "correct": false
+         },
+         {
+          "text": "Ved inngangen",
+          "correct": true
+         },
+         {
+          "text": "På soverommet",
+          "correct": false
+         },
+         {
+          "text": "Der du står",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "Stabilised movement",
+     "source": "EMBED",
+     "url": "academy.efkt.com/video/move",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    },
+    {
+     "title": "Cutting to two minutes",
+     "source": "EMBED",
+     "url": "academy.efkt.com/video/edit",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "c9",
+   "title": "Styling before the shoot",
+   "description": "What to move, what to remove and what to leave alone in a lived-in home.",
+   "categories": [
+    "Foto"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": true,
+   "country": "Both",
+   "reference": false,
+   "icon": "",
+   "modules": [
+    {
+     "title": "Reading a room",
+     "source": "EMBED",
+     "url": "academy.efkt.com/style/read",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 75,
+      "retries": 3,
+      "shuffle": false,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva fjernes alltid før opptak?",
+        "multi": false,
+        "options": [
+         {
+          "text": "All pynt",
+          "correct": false
+         },
+         {
+          "text": "Personlige bilder og rot på flater",
+          "correct": true
+         },
+         {
+          "text": "Møbler",
+          "correct": false
+         },
+         {
+          "text": "Gardiner",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    },
+    {
+     "title": "The 20-minute reset",
+     "source": "EMBED",
+     "url": "academy.efkt.com/style/reset",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": {
+      "passPercent": 75,
+      "retries": 3,
+      "shuffle": false,
+      "showFeedback": true,
+      "questions": [
+       {
+        "text": "Hva er første steg i en 20-minutters reset?",
+        "multi": false,
+        "options": [
+         {
+          "text": "Flytte sofaen",
+          "correct": false
+         },
+         {
+          "text": "Rydde flater",
+          "correct": true
+         },
+         {
+          "text": "Skifte sengetøy",
+          "correct": false
+         },
+         {
+          "text": "Vaske gulv",
+          "correct": false
+         }
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "key": "r1",
+   "title": "Camera and lens specifications",
+   "description": "Approved bodies, lenses and settings per property type.",
+   "categories": [
+    "Reference Materials"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": true,
+   "icon": "camera",
+   "modules": [
+    {
+     "title": "Approved equipment list",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ref/gear",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    },
+    {
+     "title": "Settings per room type",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ref/settings",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "r2",
+   "title": "Delivery and file naming",
+   "description": "Formats, resolutions and the naming convention Konekt expects.",
+   "categories": [
+    "Reference Materials"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": true,
+   "icon": "folders",
+   "modules": [
+    {
+     "title": "Naming convention",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ref/naming",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  },
+  {
+   "key": "r3",
+   "title": "Shot list cheat sheet",
+   "description": "One page per property type, printable for the car.",
+   "categories": [
+    "Reference Materials"
+   ],
+   "status": "PUBLISHED",
+   "updated": "1 week ago",
+   "groups": [],
+   "users": [],
+   "selfEnrol": false,
+   "country": "Both",
+   "reference": true,
+   "icon": "list-checks",
+   "modules": [
+    {
+     "title": "All property types",
+     "source": "EMBED",
+     "url": "academy.efkt.com/ref/shotlist",
+     "blocks": [],
+     "minSeconds": 10,
+     "quiz": null
+    }
+   ]
+  }
+ ],
+ "dashboard": {
+  "contactIntro": "For alt av spørsmål knyttet til gjennomføring av oppdrag, fototekniske, spørsmål til hvordan man skal produsere eller levere bestemte produkter kontakt din Teamleader:",
+  "contactNotes": [
+   {
+    "icon": "first-aid-kit",
+    "label": "Sykdom meldes til booking via mail:",
+    "value": "info.no@efkt.com",
+    "href": "mailto:info.no@efkt.com",
+    "note": "Viktig at du også varsler de berørte boligselgerne og meglerne via SMS om at du er syk og at EFKT booking vil ta kontakt med dem"
+   },
+   {
+    "icon": "envelope-simple",
+    "label": "Andre henvendelser til kundesenteret via mail:",
+    "value": "info.no@efkt.com",
+    "href": "mailto:info.no@efkt.com",
+    "note": ""
+   },
+   {
+    "icon": "phone",
+    "label": "Vi oppfordrer dere til å ringe kun når det virkelig haster:",
+    "value": "210 80 500",
+    "href": "tel:+4721080500",
+    "note": ""
+   }
+  ],
+  "contactFooter": "Er du f.eks forsinket til neste oppdrag, ring boligselgeren direkte og informer så tidlig som mulig",
+  "importantLinks": [
+   {
+    "label": "EFKT ACADEMY LOGIN",
+    "sub": "",
+    "url": "https://efktacademy.talentlms.com/index",
+    "icon": "graduation-cap"
+   },
+   {
+    "label": "LOGIN SPA",
+    "sub": "",
+    "url": "https://sp.efkt.com/login",
+    "icon": "sign-in"
+   },
+   {
+    "label": "VIVA ENGAGE",
+    "sub": "",
+    "url": "https://engage.cloud.microsoft/main/feed",
+    "icon": "chats-circle"
+   },
+   {
+    "label": "EFKT NORGE PÅ INSTAGRAM",
+    "sub": "",
+    "url": "https://www.instagram.com/efkt_norge/",
+    "icon": "instagram-logo"
+   },
+   {
+    "label": "LOGIN GAMMEL iWEB",
+    "sub": "for interiørveiledere",
+    "url": "https://web.efkt.com/people/sign_in",
+    "icon": "browser"
+   },
+   {
+    "label": "SEND STORE FILER TIL OSS",
+    "sub": "brukes til levering av videoprosjekter",
+    "url": "https://app.massive.io/en/login",
+    "icon": "upload-simple"
+   },
+   {
+    "label": "Backup system for filoverføring",
+    "sub": "",
+    "url": "https://www.filemail.com/incoming/6915734024",
+    "icon": "cloud-arrow-up"
+   }
+  ]
+ }
+}

@@ -1,0 +1,361 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Content may target one country or both; users always belong to exactly one.
+enum Country {
+  Denmark
+  Norway
+  Both
+}
+
+enum Role {
+  LEARNER
+  TEAM_LEAD
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  DEACTIVATED
+}
+
+enum CourseStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ModuleSource {
+  EMBED
+  BUILT
+}
+
+enum NewsStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
+model User {
+  id             String     @id @default(cuid())
+  email          String     @unique
+  name           String
+  passwordHash   String?
+  role           Role       @default(LEARNER)
+  country        Country    @default(Denmark)
+  regionId       String?
+  region         Region?    @relation(fields: [regionId], references: [id], onDelete: SetNull)
+  jobTitle       String     @default("")
+  photoId        String?
+  bio            String     @default("")
+  phone          String     @default("")
+  status         UserStatus @default(ACTIVE)
+  createdByAdmin Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  lastSeenAt     DateTime?
+
+  groups          Group[]         @relation("UserGroups")
+  directCourses   Course[]        @relation("CourseUsers")
+  enrolments      Enrolment[]
+  progress        Progress[]
+  attempts        QuizAttempt[]
+  sessions        Session[]       @relation("SessionUser")
+  impersonations  Session[]       @relation("SessionImpersonator")
+  resetTokens     PasswordReset[]
+  invitationsSent Invitation[]    @relation("InvitedBy")
+  auditLogs       AuditLog[]
+}
+
+model Session {
+  id             String   @id // sha256 of the cookie token
+  userId         String
+  user           User     @relation("SessionUser", fields: [userId], references: [id], onDelete: Cascade)
+  // Set while an administrator is "logged in as" this user.
+  impersonatorId String?
+  impersonator   User?    @relation("SessionImpersonator", fields: [impersonatorId], references: [id], onDelete: Cascade)
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+  userAgent      String   @default("")
+
+  @@index([userId])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ip        String
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([ip, createdAt])
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+// Regions are fixed per country. Only the teamleader holding a region is editable.
+model Region {
+  id         String  @id @default(cuid())
+  name       String
+  country    Country
+  order      Int     @default(0)
+  leadName   String  @default("")
+  leadEmail  String  @default("")
+  leadMobile String  @default("")
+  users      User[]
+
+  @@unique([country, name])
+}
+
+model Group {
+  id          String       @id @default(cuid())
+  name        String       @unique
+  description String       @default("")
+  icon        String       @default("users-three")
+  createdAt   DateTime     @default(now())
+  users       User[]       @relation("UserGroups")
+  categories  Category[]   @relation("CategoryGroups")
+  courses     Course[]     @relation("CourseGroups")
+  invitations Invitation[] @relation("InvitationGroups")
+  news        NewsStory[]  @relation("NewsGroups")
+}
+
+model Category {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String         @default("")
+  icon        String         @default("folder")
+  order       Int            @default(0)
+  groups      Group[]        @relation("CategoryGroups")
+  courses     Course[]       @relation("CourseCategories")
+  bank        BankQuestion[]
+  invitations Invitation[]   @relation("InvitationCategories")
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  title       String
+  description String       @default("")
+  country     Country      @default(Both)
+  status      CourseStatus @default(DRAFT)
+  thumbnailId String?
+  thumbX      Float        @default(50) // crop focus, percent
+  thumbY      Float        @default(50)
+  thumbScale  Float        @default(1)
+  selfEnrol   Boolean      @default(false)
+  // Reference material: shown in its own dashboard section, no progress, no quiz.
+  reference   Boolean      @default(false)
+  icon        String       @default("")
+  // Set when modules of a published course change, so an admin can decide
+  // whether existing completions still stand.
+  recertFlag  Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  categories Category[]  @relation("CourseCategories")
+  groups     Group[]     @relation("CourseGroups")
+  users      User[]      @relation("CourseUsers")
+  modules    Module[]
+  enrolments Enrolment[]
+}
+
+model Module {
+  id         String       @id @default(cuid())
+  courseId   String
+  course     Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title      String
+  order      Int
+  source     ModuleSource @default(EMBED)
+  url        String       @default("")
+  blocks     Json         @default("[]") // Block[] — see src/lib/blocks.ts
+  // Seconds the learner must spend on the module (tab visible) before the quiz opens.
+  minSeconds Int          @default(10)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  quiz       Quiz?
+  progress   Progress[]
+
+  @@index([courseId, order])
+}
+
+model Quiz {
+  id           String        @id @default(cuid())
+  moduleId     String        @unique
+  module       Module        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  passPercent  Int           @default(80)
+  retries      Int           @default(0) // 0 = unlimited
+  shuffle      Boolean       @default(true)
+  showFeedback Boolean       @default(true)
+  questions    Question[]
+  attempts     QuizAttempt[]
+}
+
+model Question {
+  id         String        @id @default(cuid())
+  quizId     String
+  quiz       Quiz          @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  order      Int
+  text       String
+  multi      Boolean       @default(false)
+  options    Json          @default("[]") // { text: string; correct: boolean }[]
+  bankItemId String?
+  bankItem   BankQuestion? @relation(fields: [bankItemId], references: [id], onDelete: SetNull)
+}
+
+model BankQuestion {
+  id         String     @id @default(cuid())
+  categoryId String?
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  text       String
+  multi      Boolean    @default(false)
+  options    Json       @default("[]")
+  createdAt  DateTime   @default(now())
+  uses       Question[]
+}
+
+model Enrolment {
+  userId    String
+  courseId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, courseId])
+}
+
+model Progress {
+  id                 String    @id @default(cuid())
+  userId             String
+  moduleId           String
+  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module             Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  seenAt             DateTime?
+  dwellSeconds       Int       @default(0)
+  confirmedAllSlides Boolean   @default(false)
+  attempts           Int       @default(0) // attempts since last reset / re-view
+  passed             Boolean   @default(false)
+  bestScore          Int?
+  lastScore          Int?
+  passedAt           DateTime?
+  updatedAt          DateTime  @updatedAt
+
+  @@unique([userId, moduleId])
+}
+
+model QuizAttempt {
+  id        String   @id @default(cuid())
+  userId    String
+  quizId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  score     Int
+  passed    Boolean
+  answers   Json
+  createdAt DateTime @default(now())
+
+  @@index([userId, quizId])
+}
+
+model Invitation {
+  id             String       @id @default(cuid())
+  email          String
+  name           String       @default("")
+  role           Role         @default(LEARNER)
+  country        Country      @default(Denmark)
+  message        String       @default("")
+  tokenHash      String       @unique
+  status         InviteStatus @default(PENDING)
+  sentAt         DateTime     @default(now())
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  remindersSent  Int          @default(0)
+  lastRemindedAt DateTime?
+  invitedById    String?
+  invitedBy      User?        @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: SetNull)
+  groups         Group[]      @relation("InvitationGroups")
+  categories     Category[]   @relation("InvitationCategories")
+
+  @@index([email])
+}
+
+model NewsStory {
+  id         String     @id @default(cuid())
+  title      String
+  lead       String     @default("")
+  category   String     @default("Internt")
+  authorName String     @default("")
+  country    Country    @default(Both)
+  status     NewsStatus @default(DRAFT)
+  pinned     Boolean    @default(false)
+  heroId     String?
+  heroX      Float      @default(50)
+  heroY      Float      @default(50)
+  heroScale  Float      @default(1)
+  publishAt  DateTime?
+  blocks     Json       @default("[]") // Block[]
+  groups     Group[]    @relation("NewsGroups") // empty = everyone in the country
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+// Uploaded images. Stored in the database so the app runs without extra infrastructure;
+// swap src/lib/storage.ts for S3 / Supabase Storage when volume grows.
+model FileUpload {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  data      Bytes
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String
+  targetType String   @default("")
+  targetId   String   @default("")
+  details    Json     @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+model EmailOutbox {
+  id        String    @id @default(cuid())
+  to        String
+  subject   String
+  html      String
+  text      String
+  status    String    @default("queued") // queued | sent | logged | failed
+  error     String    @default("")
+  createdAt DateTime  @default(now())
+  sentAt    DateTime?
+}
+
+model Setting {
+  key   String @id
+  value Json
+}

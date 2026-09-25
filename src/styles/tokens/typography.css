@@ -1,0 +1,33 @@
+:root{
+--efkt-font:'Be Vietnam Pro',-apple-system,'Segoe UI',Roboto,sans-serif;
+--efkt-font-ppt:'Be Vietnam Pro',Poppins,'Segoe UI',Arial,sans-serif;
+--font-body:var(--efkt-font);
+--font-display:var(--efkt-font);
+
+/* Weights. 300 + 800/900 are mandatory — they carry the two-weight heading.
+   400+700 is the forbidden substitution. */
+--efkt-weight-thin:300; /* @kind font */
+--efkt-weight-regular:400; /* @kind font */
+--efkt-weight-medium:500; /* @kind font */
+--efkt-weight-semibold:600; /* @kind font */
+--efkt-weight-bold:700; /* @kind font */
+--efkt-weight-fat:800; /* @kind font */
+--efkt-weight-black:900; /* @kind font */
+
+/* Web/mock-up scale (1440px viewport). MINIMUMS — go up, never down. */
+--text-hero:70px;      --lh-hero:1.2; /* @kind other */   --ls-hero:-0.02em; /* @kind other */
+--text-h1:40px;        --lh-h1:1.2; /* @kind other */     --ls-h1:-0.065em; /* @kind other */
+--text-h2:32px;        --lh-h2:1.25; /* @kind other */    --ls-h2:-0.03em; /* @kind other */
+--text-h3:20px;        --lh-h3:1.3; /* @kind other */     --ls-h3:-0.01em; /* @kind other */
+--text-lead:18px;      --lh-lead:1.6; /* @kind other */   --ls-lead:-0.02em; /* @kind other */
+--text-body-size:16px; --lh-body:1.6; /* @kind other */   --ls-body:-0.02em; /* @kind other */
+--text-ui:16px;        --lh-ui:1.2; /* @kind other */     --ls-ui:-0.01em; /* @kind other */
+--text-micro:14px;     --lh-micro:1.3; /* @kind other */  --ls-micro:0; /* @kind other */
+--text-kpi:60px;       --lh-kpi:1.1; /* @kind other */    --ls-kpi:-0.025em; /* @kind other */
+--efkt-text-min:14px;  /* absolute floor. Nothing smaller exists in EFKT material */
+--efkt-text-body:16px;
+
+/* Slide scale (960x540pt deck) — pt values as numbers-in-px for HTML decks at 1920x1080 */
+--slide-display:54pt; /* @kind font */ --slide-h1:36pt; /* @kind font */ --slide-h2:28pt; /* @kind font */ --slide-h3:20pt; /* @kind font */
+--slide-body:16pt; /* @kind font */ --slide-micro:14pt; /* @kind font */ --slide-kpi:60pt; /* @kind font */ --slide-quote:28pt; /* @kind font */
+}

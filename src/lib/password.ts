@@ -1,0 +1,32 @@
+import bcrypt from 'bcryptjs';
+
+export const PASSWORD_MIN = 8;
+
+export async function hashPassword(pw: string): Promise<string> {
+  return bcrypt.hash(pw, 12);
+}
+
+export async function verifyPassword(pw: string, hash: string | null | undefined): Promise<boolean> {
+  if (!hash) return false;
+  return bcrypt.compare(pw, hash);
+}
+
+/** Rules shown next to the new-password field. */
+export function passwordRules(pw: string) {
+  return [
+    { key: 'length', label: 'Minst 8 tegn', ok: pw.length >= PASSWORD_MIN },
+    { key: 'letter', label: 'Minst én bokstav', ok: /[A-Za-zÆØÅæøå]/.test(pw) },
+    { key: 'digit', label: 'Minst ett tall', ok: /\d/.test(pw) },
+  ];
+}
+
+export function passwordOk(pw: string): boolean {
+  return passwordRules(pw).every((r) => r.ok);
+}
+
+/** Readable one-off password for admin-created test accounts. */
+export function makePassword(): string {
+  const words = ['Fjord', 'Balkong', 'Kamera', 'Drone', 'Vindu', 'Stue', 'Lys', 'Kjokken'];
+  const w = words[Math.floor(Math.random() * words.length)];
+  return w + '-' + (1000 + Math.floor(Math.random() * 9000)) + '!';
+}
