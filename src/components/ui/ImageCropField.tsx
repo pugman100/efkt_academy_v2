@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
-import { uploadImage } from '@/app/actions/upload';
+import { uploadImageFile } from '@/lib/upload-client';
 import { fileUrl } from '@/lib/blocks';
 
 export type Crop = { imageId: string | null; x: number; y: number; scale: number };
@@ -40,9 +40,7 @@ export function ImageCropField({
     if (!file) return;
     setBusy(true);
     setError('');
-    const fd = new FormData();
-    fd.set('file', file);
-    const res = await uploadImage(fd);
+    const res = await uploadImageFile(file);
     setBusy(false);
     if (res.ok) onChange({ imageId: res.id, x: 50, y: 50, scale: 1 });
     else setError(res.error);

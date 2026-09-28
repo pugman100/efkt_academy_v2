@@ -3,7 +3,8 @@ import { randomUUID } from 'node:crypto';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { db } from './db';
 
-export const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
+// Vercel rejects request bodies over 4.5 MB; the browser shrinks photos before upload.
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'];
 
 /** Neon Object Storage bucket declared in neon.ts. */
@@ -18,7 +19,7 @@ const objectKey = (id: string) => `images/${id}`;
 /** Stores an uploaded image and returns its id (serve with fileUrl(id)). */
 export async function saveImage(file: File): Promise<string> {
   if (!ALLOWED.includes(file.type)) throw new Error('Only JPG, PNG, WebP, GIF or AVIF images are allowed.');
-  if (file.size > MAX_UPLOAD_BYTES) throw new Error('Image is larger than 6 MB.');
+  if (file.size > MAX_UPLOAD_BYTES) throw new Error('Image is larger than 4 MB.');
   const body = Buffer.from(await file.arrayBuffer());
   const id = randomUUID();
   // Object first, row second: a failed upload leaves no dangling row.

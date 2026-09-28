@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { useActionState, useRef, useState } from 'react';
+import { shrinkImage } from '@/lib/upload-client';
 import { acceptInvitation, type AcceptState } from '@/app/(auth)/actions';
 import { Button, Input, Textarea } from '@/components/ui';
 import { initials } from '@/lib/format';
@@ -52,9 +53,18 @@ export function AcceptForm({ token, email, name: initialName, intro, groups }: {
           name="photo"
           accept="image/jpeg,image/png,image/webp"
           hidden
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            setPhoto(f ? { url: URL.createObjectURL(f), label: `${f.name} · ${(f.size / 1024 / 1024).toFixed(1)} MB` } : null);
+          onChange={async (e) => {
+            const input = e.currentTarget;
+            const picked = input.files?.[0];
+            if (!picked) return setPhoto(null);
+            // Send a downscaled copy so large camera photos stay under the upload limit.
+            const f = await shrinkImage(picked).catch(() => picked);
+            if (f !== picked) {
+              const dt = new DataTransfer();
+              dt.items.add(f);
+              input.files = dt.files;
+            }
+            setPhoto({ url: URL.createObjectURL(f), label: `${picked.name} · ${(f.size / 1024 / 1024).toFixed(1)} MB` });
           }}
         />
       </div>
