@@ -27,11 +27,16 @@ Three surfaces:
 
 ## Getting started
 
-Requirements: Node 20+ and PostgreSQL 14+.
+Requirements: Node 20+ and a Postgres 14+ database. The hosted database is
+[Neon](https://neon.com) Lakebase Postgres (project `frosty-truth-53016110`, `aws-us-east-2`);
+`neon.ts` declares the branch's services (Postgres plus a private `uploads` bucket).
 
 ```bash
 npm install
-cp .env.example .env          # set DATABASE_URL (and optionally RESEND_API_KEY)
+npm i -g neon                 # Neon CLI; sign in with `neon login` (or set NEON_API_KEY)
+neon link --project-id frosty-truth-53016110 --no-env-pull
+cp .env.example .env
+neon env pull --file .env     # DATABASE_URL, DATABASE_URL_UNPOOLED, bucket credentials
 npx prisma migrate deploy     # create the schema
 npm run db:seed               # load the prototype content (wipes existing data)
 npm run dev                   # http://localhost:3000
@@ -60,8 +65,16 @@ Administrators land on `/admin`; everyone else on the dashboard.
 
 ### Environment
 
-See [`.env.example`](.env.example): `DATABASE_URL`, `APP_URL` (used in email links),
-`RESEND_API_KEY` + `EMAIL_FROM`, and `CRON_SECRET`.
+See [`.env.example`](.env.example): `DATABASE_URL` (pooled) + `DATABASE_URL_UNPOOLED`
+(direct, for migrations), the Neon Object Storage `AWS_*` variables, `APP_URL` (used in
+email links), `RESEND_API_KEY` + `EMAIL_FROM`, and `CRON_SECRET`.
+
+### Neon branches
+
+The `production` branch holds live data. For feature work, create a Neon branch alongside
+the git branch and point `.env` at it: `neon checkout dev-<feature> --create --no-env-pull`,
+then `neon env pull --file .env`. `neon diff` shows schema changes against the parent, and
+`neon config plan` / `neon deploy` reconcile the services declared in `neon.ts`.
 
 ### Scheduled job
 
