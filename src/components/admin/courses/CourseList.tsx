@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import type { Country, CourseStatus } from '@prisma/client';
 import { Badge, Button, Input, Select } from '@/components/ui';
+import { Photo } from '@/components/ui/Photo';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { COUNTRY_SHORT, COURSE_STATUS_LABEL, COURSE_STATUS_TONE } from '@/lib/labels';
 import { NewCourseDialog } from './NewCourseDialog';
@@ -16,6 +17,8 @@ export type CourseRow = {
   categories: string[];
   country: Country;
   modules: number;
+  /** Course thumbnail with its crop, or null when none is uploaded yet. */
+  thumb: { src: string; x: number; y: number; scale: number } | null;
   groups: number;
   users: number;
   status: CourseStatus;
@@ -28,7 +31,7 @@ const STATUS_FILTERS: { label: string; value: CourseStatus | 'ALL' }[] = [
   { label: 'Draft', value: 'DRAFT' },
 ];
 
-const COLS = { gridTemplateColumns: 'minmax(260px,2.4fr) minmax(120px,1fr) 100px 130px 120px 120px 44px' };
+const COLS = { gridTemplateColumns: 'minmax(230px,2.4fr) minmax(120px,1fr) 80px 104px 130px 120px 100px 32px' };
 
 function assignedLine(r: CourseRow) {
   const parts = [];
@@ -51,6 +54,8 @@ export function CourseList({
   const [search, setSearch] = useState('');
   const [cat, setCat] = useState('All categories');
   const [status, setStatus] = useState<CourseStatus | 'ALL'>('ALL');
+  const [noThumb, setNoThumb] = useState(false);
+  const missing = rows.filter((r) => !r.thumb).length;
   const [creating, setCreating] = useState(false);
   const filters = rows.some((r) => r.status === 'ARCHIVED') ? [...STATUS_FILTERS, { label: 'Archived', value: 'ARCHIVED' as const }] : STATUS_FILTERS;
 
@@ -60,9 +65,10 @@ export function CourseList({
       (c) =>
         (!q || c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q)) &&
         (cat === 'All categories' || c.categories.includes(cat)) &&
-        (status === 'ALL' || c.status === status),
+        (status === 'ALL' || c.status === status) &&
+        (!noThumb || !c.thumb),
     );
-  }, [rows, search, cat, status]);
+  }, [rows, search, cat, status, noThumb]);
 
   return (
     <div className="efkt-page" style={{ paddingBottom: 64 }}>
@@ -82,7 +88,13 @@ export function CourseList({
           style={{ width: 220 }}
           aria-label="Category"
         />
-        <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+        <div style={{ display: 'flex', gap: 8, marginLeft: 'auto', flexWrap: 'wrap' }}>
+          {missing ? (
+            <button type="button" className="ac-filter" aria-pressed={noThumb} onClick={() => setNoThumb((v) => !v)} title="Show only courses without a thumbnail">
+              <i className="ph ph-image-broken" style={{ fontSize: 16, marginRight: 6, verticalAlign: '-2px' }} aria-hidden />
+              No thumbnail ({missing})
+            </button>
+          ) : null}
           {filters.map((f) => (
             <button key={f.value} type="button" className="ac-filter" aria-pressed={status === f.value} onClick={() => setStatus(f.value)}>
               {f.label}
@@ -97,6 +109,7 @@ export function CourseList({
             <div>Course</div>
             <div>Categories / country</div>
             <div>Modules</div>
+            <div>Thumbnail</div>
             <div>Assigned to</div>
             <div>Status</div>
             <div>Updated</div>
@@ -113,6 +126,13 @@ export function CourseList({
                 <div style={{ fontSize: 14, fontWeight: 500, marginTop: 4 }}>{COUNTRY_SHORT[r.country]}</div>
               </div>
               <div style={{ fontSize: 16, fontWeight: 500 }}>{r.modules}</div>
+              <div>
+                {r.thumb ? (
+                  <Photo src={r.thumb.src} x={r.thumb.x} y={r.thumb.y} scale={r.thumb.scale} style={{ width: 72, height: 48, borderRadius: 10, overflow: 'hidden' }} alt="" />
+                ) : (
+                  <Badge tone="gold" icon="warning">Missing</Badge>
+                )}
+              </div>
               <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{assignedLine(r)}</div>
               <div>
                 <Badge tone={COURSE_STATUS_TONE[r.status]}>{COURSE_STATUS_LABEL[r.status]}</Badge>

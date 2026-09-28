@@ -65,7 +65,7 @@
 .ac-pick:disabled { background: var(--efkt-gray-100); cursor: default; }
 
 /* Table row link (course list) */
-.ac-trow { display: grid; grid-template-columns: minmax(260px,2.4fr) minmax(120px,1fr) 100px 130px 120px 120px 44px; gap: 16px; padding: 24px; min-width: 1000px; border-bottom: 1px solid var(--border-default); align-items: center; background: var(--efkt-white); color: var(--text-body); text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-trow { display: grid; grid-template-columns: minmax(230px,2.4fr) minmax(120px,1fr) 80px 104px 130px 120px 100px 32px; gap: 16px; padding: 24px; min-width: 1000px; border-bottom: 1px solid var(--border-default); align-items: center; background: var(--efkt-white); color: var(--text-body); text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
 .ac-trow:hover { background: var(--efkt-offwhite); color: var(--text-body); }
 .ac-trow:last-child { border-bottom: none; }
 /* Module card action row, indented to line up with the module title. */
