@@ -11,3 +11,9 @@
 .pp-pick:hover { filter: brightness(0.98); }
 .pp-bulk { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; align-items: start; }
 @media (max-width: 1100px) { .pp-bulk { grid-template-columns: 1fr; } }
+/* Buttons on the dark bulk-action bar. */
+.efkt-btn.pp-barbtn { background: rgba(255,255,255,.12); color: var(--efkt-white); border: none; }
+.efkt-btn.pp-barbtn:hover:not(:disabled) { background: rgba(255,255,255,.24); color: var(--efkt-white); }
+/* Floating bulk-action bar, centred over the content area (right of the 260px sidebar). */
+.pp-bulkbar { position: fixed; bottom: 24px; left: calc(50% + 130px); transform: translateX(-50%); z-index: 60; max-width: calc(100vw - 292px); }
+@media (max-width: 900px) { .pp-bulkbar { left: 50%; max-width: calc(100vw - 32px); } }

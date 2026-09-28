@@ -6,6 +6,7 @@ import { ago, daysUntil, initials } from '@/lib/format';
 import { INVITE_STATUS_LABEL, INVITE_STATUS_TONE, ROLE_LABEL } from '@/lib/labels';
 import { getInviteSettings, nextReminderAt } from '@/lib/invitations';
 import { InvitationsView, type InviteRow } from './InvitationsView';
+import '@/components/admin/people/people.css';
 
 export const metadata: Metadata = { title: 'Invitations' };
 

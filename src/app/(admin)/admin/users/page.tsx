@@ -46,12 +46,15 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
     };
   });
 
+  // Tiles count active users only, like the list's default view.
   const now = Date.now();
+  const live = users.filter((u) => u.status === 'ACTIVE');
+  const off = users.length - live.length;
   const stats = [
-    { label: 'Users', value: users.length, sub: scopeLine(scope) },
-    { label: 'Never signed in', value: users.filter((u) => !u.lastSeenAt).length, sub: 'invitation not accepted' },
-    { label: 'Active this week', value: users.filter((u) => u.lastSeenAt && now - u.lastSeenAt.getTime() < WEEK).length, sub: 'opened a course' },
-    { label: 'Fully up to date', value: rows.filter((r) => r.assigned > 0 && r.pct === 100).length, sub: 'all assigned courses passed' },
+    { label: 'Users', value: live.length, sub: off ? `${off} deactivated` : scopeLine(scope) },
+    { label: 'Never signed in', value: live.filter((u) => !u.lastSeenAt).length, sub: 'invitation not accepted' },
+    { label: 'Active this week', value: live.filter((u) => u.lastSeenAt && now - u.lastSeenAt.getTime() < WEEK).length, sub: 'opened a course' },
+    { label: 'Fully up to date', value: rows.filter((r) => !r.off && r.assigned > 0 && r.pct === 100).length, sub: 'all assigned courses passed' },
   ];
 
   const detail = openId ? await loadDetail(openId, admin.id, courses) : null;

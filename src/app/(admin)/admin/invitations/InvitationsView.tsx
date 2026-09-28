@@ -7,7 +7,8 @@ import { PageHeader } from '@/components/admin/PageHeader';
 import { Badge, Button, Input, Select, Switch, useToast, type BadgeTone } from '@/components/ui';
 import { EMPTY_STYLE, Initials, PlateButton, StatTile } from '@/components/admin/tracking/ui';
 import type { InviteSettings } from '@/lib/invitations';
-import { copyInviteLink, resendInvite, revokeInvite, updateInviteSettings } from './actions';
+import { SelectBox } from '@/components/admin/people/BulkBar';
+import { bulkResendInvites, bulkRevokeInvites, copyInviteLink, resendInvite, revokeInvite, updateInviteSettings } from './actions';
 import { InviteDialog, type Option } from './InviteDialog';
 
 export type InviteRow = {
@@ -40,7 +41,7 @@ const REMIND_AFTER = [
   { value: '14', label: 'After 2 weeks' },
 ];
 const REMIND_MAX = [1, 2, 3].map((n) => ({ value: String(n), label: `${n} ${n === 1 ? 'reminder' : 'reminders'}` }));
-const GRID = 'minmax(260px,2fr) minmax(180px,1.2fr) minmax(150px,1fr) minmax(190px,1.2fr) 140px';
+const GRID = '24px minmax(210px,2fr) minmax(180px,1.2fr) minmax(150px,1fr) minmax(190px,1.2fr) 140px';
 
 export function InvitationsView({
   scopeLine,
@@ -61,12 +62,33 @@ export function InvitationsView({
   const [q, setQ] = useState('');
   const [status, setStatus] = useState<'All' | InviteStatus>('All');
   const [dialog, setDialog] = useState(false);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
 
   const count = (s: InviteStatus) => rows.filter((r) => r.status === s).length;
   const shown = useMemo(() => {
     const t = q.trim().toLowerCase();
     return rows.filter((r) => (!t || r.email.toLowerCase().includes(t) || r.name.toLowerCase().includes(t)) && (status === 'All' || r.status === status));
   }, [rows, q, status]);
+
+  // Only pending or expired invitations can be resent or revoked, so only those are selectable.
+  const selectable = shown.filter((r) => r.open);
+  const selected = selectable.filter((r) => picked.has(r.id));
+  const allOn = selectable.length > 0 && selectable.every((r) => picked.has(r.id));
+  const flip = (id: string) => setPicked((cur) => { const n = new Set(cur); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const flipAll = () => setPicked((cur) => { const n = new Set(cur); for (const r of selectable) (allOn ? n.delete(r.id) : n.add(r.id)); return n; });
+
+  function batch(kind: 'resend' | 'revoke') {
+    const n = selected.length;
+    const label = `${n} ${n === 1 ? 'invitation' : 'invitations'}`;
+    if (kind === 'revoke' && !window.confirm(`Revoke ${label}? Their links stop working.`)) return;
+    const ids = selected.map((r) => r.id);
+    start(async () => {
+      const r = await (kind === 'resend' ? bulkResendInvites(ids) : bulkRevokeInvites(ids)).catch(() => ({ ok: false as const, error: 'Something went wrong' }));
+      if (!r.ok) return toast(r.error, 'error');
+      setPicked(new Set());
+      toast(`${r.done} ${kind === 'resend' ? 'sent again' : 'revoked'}${r.skipped ? ` · ${r.skipped} skipped` : ''}`);
+    });
+  }
 
   function run<T extends { ok: boolean }>(fn: () => Promise<T>, done: (r: T) => string) {
     start(async () => {
@@ -159,10 +181,12 @@ export function InvitationsView({
 
       <div style={{ marginTop: -8, border: '1px solid var(--border-default)', borderRadius: 20, background: 'var(--surface-card)', overflowX: 'auto' }}>
         <div style={{ display: 'grid', gridTemplateColumns: GRID, gap: 24, padding: '20px 32px', borderBottom: '1px solid var(--border-default)', fontSize: 14, fontWeight: 600, color: 'var(--text-muted)', minWidth: 1060 }}>
+          <div style={{ display: 'flex' }}><SelectBox checked={allOn} mixed={!allOn && selectable.some((r) => picked.has(r.id))} disabled={!selectable.length} label={allOn ? 'Clear selection' : 'Select all open invitations shown'} onClick={flipAll} /></div>
           <div>Person</div><div>Role and groups</div><div>Status</div><div>Sent and reminders</div><div style={{ textAlign: 'right' }}>Actions</div>
         </div>
         {shown.map((i) => (
-          <div key={i.id} className="trk-row" style={{ display: 'grid', gridTemplateColumns: GRID, gap: 24, alignItems: 'center', padding: '24px 32px', borderBottom: '1px solid var(--border-default)', minWidth: 1060 }}>
+          <div key={i.id} className="trk-row" style={{ display: 'grid', gridTemplateColumns: GRID, gap: 24, alignItems: 'center', padding: '24px 32px', borderBottom: '1px solid var(--border-default)', minWidth: 1060, background: picked.has(i.id) && i.open ? 'var(--efkt-offwhite)' : undefined }}>
+            <div style={{ display: 'flex' }}>{i.open ? <SelectBox checked={picked.has(i.id)} label={`Select ${i.email}`} onClick={() => flip(i.id)} /> : null}</div>
             <div style={{ minWidth: 0, display: 'flex', alignItems: 'center', gap: 16 }}>
               <Initials text={i.initials} />
               <div style={{ minWidth: 0 }}>
@@ -201,6 +225,20 @@ export function InvitationsView({
         ))}
         {shown.length === 0 ? <div style={EMPTY_STYLE}>No invitations match that filter.</div> : null}
       </div>
+
+      {selected.length ? (
+        <>
+          <div style={{ height: 88 }} aria-hidden />
+          <div role="toolbar" className="pp-bulkbar" aria-label="Actions for selected invitations" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '12px 12px 12px 24px', borderRadius: 40, background: 'var(--efkt-deep-navy)', color: 'var(--efkt-white)', boxShadow: '0 16px 48px rgba(12,14,57,0.28)' }}>
+            <span style={{ fontSize: 16, fontWeight: 600, marginRight: 8 }}>{selected.length} selected</span>
+            <Button size="sm" variant="ghost" className="pp-barbtn" iconLeft="paper-plane-tilt" disabled={pending} onClick={() => batch('resend')}>Resend</Button>
+            <Button size="sm" variant="ghost" className="pp-barbtn" iconLeft="trash" disabled={pending} onClick={() => batch('revoke')}>Revoke</Button>
+            <button type="button" onClick={() => setPicked(new Set())} aria-label="Clear selection" title="Clear selection" style={{ width: 40, height: 40, minWidth: 40, borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.12)', color: 'var(--efkt-white)', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <i className="ph ph-x" style={{ fontSize: 16 }} aria-hidden />
+            </button>
+          </div>
+        </>
+      ) : null}
 
       <InviteDialog
         open={dialog}

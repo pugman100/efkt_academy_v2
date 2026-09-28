@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Field';
@@ -9,10 +9,16 @@ import { COUNTRY_SHORT, ROLE_LABEL, ROLES } from '@/lib/labels';
 import { Initials, MUTED, ProgressLine, RoleBadge, roleAvatarBg, SEARCH_STYLE, SELECT_STYLE, StatTile } from './bits';
 import { UserDrawer } from './UserDrawer';
 import { CreateUserDialog } from './CreateUserDialog';
+import { BulkBar, SelectBox } from './BulkBar';
 import type { GroupOption, RegionOption, UserDetail, UserRow } from './types';
 
-const COLS = { name: 280, group: 170, role: 140, courses: 220, last: 130, go: 44 };
-const GRID_MIN = Object.values(COLS).reduce((a, b) => a + b, 0) + 16 * 5;
+const COLS = { pick: 24, name: 280, group: 170, role: 140, courses: 220, last: 130, go: 44 };
+const GRID_MIN = Object.values(COLS).reduce((a, b) => a + b, 0) + 16 * 6;
+const STATUSES = [
+  { value: 'active', label: 'Active users' },
+  { value: 'off', label: 'Deactivated users' },
+  { value: 'all', label: 'All users' },
+];
 const col = (w: number) => ({ width: w, minWidth: w });
 
 export function UsersView({
@@ -34,6 +40,10 @@ export function UsersView({
   const [q, setQ] = useState('');
   const [group, setGroup] = useState('all');
   const [role, setRole] = useState('all');
+  // Deactivated people are hidden unless asked for.
+  const [status, setStatus] = useState('active');
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const anchor = useRef<string | null>(null);
   const [creating, setCreating] = useState(false);
 
   const shown = useMemo(() => {
@@ -42,9 +52,34 @@ export function UsersView({
       (u) =>
         (!s || u.name.toLowerCase().includes(s) || u.email.toLowerCase().includes(s)) &&
         (group === 'all' || u.groupIds.includes(group)) &&
-        (role === 'all' || u.role === role),
+        (role === 'all' || u.role === role) &&
+        (status === 'all' || (status === 'off') === u.off),
     );
-  }, [rows, q, group, role]);
+  }, [rows, q, group, role, status]);
+
+  // Actions only ever apply to selected rows that are visible under the current filters.
+  const selected = shown.filter((u) => picked.has(u.id));
+  const shownPicked = selected.length;
+  const allOn = shown.length > 0 && shownPicked === shown.length;
+
+  function pick(id: string, e: MouseEvent) {
+    e.stopPropagation();
+    const next = new Set(picked);
+    const on = !next.has(id);
+    // Shift-click selects (or clears) every visible row between the last click and this one.
+    const from = anchor.current ? shown.findIndex((u) => u.id === anchor.current) : -1;
+    const to = shown.findIndex((u) => u.id === id);
+    const range = e.shiftKey && from >= 0 && to >= 0 ? shown.slice(Math.min(from, to), Math.max(from, to) + 1) : [shown[to]];
+    for (const u of range) if (u) (on ? next.add(u.id) : next.delete(u.id));
+    anchor.current = id;
+    setPicked(next);
+  }
+
+  function pickAll() {
+    const next = new Set(picked);
+    for (const u of shown) (allOn ? next.delete(u.id) : next.add(u.id));
+    setPicked(next);
+  }
 
   const open = (id: string) => router.push(`/admin/users?u=${encodeURIComponent(id)}`, { scroll: false });
   const close = () => router.push('/admin/users', { scroll: false });
@@ -83,10 +118,14 @@ export function UsersView({
           onChange={(e) => setRole(e.target.value)}
           style={SELECT_STYLE}
         />
+        <Select aria-label="Filter by status" options={STATUSES} value={status} onChange={(e) => setStatus(e.target.value)} style={SELECT_STYLE} />
       </div>
 
       <div style={{ border: '1px solid var(--border-default)', borderRadius: 20, background: 'var(--surface-card)', overflowX: 'auto', marginTop: -8 }}>
         <div style={{ display: 'flex', gap: 16, padding: '20px 24px', borderBottom: '1px solid var(--border-default)', fontSize: 14, fontWeight: 600, color: 'var(--text-muted)', minWidth: GRID_MIN }}>
+          <div style={{ ...col(COLS.pick), display: 'flex' }}>
+            <SelectBox checked={allOn} mixed={!allOn && shownPicked > 0} disabled={!shown.length} label={allOn ? 'Clear selection' : `Select all ${shown.length} shown`} onClick={(e) => (e.stopPropagation(), pickAll())} />
+          </div>
           <div style={col(COLS.name)}>Name</div>
           <div style={col(COLS.group)}>Group</div>
           <div style={col(COLS.role)}>Role</div>
@@ -102,8 +141,11 @@ export function UsersView({
             onClick={() => open(u.id)}
             onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), open(u.id))}
             className="efkt-row"
-            style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '20px 24px', borderBottom: '1px solid var(--border-default)', minWidth: GRID_MIN, cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '20px 24px', borderBottom: '1px solid var(--border-default)', minWidth: GRID_MIN, cursor: 'pointer', background: picked.has(u.id) ? 'var(--efkt-offwhite)' : undefined }}
           >
+            <div style={{ ...col(COLS.pick), display: 'flex' }}>
+              <SelectBox checked={picked.has(u.id)} label={`Select ${u.name}`} onClick={(e) => pick(u.id, e)} />
+            </div>
             <div style={{ ...col(COLS.name), display: 'flex', alignItems: 'center', gap: 12 }}>
               <Initials name={u.name} bg={roleAvatarBg(u.role)} />
               <div style={{ minWidth: 0 }}>
@@ -139,6 +181,10 @@ export function UsersView({
           <div style={{ padding: '64px 24px', textAlign: 'center', fontSize: 16, fontWeight: 300, color: 'var(--text-muted)' }}>No users match that filter.</div>
         ) : null}
       </div>
+
+      {selected.length ? (
+        <BulkBar users={selected} groups={groups} regions={regions} onClear={() => setPicked(new Set())} />
+      ) : null}
 
       {detail ? <UserDrawer key={detail.id} user={detail} groups={groups} regions={regions} onClose={close} /> : null}
       {creating ? (
