@@ -47,32 +47,37 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 32, alignItems: 'start' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, minWidth: 0, opacity: pending ? 0.8 : 1 }}>
         {modules.map((m, i) => (
-          <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap', padding: '20px 24px', background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 20, boxShadow: '0 4px 24px rgba(12,14,57,0.06)' }}>
-            <div style={{ width: 32, height: 32, minWidth: 32, borderRadius: '50%', background: 'var(--efkt-offwhite)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600 }}>{i + 1}</div>
-            <i className={`ph ph-${m.source === 'BUILT' ? 'article' : 'presentation-chart'}`} style={{ fontSize: 24, color: 'var(--efkt-coral)' }} aria-hidden />
-            <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{m.title}</div>
-              <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={m.url || undefined}>{subLine(m)}</div>
+          <div key={m.id} style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: '20px 24px', background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 20, boxShadow: '0 4px 24px rgba(12,14,57,0.06)' }}>
+            {/* Title row: the title gets the full card width; actions sit on their own row below. */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+              <div style={{ width: 32, height: 32, minWidth: 32, borderRadius: '50%', background: 'var(--efkt-offwhite)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600 }}>{i + 1}</div>
+              <i className={`ph ph-${m.source === 'BUILT' ? 'article' : 'presentation-chart'}`} style={{ fontSize: 24, color: 'var(--efkt-coral)' }} aria-hidden />
+              <div style={{ minWidth: 0, flex: 1 }}>
+                <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4, textWrap: 'pretty' }}>{m.title}</div>
+                <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={m.url || undefined}>{subLine(m)}</div>
+              </div>
+              <Badge tone={m.source === 'BUILT' ? 'sand' : 'mint'} style={{ flexShrink: 0 }}>{sourceLabel(m)}</Badge>
             </div>
-            <Badge tone={m.source === 'BUILT' ? 'sand' : 'mint'}>{sourceLabel(m)}</Badge>
-            {m.source === 'BUILT' ? (
-              <Link href={`/admin/courses/${courseId}/modules/${m.id}/content`} className="ac-pill">
-                <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> Rediger innhold
+            <div className="ac-modactions">
+              {m.source === 'BUILT' ? (
+                <Link href={`/admin/courses/${courseId}/modules/${m.id}/content`} className="ac-pill">
+                  <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> Rediger innhold
+                </Link>
+              ) : (
+                <button type="button" className="ac-pill" onClick={() => edit(m)}>
+                  <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> Bytt lenke
+                </button>
+              )}
+              {m.quiz && m.minSeconds > 0 ? <GateInput key={m.minSeconds} value={m.minSeconds} onCommit={(n) => run(() => setModuleSeconds(m.id, n))} /> : null}
+              <Link href={`/admin/courses/${courseId}/modules/${m.id}/quiz`} className="ac-pill ac-pill--coral">
+                <i className="ph ph-list-checks" style={{ fontSize: 16 }} aria-hidden /> {m.quiz ? 'Edit quiz' : 'Add quiz'}
               </Link>
-            ) : (
-              <button type="button" className="ac-pill" onClick={() => edit(m)}>
-                <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> Bytt lenke
-              </button>
-            )}
-            {m.quiz && m.minSeconds > 0 ? <GateInput key={m.minSeconds} value={m.minSeconds} onCommit={(n) => run(() => setModuleSeconds(m.id, n))} /> : null}
-            <Link href={`/admin/courses/${courseId}/modules/${m.id}/quiz`} className="ac-pill ac-pill--coral">
-              <i className="ph ph-list-checks" style={{ fontSize: 16 }} aria-hidden /> {m.quiz ? 'Edit quiz' : 'Add quiz'}
-            </Link>
-            <div style={{ display: 'flex', gap: 4 }}>
-              <button type="button" className="ac-sq" title="Move up" aria-label="Move up" disabled={i === 0 || pending} onClick={() => run(() => moveModule(m.id, -1))}><i className="ph ph-arrow-up" aria-hidden /></button>
-              <button type="button" className="ac-sq" title="Move down" aria-label="Move down" disabled={i === modules.length - 1 || pending} onClick={() => run(() => moveModule(m.id, 1))}><i className="ph ph-arrow-down" aria-hidden /></button>
-              <button type="button" className="ac-sq" title="Edit" aria-label="Edit module" onClick={() => edit(m)}><i className="ph ph-pencil-simple" aria-hidden /></button>
-              <button type="button" className="ac-sq ac-sq--danger" title="Remove" aria-label="Remove module" onClick={() => setRemoving(m)}><i className="ph ph-trash" aria-hidden /></button>
+              <div style={{ display: 'flex', gap: 4, marginLeft: 'auto' }}>
+                <button type="button" className="ac-sq" title="Move up" aria-label="Move up" disabled={i === 0 || pending} onClick={() => run(() => moveModule(m.id, -1))}><i className="ph ph-arrow-up" aria-hidden /></button>
+                <button type="button" className="ac-sq" title="Move down" aria-label="Move down" disabled={i === modules.length - 1 || pending} onClick={() => run(() => moveModule(m.id, 1))}><i className="ph ph-arrow-down" aria-hidden /></button>
+                <button type="button" className="ac-sq" title="Edit" aria-label="Edit module" onClick={() => edit(m)}><i className="ph ph-pencil-simple" aria-hidden /></button>
+                <button type="button" className="ac-sq ac-sq--danger" title="Remove" aria-label="Remove module" onClick={() => setRemoving(m)}><i className="ph ph-trash" aria-hidden /></button>
+              </div>
             </div>
           </div>
         ))}

@@ -41,7 +41,9 @@ export function CourseHeader({
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             {categories.map((k) => <Tag key={k}>{k}</Tag>)}
             <Badge tone={COURSE_STATUS_TONE[course.status]}>{COURSE_STATUS_LABEL[course.status]}</Badge>
-            <Tag>{course.country}</Tag>
+            <span title={`Visible to learners in ${course.country === 'Both' ? 'Denmark and Norway' : course.country}. Change it under Settings.`}>
+              <Tag icon={course.country === 'Both' ? 'globe-hemisphere-west' : 'map-pin'}>{course.country === 'Both' ? 'Denmark + Norway' : course.country}</Tag>
+            </span>
             <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{metaLine}</span>
           </div>
         </div>
