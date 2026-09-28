@@ -58,6 +58,8 @@
   .lr-page-title { font-size: 36px !important; }
   .lr-pad-hero { padding: 32px 16px !important; }
   .lr-plabel { display: none; }
+  .lr-ptop { flex-wrap: wrap; padding: 12px 16px !important; }
+  .lr-ptitle { order: 5; flex-basis: 100% !important; margin-left: 0 !important; }
   .lr-pbody { padding: 24px 16px; }
   .lr-newsthumb { width: 110px !important; min-width: 110px !important; }
 }

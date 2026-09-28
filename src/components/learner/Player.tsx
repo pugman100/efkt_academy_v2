@@ -181,11 +181,11 @@ export function Player(props: PlayerProps) {
         </div>
       ) : null}
 
-      <div style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+      <div className="lr-ptop" style={{ padding: '14px 24px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <Link href={`/courses/${courseId}`} className="lr-pbtn" onClick={() => document.fullscreenElement && document.exitFullscreen().catch(() => {})}>
           <i className="ph ph-arrow-left" style={{ fontSize: 14 }} aria-hidden /> Lukk
         </Link>
-        <div style={{ minWidth: 0, flex: 1, marginLeft: 8 }}>
+        <div className="lr-ptitle" style={{ minWidth: 0, flex: 1, marginLeft: 8 }}>
           <div style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.65)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {props.courseTitle} · Modul {index + 1} av {steps.length}
           </div>
