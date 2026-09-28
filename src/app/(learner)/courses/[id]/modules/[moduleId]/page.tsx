@@ -16,8 +16,8 @@ export default async function ModulePlayer({ params }: { params: Promise<{ id: s
   // Locked modules are rejected server-side, not just hidden.
   if (item.state === 'locked') redirect(`/courses/${id}`);
 
-  await recordOpen(user.id, item.module);
-  const { course, progress, row } = await loadCourse(user, id);
+  if (!before.preview) await recordOpen(user.id, item.module);
+  const { course, progress, row, preview } = await loadCourse(user, id);
   const it = progress.items[item.index];
   const m = it.module;
   const next = progress.items[it.index + 1];
@@ -50,6 +50,7 @@ export default async function ModulePlayer({ params }: { params: Promise<{ id: s
       confirmed={row.get(m.id)?.confirmedAllSlides ?? false}
       courses={await linkedCourses(user, blocks)}
       impersonating={session?.impersonatorId ? user.name : null}
+      preview={preview}
     />
   );
 }

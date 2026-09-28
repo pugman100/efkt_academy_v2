@@ -5,7 +5,7 @@ import { db } from '@/lib/db';
 import { canAccessCourse, coursesForUser } from '@/lib/access';
 import { courseProgress } from '@/lib/progress';
 import { fileUrl } from '@/lib/blocks';
-import type { CurrentUser } from '@/lib/auth';
+import { getSession, type CurrentUser } from '@/lib/auth';
 
 /** Modules in order, with the quiz facts the learner UI needs (never the answers). */
 export const LEARNER_MODULES = {
@@ -62,21 +62,35 @@ export async function myCourses(user: CurrentUser) {
 }
 
 /**
- * One course for the learner, 404 unless they may open it. Reference courses never lock.
+ * Admin preview: an administrator (not impersonating) may open any course — drafts and
+ * other countries included — with every module unlocked. Preview is read-only: nothing
+ * is recorded as progress.
+ */
+export async function isPreview(user: CurrentUser): Promise<boolean> {
+  if (user.role !== 'ADMIN') return false;
+  const s = await getSession();
+  return !!s && !s.impersonatorId;
+}
+
+/**
+ * One course for the learner, 404 unless they may open it. Reference courses never lock;
+ * in admin preview nothing locks and no progress is shown.
  */
 export async function loadCourse(user: CurrentUser, courseId: string) {
-  if (!(await canAccessCourse(user, courseId))) notFound();
+  const preview = await isPreview(user);
+  if (!preview && !(await canAccessCourse(user, courseId))) notFound();
   const course = await db.course.findUnique({
     where: { id: courseId },
     include: { ...LEARNER_MODULES, categories: true },
   });
   if (!course) notFound();
-  const rows = await progressRows(user.id, course.modules.map((m) => m.id));
+  const rows = preview ? [] : await progressRows(user.id, course.modules.map((m) => m.id));
   const progress = courseProgress(course.modules, rows);
-  if (course.reference) for (const it of progress.items) if (it.state === 'locked') it.state = it.progress?.seenAt ? 'started' : 'available';
+  if (course.reference || preview)
+    for (const it of progress.items) if (it.state === 'locked') it.state = it.progress?.seenAt ? 'started' : 'available';
   // courseProgress keeps only the fields it needs; the full rows carry dwell/confirmation.
   const row = new Map(rows.map((r) => [r.moduleId, r]));
-  return { course, progress, row, category: primaryCategory(course.categories) };
+  return { course, progress, row, preview, category: primaryCategory(course.categories) };
 }
 
 /** News the learner may read: live, their country (or both), and their groups when targeted. */

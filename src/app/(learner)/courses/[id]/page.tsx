@@ -4,6 +4,7 @@ import { requireUser } from '@/lib/auth';
 import { Badge, type BadgeTone } from '@/components/ui/Badge';
 import { ButtonLink } from '@/components/ui/Button';
 import { Photo } from '@/components/ui/Photo';
+import { PreviewNotice } from '@/components/learner/PreviewNotice';
 import { ResetCourse, ResetModuleButton } from '@/components/learner/ResetControls';
 import { attemptsLeft, courseThumb, loadCourse, splitLast } from '@/components/learner/server';
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = { title: 'Kurs' };
 export default async function CourseOverview({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const user = await requireUser();
-  const { course: c, progress, row, category } = await loadCourse(user, id);
+  const { course: c, progress, row, preview, category } = await loadCourse(user, id);
   const t = splitLast(c.title);
   const passPercents = c.modules.flatMap((m) => (m.quiz ? [m.quiz.passPercent] : []));
   const pass = passPercents.length ? Math.max(...passPercents) : null;
@@ -43,9 +44,12 @@ export default async function CourseOverview({ params }: { params: Promise<{ id:
             boxSizing: 'border-box',
           }}
         >
-          <Link href="/" className="lr-back">
-            <i className="ph ph-arrow-left" style={{ fontSize: 14 }} aria-hidden /> Mine kurs
-          </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <Link href={preview ? `/admin/courses/${c.id}` : '/'} className="lr-back">
+              <i className="ph ph-arrow-left" style={{ fontSize: 14 }} aria-hidden /> {preview ? 'Admin' : 'Mine kurs'}
+            </Link>
+            {preview ? <PreviewNotice /> : null}
+          </div>
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
             {category ? <div style={{ fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,0.85)' }}>{category.name}</div> : null}
             <h1
@@ -208,7 +212,7 @@ export default async function CourseOverview({ params }: { params: Promise<{ id:
                     Åpne modulen og bekreft at du har vært gjennom alle slidene for å ta quizen
                   </span>
                 ) : null}
-                {p && !c.reference ? (
+                {p && !c.reference && !preview ? (
                   <ResetModuleButton courseId={c.id} moduleId={m.id} title={m.title} isLast={it.index === c.modules.length - 1} passed={passed} />
                 ) : null}
               </div>
@@ -216,7 +220,7 @@ export default async function CourseOverview({ params }: { params: Promise<{ id:
           );
         })}
 
-        {anyDone && !c.reference ? <ResetCourse courseId={c.id} title={c.title} moduleCount={c.modules.length} /> : null}
+        {anyDone && !c.reference && !preview ? <ResetCourse courseId={c.id} title={c.title} moduleCount={c.modules.length} /> : null}
       </section>
     </>
   );

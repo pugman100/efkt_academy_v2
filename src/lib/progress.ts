@@ -18,7 +18,7 @@ export type ModuleProgress<M> = {
   index: number;
   state: ModuleState;
   progress: ProgressLike | null;
-  /** Remaining quiz attempts, or null when unlimited / no quiz. */
+  /** Remaining quiz attempts (retries are extra tries after the first), or null when unlimited / no quiz. */
   attemptsLeft: number | null;
 };
 
@@ -33,7 +33,7 @@ export function courseProgress<M extends ModuleLike>(modules: M[], rows: Progres
     else if (p && m.quiz && p.attempts > 0 && p.lastScore !== null && p.lastScore < m.quiz.passPercent) state = 'failed';
     else if (p?.seenAt) state = 'started';
     else state = 'available';
-    const attemptsLeft = m.quiz && m.quiz.retries > 0 ? Math.max(0, m.quiz.retries - (p?.attempts ?? 0)) : null;
+    const attemptsLeft = m.quiz && m.quiz.retries > 0 ? Math.max(0, m.quiz.retries + 1 - (p?.attempts ?? 0)) : null;
     unlocked = state === 'passed';
     return { module: m, index, state, progress: p, attemptsLeft };
   });

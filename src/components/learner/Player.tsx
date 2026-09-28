@@ -6,6 +6,7 @@ import { BlockRenderer, type LinkedCourse } from '@/components/blocks/BlockRende
 import { useToast } from '@/components/ui/Toast';
 import type { Block } from '@/lib/blocks';
 import type { ModuleState } from '@/lib/progress';
+import { PreviewNotice } from '@/components/learner/PreviewNotice';
 import { syncModule } from '@/app/(learner)/courses/[id]/modules/[moduleId]/actions';
 
 const PING = 10;
@@ -34,6 +35,8 @@ export type PlayerProps = {
   confirmed: boolean;
   courses: Record<string, LinkedCourse>;
   impersonating: string | null;
+  /** Admin preview: no gate, nothing recorded. */
+  preview: boolean;
 };
 
 /** Opens a URL in a separate window placed to the right of the course window. */
@@ -66,11 +69,11 @@ export function Player(props: PlayerProps) {
   const pendingRef = useRef(0);
   const syncing = useRef(false);
 
-  const gated = !!m.quiz && !passed;
+  const gated = !!m.quiz && !passed && !props.preview;
   const need = m.minSeconds;
   const spent = dwell + pending;
   const timeMet = spent >= need;
-  const openable = !m.quiz || passed || (timeMet && confirmed);
+  const openable = !m.quiz || passed || props.preview || (timeMet && confirmed);
   const remain = Math.max(0, need - spent);
   const counting = gated && dwell < need;
 
@@ -191,6 +194,7 @@ export function Player(props: PlayerProps) {
           </div>
           <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--efkt-white)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.title}</div>
         </div>
+        {props.preview ? <PreviewNotice dark /> : null}
         {isEmbed ? (
           <>
             <button

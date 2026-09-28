@@ -27,15 +27,15 @@ export type QuizResult = {
 export async function submitQuiz(input: z.input<typeof Input>): Promise<{ ok: true; result: QuizResult } | { ok: false; error: string }> {
   const user = await requireUser();
   const { courseId, moduleId, answers } = Input.parse(input);
-  const { progress, row } = await loadCourse(user, courseId);
+  const { progress, row, preview } = await loadCourse(user, courseId);
   const item = progress.items.find((i) => i.module.id === moduleId);
   if (!item || !item.module.quiz) return { ok: false, error: 'Fant ikke quizen.' };
   if (item.state === 'locked') return { ok: false, error: 'Modulen er låst.' };
   const p = row.get(moduleId);
   const passedBefore = item.state === 'passed';
-  if (!passedBefore && !(p && p.dwellSeconds >= item.module.minSeconds && p.confirmedAllSlides))
+  if (!preview && !passedBefore && !(p && p.dwellSeconds >= item.module.minSeconds && p.confirmedAllSlides))
     return { ok: false, error: 'Gå gjennom modulen før du tar quizen.' };
-  if (!passedBefore && attemptsLeft(item.module.quiz, p?.attempts ?? 0) === 0)
+  if (!preview && !passedBefore && attemptsLeft(item.module.quiz, p?.attempts ?? 0) === 0)
     return { ok: false, error: 'Ingen forsøk igjen — gå gjennom modulen på nytt først.' };
 
   const quiz = await db.quiz.findUniqueOrThrow({ where: { id: item.module.quiz.id }, include: { questions: { orderBy: { order: 'asc' } } } });
@@ -54,6 +54,9 @@ export async function submitQuiz(input: z.input<typeof Input>): Promise<{ ok: tr
   const passed = score >= quiz.passPercent;
   const attempts = (p?.attempts ?? 0) + 1;
   const now = new Date();
+  const result: QuizResult = { score, right, total, passed, questions: graded, attemptsLeft: passed || preview ? null : attemptsLeft(quiz, attempts) };
+  // Admin preview grades but records nothing.
+  if (preview) return { ok: true, result };
 
   await db.$transaction([
     db.quizAttempt.create({ data: { userId: user.id, quizId: quiz.id, score, passed, answers } }),
@@ -70,8 +73,5 @@ export async function submitQuiz(input: z.input<typeof Input>): Promise<{ ok: tr
   ]);
   revalidatePath(`/courses/${courseId}`);
   revalidatePath('/');
-  return {
-    ok: true,
-    result: { score, right, total, passed, questions: graded, attemptsLeft: passed ? null : attemptsLeft(quiz, attempts) },
-  };
+  return { ok: true, result };
 }

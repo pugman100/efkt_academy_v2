@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
+import { PreviewNotice } from '@/components/learner/PreviewNotice';
 import { submitQuiz, type QuizResult } from '@/app/(learner)/courses/[id]/modules/[moduleId]/quiz/actions';
 
 type Q = { id: string; text: string; multi: boolean; options: { i: number; text: string }[] };
@@ -19,6 +20,7 @@ export type QuizProps = {
   showFeedback: boolean;
   questions: Q[];
   next: { id: string; title: string } | null;
+  preview: boolean;
 };
 
 const SECTION = { maxWidth: 820, boxSizing: 'border-box', width: '100%' } as const;
@@ -111,6 +113,7 @@ export function Quiz(props: QuizProps) {
         <Link href={courseHref} className="lr-coral" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14, fontWeight: 500, color: 'var(--efkt-coral)' }}>
           <i className="ph ph-arrow-left" style={{ fontSize: 16 }} aria-hidden /> {props.courseTitle}
         </Link>
+        {props.preview ? <div style={{ marginTop: 20 }}><PreviewNotice /></div> : null}
         <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-muted)', margin: '20px 0 12px' }}>Quiz · {props.moduleTitle}</div>
         <h1 className="lr-page-title" style={{ margin: '0 0 16px', fontSize: 40, lineHeight: 1.1, letterSpacing: '-0.065em', fontWeight: 300 }}>
           Test din <span style={{ fontWeight: 800 }}>kunnskap</span>

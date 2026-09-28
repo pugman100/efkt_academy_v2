@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: 'Quiz' };
 export default async function QuizPage({ params }: { params: Promise<{ id: string; moduleId: string }> }) {
   const { id, moduleId } = await params;
   const user = await requireUser();
-  const { course, progress, row } = await loadCourse(user, id);
+  const { course, progress, row, preview } = await loadCourse(user, id);
   const item = progress.items.find((i) => i.module.id === moduleId);
   if (!item) notFound();
   const player = `/courses/${id}/modules/${moduleId}`;
@@ -22,8 +22,8 @@ export default async function QuizPage({ params }: { params: Promise<{ id: strin
   // The gate and the retry limit are enforced here and again when grading.
   const p = row.get(moduleId);
   const passed = item.state === 'passed';
-  if (!passed && !(p && p.dwellSeconds >= item.module.minSeconds && p.confirmedAllSlides)) redirect(player);
-  if (!passed && attemptsLeft(item.module.quiz, p?.attempts ?? 0) === 0) redirect(`/courses/${id}`);
+  if (!preview && !passed && !(p && p.dwellSeconds >= item.module.minSeconds && p.confirmedAllSlides)) redirect(player);
+  if (!preview && !passed && attemptsLeft(item.module.quiz, p?.attempts ?? 0) === 0) redirect(`/courses/${id}`);
 
   const quiz = await db.quiz.findUniqueOrThrow({ where: { id: item.module.quiz.id }, include: { questions: { orderBy: { order: 'asc' } } } });
   // Stable per attempt: the seed changes only when an attempt is recorded.
@@ -52,6 +52,7 @@ export default async function QuizPage({ params }: { params: Promise<{ id: strin
       showFeedback={quiz.showFeedback}
       questions={questions}
       next={next ? { id: next.module.id, title: next.module.title } : null}
+      preview={preview}
     />
   );
 }
