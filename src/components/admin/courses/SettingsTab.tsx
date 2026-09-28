@@ -21,7 +21,11 @@ type CourseSettings = {
   status: CourseStatus;
 };
 
-const COUNTRIES = ['Denmark', 'Norway', 'Both'];
+const COUNTRIES = [
+  { value: 'Both', label: 'Denmark + Norway' },
+  { value: 'Denmark', label: 'Denmark only' },
+  { value: 'Norway', label: 'Norway only' },
+];
 
 /** Course settings. Every field saves on its own (blur for text, immediately for toggles). */
 export function SettingsTab({
@@ -138,7 +142,7 @@ export function SettingsTab({
         options={COUNTRIES}
         value={course.country}
         onChange={(e) => save({ country: e.target.value as 'Both' | 'Denmark' | 'Norway' })}
-        hint="Which team sees this course. Both means Denmark and Norway."
+        hint="Which learners can see this course."
       />
       <Input
         label="Quiz pass score"

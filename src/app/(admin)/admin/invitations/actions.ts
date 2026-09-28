@@ -121,3 +121,38 @@ export async function updateInviteSettings(patch: z.input<typeof settingsSchema>
   revalidatePath(PATH);
   return { ok: true };
 }
+
+// ---------- Batch ----------
+
+const batchIds = z.array(id).min(1).max(500);
+
+/** Resends every selected open invitation; accepted or revoked ones are skipped. */
+export async function bulkResendInvites(inviteIds: string[]): Promise<Result<{ done: number; skipped: number }>> {
+  const admin = await requireAdmin();
+  const parsed = batchIds.safeParse(inviteIds);
+  if (!parsed.success) return { ok: false, error: 'Select at least one invitation' };
+  let done = 0;
+  for (const inviteId of new Set(parsed.data)) {
+    try {
+      const { invitation, mailed } = await resendInvitation(inviteId);
+      await audit(admin.id, 'invitation.resend', { type: 'invitation', id: invitation.id }, { email: invitation.email, mailed, bulk: true });
+      done++;
+    } catch {}
+  }
+  revalidatePath(PATH);
+  return { ok: true, done, skipped: parsed.data.length - done };
+}
+
+/** Revokes every selected open invitation. */
+export async function bulkRevokeInvites(inviteIds: string[]): Promise<Result<{ done: number; skipped: number }>> {
+  const admin = await requireAdmin();
+  const parsed = batchIds.safeParse(inviteIds);
+  if (!parsed.success) return { ok: false, error: 'Select at least one invitation' };
+  const open = await db.invitation.findMany({ where: { id: { in: parsed.data }, status: { in: ['PENDING', 'EXPIRED'] } }, select: { id: true, email: true } });
+  await db.$transaction([
+    db.invitation.updateMany({ where: { id: { in: open.map((i) => i.id) } }, data: { status: 'REVOKED' } }),
+    db.auditLog.createMany({ data: open.map((i) => ({ actorId: admin.id, action: 'invitation.revoke', targetType: 'invitation', targetId: i.id, details: { email: i.email, bulk: true } })) }),
+  ]);
+  revalidatePath(PATH);
+  return { ok: true, done: open.length, skipped: parsed.data.length - open.length };
+}

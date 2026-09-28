@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useTransition, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, useTransition, type ReactNode } from 'react';
 import type { Country, CourseStatus } from '@prisma/client';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -14,6 +14,9 @@ import { Initials, MUTED } from './bits';
 type U = { id: string; name: string; country: Country; groupIds: string[]; groups: string; inScope: boolean };
 type G = { id: string; name: string; icon: string };
 type C = { id: string; title: string; status: CourseStatus; country: Country; reference: boolean; category: string };
+
+/** sessionStorage key the Users list uses to pre-select people here. */
+export const BULK_ASSIGN_HANDOFF = 'efkt-bulk-assign-users';
 
 const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
 const toggle = (set: Set<string>, id: string) => {
@@ -33,6 +36,21 @@ export function BulkAssign({ scopeLine, users, groups, courses, access }: { scop
   const [uq, setUq] = useState('');
   const [ug, setUg] = useState('all');
   const [cq, setCq] = useState('');
+
+  // "Assign courses" on the Users list hands its selection over in sessionStorage.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(BULK_ASSIGN_HANDOFF);
+      if (!raw) return;
+      sessionStorage.removeItem(BULK_ASSIGN_HANDOFF);
+      const known = new Set(users.map((u) => u.id));
+      const ids = (JSON.parse(raw) as string[]).filter((id) => known.has(id));
+      if (ids.length) {
+        setTab('people');
+        setPickedUsers(new Set(ids));
+      }
+    } catch {}
+  }, [users]);
 
   const people = users.filter((u) => u.inScope);
   const shownPeople = people.filter((u) => (!uq.trim() || u.name.toLowerCase().includes(uq.trim().toLowerCase())) && (ug === 'all' || u.groupIds.includes(ug)));

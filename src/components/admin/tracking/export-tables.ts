@@ -1,9 +1,9 @@
 import 'server-only';
 import { COUNTRY_SHORT, ROLE_LABEL, type Scope } from '@/lib/labels';
+import type { Table } from '@/lib/spreadsheet';
 import { BUCKET_NO, STATUS, summarize, trackRows, type Completion, type CourseRecord, type TrackFilters } from './completion-data';
 
-export type Cell = string | number;
-export type Table = { name: string; sheet: string; head: string[]; rows: Cell[][] };
+export type { Cell, Table } from '@/lib/spreadsheet';
 export type ExportType = 'course' | 'user' | 'all';
 
 const day = (d: Date | null) => (d ? d.toISOString().slice(0, 10) : '');
