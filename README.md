@@ -22,6 +22,9 @@ Three surfaces:
 - Images: stored in Postgres (`FileUpload`) and served from `/api/files/[id]` to signed-in users,
   with the crop (focus x/y + zoom) stored next to the reference
 - Exports: CSV and XLSX (exceljs) generated server-side
+- Uploads: images go to the private Neon Object Storage bucket `uploads` (key `images/<id>`,
+  via `@aws-sdk/client-s3`); the `FileUpload` table holds metadata, and `/api/files/<id>`
+  streams the image to signed-in users
 - Design system: EFKT tokens in `src/styles/tokens`, components in `src/components/ui`,
   Be Vietnam Pro (Google Fonts) and Phosphor icons (bundled from npm)
 

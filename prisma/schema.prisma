@@ -323,12 +323,14 @@ model NewsStory {
 
 // Uploaded images. Stored in the database so the app runs without extra infrastructure;
 // swap src/lib/storage.ts for S3 / Supabase Storage when volume grows.
+// Metadata for an uploaded image; the bytes live in the Neon "uploads" bucket at images/<id>.
 model FileUpload {
   id        String   @id @default(cuid())
   filename  String
   mimeType  String
   size      Int
-  data      Bytes
+  /// Legacy: bytes of images uploaded before the move to object storage. Null for new uploads.
+  data      Bytes?
   createdAt DateTime @default(now())
 }
 
