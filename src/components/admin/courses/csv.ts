@@ -47,12 +47,13 @@ export function parseQuestionCsv(input: string): CsvResult {
   const firstLine = src.split(/\r?\n/, 1)[0] ?? '';
   const sep = (firstLine.match(/;/g)?.length ?? 0) > (firstLine.match(/,/g)?.length ?? 0) ? ';' : ',';
   const rows = splitRows(src, sep);
-  if (rows[0] && rows[0][0]?.trim().toLowerCase() === 'category') rows.shift();
+  const hasHeader = rows[0]?.[0]?.trim().toLowerCase() === 'category';
+  if (hasHeader) rows.shift();
 
   const questions: CsvQuestion[] = [];
   const errors: string[] = [];
   rows.forEach((r, idx) => {
-    const line = idx + 1;
+    const line = idx + (hasHeader ? 2 : 1); // non-empty rows, counting the header
     const [category = '', text = '', multi = '', ...rest] = r.map((c) => c.trim());
     const options: CsvQuestion['options'] = [];
     for (let i = 0; i < rest.length; i += 2) if (rest[i]) options.push({ text: rest[i], correct: truthy(rest[i + 1] ?? '') });
