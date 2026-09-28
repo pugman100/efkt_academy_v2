@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { requireAdmin } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { fileUrl } from '@/lib/blocks';
 import { getScope, scopeLine } from '@/lib/scope';
 import { scopeWhere } from '@/lib/labels';
 import { ago } from '@/lib/format';
@@ -30,6 +31,7 @@ export default async function CoursesPage() {
     categories: c.categories.map((k) => k.name),
     country: c.country,
     modules: c._count.modules,
+    thumb: c.thumbnailId ? { src: fileUrl(c.thumbnailId)!, x: c.thumbX, y: c.thumbY, scale: c.thumbScale } : null,
     groups: c._count.groups,
     users: c._count.users,
     status: c.status,
