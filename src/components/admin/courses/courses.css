@@ -1,0 +1,70 @@
+/* Admin course authoring: hover states for the prototype's inline-styled controls. */
+
+/* 40×40 square icon button on off-white (module rows, category cards) */
+.ac-sq { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; border: none; background: var(--efkt-offwhite); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-sq:hover:not(:disabled) { background: var(--efkt-border); }
+.ac-sq:disabled { opacity: .4; cursor: not-allowed; }
+.ac-sq--danger { color: var(--efkt-coral); }
+.ac-sq--danger:hover:not(:disabled) { background: var(--efkt-blush); }
+.ac-sq > i { font-size: 18px; }
+
+/* 36×36 white mini button inside selectable list rows (blocks, questions) */
+.ac-mini { width: 36px; height: 36px; min-width: 36px; border-radius: 10px; border: none; background: var(--efkt-white); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-mini:hover:not(:disabled) { background: var(--efkt-border); }
+.ac-mini:disabled { opacity: .4; cursor: not-allowed; }
+.ac-mini--danger { color: var(--efkt-coral); }
+.ac-mini--danger:hover:not(:disabled) { background: var(--efkt-blush); }
+.ac-mini > i { font-size: 16px; }
+
+/* Pill buttons in module rows */
+.ac-pill { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 25px; border: 1px solid var(--border-default); background: var(--efkt-white); cursor: pointer; font-family: var(--efkt-font); font-size: 14px; font-weight: 500; color: var(--text-body); white-space: nowrap; text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-pill:hover { background: var(--efkt-offwhite); color: var(--text-body); }
+.ac-pill--coral { border: 1.5px solid var(--efkt-coral); color: var(--efkt-coral); }
+.ac-pill--coral:hover { background: var(--efkt-blush); color: var(--efkt-coral); }
+.ac-pill--sm { padding: 10px 20px; }
+
+/* Dashed "add" tile */
+.ac-add { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 24px; border: 1px dashed var(--border-dashed); border-radius: 20px; background: var(--efkt-offwhite); cursor: pointer; font-family: var(--efkt-font); font-size: 16px; font-weight: 500; color: var(--efkt-coral); transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-add:hover { background: var(--efkt-gray-100); }
+.ac-add--outline { border: 1.5px solid var(--efkt-coral); background: var(--efkt-white); }
+.ac-add--outline:hover { background: var(--efkt-blush); }
+
+/* Palette tile in the block editor */
+.ac-palette { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px dashed var(--border-dashed); border-radius: 12px; background: var(--efkt-offwhite); cursor: pointer; font-family: var(--efkt-font); font-size: 14px; font-weight: 500; color: var(--text-body); text-align: left; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-palette:hover { background: var(--efkt-gray-100); }
+
+/* Off-white list button (category course list, user search results) */
+.ac-listbtn { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border: none; border-radius: 12px; background: var(--efkt-offwhite); cursor: pointer; font-family: var(--efkt-font); font-size: 16px; font-weight: 300; color: var(--text-body); text-align: left; text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-listbtn:hover { background: var(--efkt-gray-100); color: var(--text-body); }
+
+/* Selectable rows (blocks, questions) */
+.ac-selrow { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid var(--border-default); border-radius: 12px; background: var(--efkt-white); cursor: pointer; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-selrow:hover { background: var(--efkt-offwhite); }
+.ac-selrow[aria-selected='true'] { background: var(--efkt-offwhite); border-color: var(--efkt-coral); }
+
+/* Course detail tabs */
+.ac-tab { border: none; background: transparent; padding: 0 0 16px; cursor: pointer; font-family: var(--efkt-font); font-size: 16px; font-weight: 300; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -1px; text-decoration: none; transition: color var(--efkt-duration) var(--efkt-ease); }
+.ac-tab:hover { color: var(--text-body); }
+.ac-tab[aria-current='page'] { font-weight: 600; color: var(--text-body); border-bottom-color: var(--efkt-coral); }
+
+/* Status filter pills in the course list */
+.ac-filter { padding: 10px 20px; border-radius: 25px; border: 1px solid var(--border-default); background: var(--efkt-white); color: var(--text-body); font-family: var(--efkt-font); font-size: 14px; font-weight: 500; cursor: pointer; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-filter:hover { background: var(--efkt-offwhite); }
+.ac-filter[aria-pressed='true'] { background: var(--efkt-navy); border-color: var(--efkt-navy); color: var(--efkt-white); }
+
+/* Choice tile (module source / quiz type in the module dialog) */
+.ac-choice { flex: 1; min-width: 180px; display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-radius: 20px; border: 1px solid var(--border-default); background: var(--efkt-white); cursor: pointer; font-family: var(--efkt-font); font-size: 16px; font-weight: 500; color: var(--text-body); text-align: left; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-choice:hover { background: var(--efkt-offwhite); }
+.ac-choice[aria-pressed='true'] { background: var(--efkt-offwhite); border-color: var(--efkt-coral); }
+.ac-choice > i { font-size: 20px; color: var(--efkt-coral); }
+
+/* Picker row (bank dialog, bulk-assign dialog) */
+.ac-pick { display: flex; align-items: flex-start; gap: 16px; padding: 20px; border: none; border-radius: 20px; background: var(--efkt-offwhite); cursor: pointer; font-family: var(--efkt-font); text-align: left; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-pick:hover { background: var(--efkt-gray-100); }
+.ac-pick[aria-pressed='true'] { background: var(--efkt-mint); }
+.ac-pick:disabled { background: var(--efkt-gray-100); cursor: default; }
+
+/* Table row link (course list) */
+.ac-trow { display: grid; grid-template-columns: minmax(260px,2.4fr) minmax(120px,1fr) 100px 130px 120px 120px 44px; gap: 16px; padding: 24px; min-width: 1000px; border-bottom: 1px solid var(--border-default); align-items: center; background: var(--efkt-white); color: var(--text-body); text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
+.ac-trow:hover { background: var(--efkt-offwhite); color: var(--text-body); }
+.ac-trow:last-child { border-bottom: none; }

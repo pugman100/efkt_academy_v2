@@ -1,0 +1,22 @@
+/* Hover states for the invitations, completion and teamleader admin pages. */
+.trk-plate { width: 40px; height: 40px; min-width: 40px; border-radius: 10px; border: none; background: var(--efkt-offwhite); cursor: pointer; color: var(--efkt-navy); display: inline-flex; align-items: center; justify-content: center; text-decoration: none; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-plate:hover:not(:disabled) { background: var(--efkt-border); }
+.trk-plate:disabled { opacity: .4; cursor: not-allowed; }
+.trk-plate--danger { color: var(--efkt-coral); }
+.trk-plate--danger:hover:not(:disabled) { background: var(--efkt-blush); }
+.trk-row { background: var(--efkt-white); transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-row:hover { background: var(--efkt-offwhite); }
+.trk-pill { padding: 10px 20px; border-radius: 25px; border: 1px solid var(--border-default); background: var(--efkt-white); color: var(--text-body); font-family: var(--efkt-font); font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-pill:hover { background: var(--efkt-offwhite); }
+.trk-pill[aria-pressed='true'], .trk-pill[aria-current='true'] { background: var(--efkt-navy); border-color: var(--efkt-navy); color: var(--efkt-white); }
+.trk-export { transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-export:hover { background: var(--efkt-gray-100); }
+.trk-fmt { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--border-default); background: var(--efkt-white); font-size: 14px; font-weight: 500; color: var(--efkt-navy); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: border-color 180ms cubic-bezier(0.4,0,0.2,1), color 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-fmt:hover { border-color: var(--efkt-coral); color: var(--efkt-coral); }
+.trk-head-link { color: inherit; text-decoration: none; transition: color 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-head-link:hover { color: var(--efkt-coral); }
+.trk-mode { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 12px; border-radius: 20px; border: 1px solid var(--border-default); background: var(--efkt-white); cursor: pointer; font-family: var(--efkt-font); font-size: 14px; font-weight: 500; color: var(--text-body); transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-mode:hover { background: var(--efkt-offwhite); }
+.trk-mode[aria-pressed='true'] { background: var(--efkt-offwhite); border-color: var(--efkt-coral); }
+.trk-drop { transition: background 180ms cubic-bezier(0.4,0,0.2,1); }
+.trk-drop:hover { background: var(--efkt-gray-100); }

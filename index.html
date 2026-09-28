@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EFKT Academy</title>
+<meta name="description" content="EFKT Academy — kurs, nyheter og alt du trenger for oppdragene dine.">
+<link rel="icon" href="public/assets/logo/efkt-maerke.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;500;600;700;800&display=swap">
+<style>
+  :root {
+    --navy: #373B54; --coral: #F1554C; --coral-hover: #DD4E45; --deep-navy: #0C0E39;
+    --muted: #63667E; --white: #FFFFFF; --offwhite: #F8F8FA; --border: #E9E9EC;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Be Vietnam Pro', -apple-system, 'Segoe UI', Roboto, sans-serif; color: var(--navy); background: var(--white); font-weight: 300; letter-spacing: -0.02em; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+
+  .hero { position: relative; min-height: 460px; display: flex; flex-direction: column; padding: 48px; overflow: hidden; background: var(--deep-navy); }
+  .hero img.bg { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero::after { content: ''; position: absolute; z-index: 0; inset: 0; background: linear-gradient(180deg, rgba(12,14,57,0.72) 0%, rgba(12,14,57,0.38) 40%, rgba(12,14,57,0.88) 100%); }
+  .hero > :not(.bg) { position: relative; z-index: 1; }
+  .hero .logo { width: 120px; height: auto; display: block; }
+  .hero .copy { margin-top: auto; max-width: 640px; display: flex; flex-direction: column; gap: 16px; }
+  h1 { margin: 0; font-size: 70px; line-height: 1.05; letter-spacing: -0.06em; font-weight: 300; color: var(--white); }
+  h1 b, h2 b { font-weight: 800; }
+  .lead { font-size: 20px; color: rgba(255,255,255,0.9); text-wrap: pretty; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 96px 48px; display: flex; flex-direction: column; gap: 48px; }
+  h2 { margin: 0; font-size: 40px; line-height: 1.1; letter-spacing: -0.065em; font-weight: 300; }
+  .intro { font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 720px; text-wrap: pretty; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+  .card { display: flex; flex-direction: column; gap: 16px; padding: 32px; background: var(--white); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 4px 24px rgba(12,14,57,0.06); transition: box-shadow 180ms var(--ease); }
+  .card:hover { box-shadow: 0 8px 32px rgba(12,14,57,0.10); }
+  .card .icon { width: 48px; height: 48px; border-radius: 10px; background: var(--offwhite); display: inline-flex; align-items: center; justify-content: center; }
+  .card .icon svg { width: 24px; height: 24px; stroke: var(--coral); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .card p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); flex: 1; text-wrap: pretty; }
+  .card .cta { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 500; color: var(--coral); transition: color 180ms var(--ease); }
+  .card:hover .cta { color: var(--coral-hover); }
+
+  .note { padding: 24px; background: var(--offwhite); border-radius: 20px; font-size: 14px; line-height: 1.6; color: var(--muted); text-wrap: pretty; }
+  footer { padding: 32px 48px; border-top: 1px solid var(--border); font-size: 14px; color: var(--muted); text-align: center; }
+
+  @media (max-width: 810px) {
+    .hero { padding: 32px 16px; min-height: 380px; }
+    h1 { font-size: 44px; }
+    main { padding: 64px 16px; }
+    h2 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="bg" src="public/assets/photo-hero.webp" alt="">
+  <img class="logo" src="public/assets/logo/efkt-logo-white.svg" alt="EFKT">
+  <div class="copy">
+    <h1>EFKT <b>Academy</b></h1>
+    <div class="lead">Kurs, nyheter og alt du trenger for oppdragene dine.</div>
+  </div>
+</header>
+
+<main>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <h2>Se <b>designet</b></h2>
+    <div class="intro">Klikkbare prototyper av de tre flatene i EFKT Academy: innlogging, Photographer Dashboard og administrasjon.</div>
+  </div>
+
+  <div class="grid">
+    <a class="card" href="project/design_handoff_efkt_academy/LMS%20Login.dc.html">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/></svg></span>
+      <h3>Logg inn</h3>
+      <p>Innlogging, glemt passord, ny lenke og nytt passord.</p>
+      <span class="cta">Åpne prototypen &rarr;</span>
+    </a>
+    <a class="card" href="project/design_handoff_efkt_academy/LMS%20Learner.dc.html">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 10l9-6 9 6-9 6-9-6z"/><path d="M7 12.5V17c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5"/></svg></span>
+      <h3>Photographer Dashboard</h3>
+      <p>Nyheter, kontakt, viktige lenker, kursene dine, kursspiller og quiz.</p>
+      <span class="cta">Åpne prototypen &rarr;</span>
+    </a>
+    <a class="card" href="project/design_handoff_efkt_academy/LMS%20Admin.dc.html">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+      <h3>Admin</h3>
+      <p>Kurs, moduler, quiz, kategorier, brukere, grupper, invitasjoner, fullføring og nyheter.</p>
+      <span class="cta">Åpne prototypen &rarr;</span>
+    </a>
+  </div>
+
+  <div class="note">Dette er designprototypene. Selve applikasjonen (Next.js + PostgreSQL) krever en server — se README.md for oppsett og drift.</div>
+</main>
+
+<footer>EFKT Academy · Den komplette pakken fra «Til salg» til «Solgt»</footer>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--efkt-font);font-size:var(--efkt-text-body);line-height:var(--lh-body);letter-spacing:var(--ls-body);font-weight:var(--efkt-weight-thin);color:var(--text-body);background:var(--surface-page);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{color:var(--text-heading);margin:0}
+h1{font-size:var(--text-h1);line-height:var(--lh-h1);letter-spacing:var(--ls-h1);font-weight:var(--efkt-weight-black)}
+h2{font-size:var(--text-h2);line-height:var(--lh-h2);letter-spacing:var(--ls-h2);font-weight:var(--efkt-weight-fat)}
+h3{font-size:var(--text-h3);line-height:var(--lh-h3);letter-spacing:var(--ls-h3);font-weight:var(--efkt-weight-semibold)}
+p{margin:0}
+small,.efkt-micro{font-size:var(--text-micro);line-height:var(--lh-micro);font-weight:var(--efkt-weight-regular);color:var(--text-muted)}
+a{color:var(--text-link);text-decoration:none;transition:color var(--efkt-duration) var(--efkt-ease)}
+a:hover{color:var(--text-link-hover);text-decoration:none}
+/* The two-weight heading: wrap the key word in .efkt-fat inside a 300-weight heading,
+   or wrap the soft half in .efkt-thin inside an 800/900 heading. Same size, same colour. */
+.efkt-fat{font-weight:var(--efkt-weight-fat)}
+.efkt-thin{font-weight:var(--efkt-weight-thin)}
+.efkt-container{max-width:var(--efkt-max-width);margin:0 auto}
