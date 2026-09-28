@@ -17,6 +17,8 @@ export type UserRow = {
   region: string;
   last: string;
   off: boolean;
+  /** Active, not an administrator and not the viewer: "Log in as" is allowed. */
+  canImpersonate: boolean;
   assigned: number;
   done: number;
   pct: number;

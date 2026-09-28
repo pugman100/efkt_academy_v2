@@ -42,6 +42,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
       region: u.region?.name ?? '',
       last: ago(u.lastSeenAt),
       off: u.status !== 'ACTIVE',
+      canImpersonate: u.status === 'ACTIVE' && u.role !== 'ADMIN' && u.id !== admin.id,
       ...s,
     };
   });

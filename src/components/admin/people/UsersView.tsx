@@ -1,9 +1,11 @@
 'use client';
 
-import { useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useMemo, useRef, useState, useTransition, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Field';
+import { useToast } from '@/components/ui/Toast';
+import { impersonate } from '@/app/(admin)/admin/users/actions';
 import { PageHeader } from '@/components/admin/PageHeader';
 import { COUNTRY_SHORT, ROLE_LABEL, ROLES } from '@/lib/labels';
 import { Initials, MUTED, ProgressLine, RoleBadge, roleAvatarBg, SEARCH_STYLE, SELECT_STYLE, StatTile } from './bits';
@@ -12,7 +14,7 @@ import { CreateUserDialog } from './CreateUserDialog';
 import { BulkBar, SelectBox } from './BulkBar';
 import type { GroupOption, RegionOption, UserDetail, UserRow } from './types';
 
-const COLS = { pick: 24, name: 280, group: 170, role: 140, courses: 220, last: 130, go: 44 };
+const COLS = { pick: 24, name: 230, group: 160, role: 130, courses: 190, last: 120, go: 84 };
 const GRID_MIN = Object.values(COLS).reduce((a, b) => a + b, 0) + 16 * 6;
 const STATUSES = [
   { value: 'active', label: 'Active users' },
@@ -37,6 +39,8 @@ export function UsersView({
   detail: UserDetail | null;
 }) {
   const router = useRouter();
+  const toast = useToast();
+  const [switching, startSwitch] = useTransition();
   const [q, setQ] = useState('');
   const [group, setGroup] = useState('all');
   const [role, setRole] = useState('all');
@@ -172,7 +176,27 @@ export function UsersView({
               />
             </div>
             <div style={{ ...col(COLS.last), ...MUTED }}>{u.last}</div>
-            <div style={{ ...col(COLS.go), textAlign: 'right' }}>
+            <div style={{ ...col(COLS.go), display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
+              {u.canImpersonate ? (
+                <button
+                  type="button"
+                  className="pp-softbtn"
+                  title={`Log in as ${u.name}`}
+                  aria-label={`Log in as ${u.name}`}
+                  disabled={switching}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startSwitch(async () => {
+                      // Redirects to the learner dashboard on success.
+                      const r = await impersonate(u.id);
+                      if (r && !r.ok) toast(r.error, 'error');
+                    });
+                  }}
+                >
+                  <i className="ph ph-sign-in" style={{ fontSize: 20, color: 'var(--efkt-coral)' }} aria-hidden />
+                </button>
+              ) : null}
               <i className="ph ph-arrow-up-right" style={{ fontSize: 20, color: 'var(--efkt-coral)' }} aria-hidden />
             </div>
           </div>
