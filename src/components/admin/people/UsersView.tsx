@@ -14,7 +14,7 @@ import { CreateUserDialog } from './CreateUserDialog';
 import { BulkBar, SelectBox } from './BulkBar';
 import type { GroupOption, RegionOption, UserDetail, UserRow } from './types';
 
-const COLS = { pick: 24, name: 230, group: 160, role: 130, courses: 190, last: 120, go: 84 };
+const COLS = { pick: 24, name: 230, group: 160, role: 130, courses: 190, last: 120, go: 40 };
 const GRID_MIN = Object.values(COLS).reduce((a, b) => a + b, 0) + 16 * 6;
 const STATUSES = [
   { value: 'active', label: 'Active users' },
@@ -176,7 +176,7 @@ export function UsersView({
               />
             </div>
             <div style={{ ...col(COLS.last), ...MUTED }}>{u.last}</div>
-            <div style={{ ...col(COLS.go), display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
+            <div style={{ ...col(COLS.go), display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
               {u.canImpersonate ? (
                 <button
                   type="button"
@@ -197,7 +197,6 @@ export function UsersView({
                   <i className="ph ph-sign-in" style={{ fontSize: 20, color: 'var(--efkt-coral)' }} aria-hidden />
                 </button>
               ) : null}
-              <i className="ph ph-arrow-up-right" style={{ fontSize: 20, color: 'var(--efkt-coral)' }} aria-hidden />
             </div>
           </div>
         ))}
