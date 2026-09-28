@@ -81,9 +81,10 @@ then `neon env pull --file .env`. `neon diff` shows schema changes against the p
 
 ### Scheduled job
 
-`GET /api/cron` with header `Authorization: Bearer $CRON_SECRET` (e.g. Vercel Cron or any
-scheduler, hourly) sends due invitation reminders, expires old invitations and publishes
-scheduled news stories.
+`GET /api/cron` with header `Authorization: Bearer $CRON_SECRET` sends due invitation reminders,
+expires old invitations and publishes scheduled news stories. On Vercel, `vercel.json` runs it
+daily at 06:00 UTC (the Hobby plan's limit) and sends the header automatically when
+`CRON_SECRET` is set; on a Pro plan it can run hourly (`0 * * * *`).
 
 ## How it works
 
