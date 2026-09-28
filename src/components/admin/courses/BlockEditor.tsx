@@ -6,7 +6,7 @@ import { useMemo, useRef, useState, useTransition } from 'react';
 import { Button, ButtonLink, Input, Select, Switch, Textarea, useToast } from '@/components/ui';
 import { BlockView, type LinkedCourse } from '@/components/blocks/BlockRenderer';
 import { BLOCK_KINDS, imageSrc, newBlock, type Block, type BlockKind } from '@/lib/blocks';
-import { uploadImage } from '@/app/actions/upload';
+import { uploadImageFile } from '@/lib/upload-client';
 import { saveModuleBlocks } from '@/app/(admin)/admin/courses/actions';
 import './courses.css';
 
@@ -274,9 +274,7 @@ function ImageUpload({ imageId, onChange }: { imageId?: string; onChange: (id: s
   async function upload(file: File | undefined) {
     if (!file) return;
     setBusy(true);
-    const fd = new FormData();
-    fd.set('file', file);
-    const res = await uploadImage(fd);
+    const res = await uploadImageFile(file);
     setBusy(false);
     if (res.ok) onChange(res.id);
     else toast(res.error, 'error');

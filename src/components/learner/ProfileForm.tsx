@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useRef, useState, useTransition } from 'react';
-import { uploadImage } from '@/app/actions/upload';
+import { uploadImageFile } from '@/lib/upload-client';
 import { saveProfile } from '@/app/(learner)/profile/actions';
 import { Button } from '@/components/ui/Button';
 import { Input, Textarea } from '@/components/ui/Field';
@@ -27,9 +27,7 @@ export function ProfileForm({ initial, email, region, teamleader, groups }: { in
   async function upload(f: File | undefined) {
     if (!f) return;
     setUploading(true);
-    const fd = new FormData();
-    fd.set('file', f);
-    const res = await uploadImage(fd);
+    const res = await uploadImageFile(f);
     setUploading(false);
     if (res.ok) set({ photoId: res.id });
     else toast(res.error, 'error');

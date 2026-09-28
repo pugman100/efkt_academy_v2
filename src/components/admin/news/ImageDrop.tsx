@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, type CSSProperties } from 'react';
-import { uploadImage } from '@/app/actions/upload';
+import { uploadImageFile } from '@/lib/upload-client';
 import { fileUrl } from '@/lib/blocks';
 import { Photo } from '@/components/ui/Photo';
 import { useToast } from '@/components/ui/Toast';
@@ -16,9 +16,7 @@ export function ImageDrop({ imageId, hint, onUpload, style }: { imageId?: string
   async function upload(file: File | undefined) {
     if (!file) return;
     setBusy(true);
-    const fd = new FormData();
-    fd.set('file', file);
-    const res = await uploadImage(fd);
+    const res = await uploadImageFile(file);
     setBusy(false);
     if (res.ok) onUpload(res.id);
     else toast(res.error, 'error');
