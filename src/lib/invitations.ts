@@ -36,18 +36,18 @@ export function inviteLink(token: string): string {
 type MailKind = 'invite' | 'reminder';
 
 async function sendInviteMail(
-  inv: { email: string; name: string; message: string; expiresAt: Date; invitedBy?: { name: string } | null },
+  inv: { email: string; name: string; message: string; expiresAt: Date },
   token: string,
   kind: MailKind,
 ) {
   const url = inviteLink(token);
   const hello = inv.name ? `Hei ${inv.name.split(' ')[0]},` : 'Hei,';
-  const from = inv.invitedBy?.name ? `${inv.invitedBy.name} har invitert deg` : 'Du er invitert';
   const body = [
     hello,
     kind === 'reminder'
       ? 'En liten påminnelse: invitasjonen din til EFKT Academy venter fortsatt på deg.'
-      : `${from} til EFKT Academy – stedet for kurs, nyheter og alt du trenger for oppdragene dine.`,
+      : // Always from EFKT, never the individual admin who sent it.
+        'EFKT har invitert deg til EFKT Academy – stedet for kurs, nyheter og alt du trenger for oppdragene dine.',
     ...(inv.message.trim() ? [inv.message.trim()] : []),
     `Opprett kontoen din med knappen under. Lenken gjelder til ${dateNo(inv.expiresAt)}.`,
   ];
@@ -90,7 +90,6 @@ export async function createInvitation(input: NewInvitation) {
       groups: { connect: (input.groupIds ?? []).map((id) => ({ id })) },
       categories: { connect: (input.categoryIds ?? []).map((id) => ({ id })) },
     },
-    include: { invitedBy: { select: { name: true } } },
   });
   const mail = await sendInviteMail(invitation, token, 'invite');
   return { invitation, link: inviteLink(token), mailed: mail.ok };
@@ -102,7 +101,6 @@ async function rotate(id: string, data: Prisma.InvitationUpdateInput = {}) {
   const invitation = await db.invitation.update({
     where: { id },
     data: { ...data, tokenHash: hashToken(token) },
-    include: { invitedBy: { select: { name: true } } },
   });
   return { invitation, token };
 }
