@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { requireUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { withPrerequisites } from '@/lib/access';
 
 /** Self-enrol in a published, self-enrol course for the learner's country. */
 export async function enrol(courseId: string): Promise<{ ok: true; title: string } | { ok: false; error: string }> {
@@ -11,9 +12,9 @@ export async function enrol(courseId: string): Promise<{ ok: true; title: string
   const id = z.string().min(1).max(64).parse(courseId);
   const course = await db.course.findFirst({
     where: { id, status: 'PUBLISHED', selfEnrol: true, country: { in: [user.country, 'Both'] } },
-    select: { id: true, title: true },
+    select: { id: true, title: true, prerequisiteId: true, unlockDelayDays: true, prerequisiteSetAt: true },
   });
-  if (!course) return { ok: false, error: 'Kurset er ikke åpent for påmelding.' };
+  if (!course || !(await withPrerequisites(user.id, [course])).length) return { ok: false, error: 'Kurset er ikke åpent for påmelding.' };
   await db.enrolment.upsert({
     where: { userId_courseId: { userId: user.id, courseId: course.id } },
     create: { userId: user.id, courseId: course.id },

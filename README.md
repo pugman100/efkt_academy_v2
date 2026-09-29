@@ -83,7 +83,7 @@ then `neon env pull --file .env`. `neon diff` shows schema changes against the p
 ### Scheduled job
 
 `GET /api/cron` with header `Authorization: Bearer $CRON_SECRET` sends due invitation reminders,
-expires old invitations, publishes scheduled news stories and sends course reminders. On Vercel, `vercel.json` runs it
+expires old invitations, publishes scheduled news stories, sends course unlock emails and sends course reminders. On Vercel, `vercel.json` runs it
 daily at 06:00 UTC (the Hobby plan's limit) and sends the header automatically when
 `CRON_SECRET` is set; on a Pro plan it can run hourly (`0 * * * *`).
 
@@ -113,6 +113,17 @@ the learner has spent the module's `minSeconds` with the tab visible **and** tic
 through all slides" — the dwell time is tracked server-side. Quizzes are graded on the server
 (correct answers never reach the browser before submission), retries are enforced, and passing
 offers "Neste: …" straight away. Completion = passed modules / total.
+
+### Prerequisites (`src/lib/prerequisites.ts`)
+
+Any course can require another course to be completed first (course Settings → Prerequisite,
+off by default), optionally plus a number of days. Until then the course is hidden from the
+learner everywhere (dashboard, catalogue, direct links, reminders) and isn't counted in the
+admin's completion figures; the admin user panel lists it as locked with the unlock date. On
+unlock the learner gets "Gratulerer! Ved å fullføre kurset «A» har du nå låst opp «B»" — straight
+after finishing A, or from the daily job once the waiting days have passed (sent once,
+`CourseUnlock`). People who completed A before the prerequisite was switched on, or had already
+started B, keep access without an email. Loops (A needs B needs A) are refused.
 
 ### Course reminders (`src/lib/course-reminders.ts`)
 

@@ -3,6 +3,7 @@ import type { Country } from '@prisma/client';
 import { db } from '@/lib/db';
 import { accessReasons, countryMatches, COURSE_ACCESS_INCLUDE, reasonLabel, type AccessReason } from '@/lib/access';
 import { courseProgress } from '@/lib/progress';
+import { gate } from '@/lib/prerequisites';
 import type { Scope } from '@/lib/labels';
 
 /** Prisma where for users inside the admin's country scope. */
@@ -19,7 +20,7 @@ const MODULES = {
 export async function loadPublishedCourses() {
   return db.course.findMany({
     where: { status: 'PUBLISHED' },
-    include: { ...COURSE_ACCESS_INCLUDE, modules: MODULES },
+    include: { ...COURSE_ACCESS_INCLUDE, modules: MODULES, prerequisite: { select: { modules: { select: { id: true } } } } },
     orderBy: { createdAt: 'asc' },
   });
 }
@@ -41,7 +42,7 @@ export function reachable(courses: PublishedCourse[], user: AccessUser) {
 export async function loadProgress(userIds: string[]) {
   return db.progress.findMany({
     where: { userId: { in: userIds } },
-    select: { userId: true, moduleId: true, seenAt: true, passed: true, attempts: true, bestScore: true, lastScore: true },
+    select: { userId: true, moduleId: true, seenAt: true, passed: true, passedAt: true, attempts: true, bestScore: true, lastScore: true },
   });
 }
 type ProgressRow = Awaited<ReturnType<typeof loadProgress>>[number];
@@ -61,7 +62,9 @@ export type CourseLine = {
 /** Courses a user receives (progress-bearing ones first), with the reasons spelled out. */
 export function courseLines(courses: PublishedCourse[], user: AccessUser, progress: ProgressRow[]): CourseLine[] {
   const mine = progress.filter((p) => p.userId === user.id);
-  return reachable(courses, user).map(({ course, reasons }) => {
+  const now = new Date();
+  // Courses behind an unmet prerequisite aren't visible to the learner yet, so not counted.
+  return reachable(courses, user).filter(({ course }) => prerequisiteOpen(course, mine, now)).map(({ course, reasons }) => {
     const p = courseProgress(course.modules, mine);
     return {
       id: course.id,
@@ -75,6 +78,16 @@ export function courseLines(courses: PublishedCourse[], user: AccessUser, progre
       started: p.started,
     };
   });
+}
+
+/** The prerequisite rule for a loaded course (its own and its prerequisite's modules are included). */
+export function prerequisiteOpen(course: PublishedCourse, rows: ProgressRow[], now = new Date()): boolean {
+  if (!course.prerequisiteId) return true;
+  const modules = new Map([
+    [course.id, course.modules.map((m) => m.id)],
+    [course.prerequisiteId, course.prerequisite?.modules.map((m) => m.id) ?? []],
+  ]);
+  return gate(course, modules, rows, now).open;
 }
 
 /** Completion summary over the non-reference courses. */

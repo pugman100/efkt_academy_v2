@@ -2,10 +2,11 @@ import { timingSafeEqual } from 'node:crypto';
 import { processInvitationReminders } from '@/lib/invitations';
 import { publishDueStories } from '@/components/admin/news/publishDue';
 import { processCourseReminders } from '@/lib/course-reminders';
+import { notifyUnlocks } from '@/lib/course-unlocks';
 
 /**
  * Scheduled job (daily on Vercel Hobby): invitation reminders + expiry, scheduled news,
- * and course reminders (not started / not finished).
+ * course unlock emails (prerequisites) and course reminders (not started / not finished).
  * Call with `Authorization: Bearer $CRON_SECRET`.
  */
 export async function GET(req: Request) {
@@ -16,6 +17,8 @@ export async function GET(req: Request) {
   }
   const invitations = await processInvitationReminders();
   const news = await publishDueStories();
+  // Unlocks first, so a freshly unlocked course isn't in the same day's reminder.
+  const courseUnlocks = await notifyUnlocks();
   const courseReminders = await processCourseReminders();
-  return Response.json({ ok: true, invitations, publishedStories: news, courseReminders });
+  return Response.json({ ok: true, invitations, publishedStories: news, courseUnlocks, courseReminders });
 }

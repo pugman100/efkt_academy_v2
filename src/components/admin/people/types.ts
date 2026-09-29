@@ -43,6 +43,8 @@ export type UserDetail = {
   courses: CourseLine[];
   /** Directly assigned courses the learner can't see yet (draft, archived, other country). */
   hiddenDirect: { id: string; title: string; why: string }[];
+  /** Courses the person has, still hidden behind an unmet prerequisite. */
+  locked: { id: string; title: string; why: string }[];
   assignable: { id: string; title: string; status: CourseStatus }[];
   resetSent: string | null;
   isSelf: boolean;

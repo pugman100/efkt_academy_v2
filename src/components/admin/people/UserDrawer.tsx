@@ -112,7 +112,7 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
         <div style={MUTED}>
           {tracked.length ? `${done} of ${tracked.length} assigned courses completed` : 'No courses assigned yet'}
         </div>
-        {user.courses.length === 0 && user.hiddenDirect.length === 0 ? (
+        {user.courses.length === 0 && user.hiddenDirect.length === 0 && user.locked.length === 0 ? (
           <EmptyNote>Nothing assigned yet. Add this person to a group, or assign a course directly from the course page.</EmptyNote>
         ) : null}
         {user.courses.map((c) => (
@@ -125,6 +125,15 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
               <div style={{ ...MUTED, marginTop: 4 }}>Assigned directly · {c.why}</div>
             </div>
             <UnassignButton disabled={pending} onClick={() => run(() => setDirectCourse(user.id, c.id, false), 'Direct assignment removed')} />
+          </div>
+        ))}
+        {user.locked.map((c) => (
+          <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 20, border: '1px dashed var(--border-dashed)', borderRadius: 20 }}>
+            <i className="ph ph-lock-simple" style={{ fontSize: 20, color: 'var(--text-muted)' }} aria-hidden />
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <Link href={`/admin/courses/${c.id}`} style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-body)', textDecoration: 'none' }}>{c.title}</Link>
+              <div style={{ ...MUTED, marginTop: 4 }}>{c.why}</div>
+            </div>
           </div>
         ))}
         {user.assignable.length ? (

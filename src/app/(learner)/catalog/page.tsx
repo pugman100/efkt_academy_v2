@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { requireUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { reachableWhere } from '@/lib/access';
+import { reachableWhere, withPrerequisites } from '@/lib/access';
 import { Photo } from '@/components/ui/Photo';
 import { EnrolButton } from '@/components/learner/EnrolButton';
 import { courseThumb, primaryCategory } from '@/components/learner/server';
@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: 'Kurskatalog' };
 export default async function Catalog() {
   const user = await requireUser();
   // Self-enrol courses the learner doesn't already have by any route.
-  const courses = await db.course.findMany({
+  const all = await db.course.findMany({
     where: {
       status: 'PUBLISHED',
       selfEnrol: true,
@@ -21,6 +21,8 @@ export default async function Catalog() {
     include: { categories: true },
     orderBy: { createdAt: 'asc' },
   });
+  // Courses behind an unmet prerequisite stay hidden here too.
+  const courses = await withPrerequisites(user.id, all);
 
   return (
     <>

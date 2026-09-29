@@ -87,6 +87,7 @@ model User {
   invitationsSent Invitation[]     @relation("InvitedBy")
   auditLogs       AuditLog[]
   courseReminders CourseReminder[]
+  courseUnlocks   CourseUnlock[]
 }
 
 model Session {
@@ -164,24 +165,32 @@ model Category {
 }
 
 model Course {
-  id          String       @id @default(cuid())
-  title       String
-  description String       @default("")
-  country     Country      @default(Both)
-  status      CourseStatus @default(DRAFT)
-  thumbnailId String?
-  thumbX      Float        @default(50) // crop focus, percent
-  thumbY      Float        @default(50)
-  thumbScale  Float        @default(1)
-  selfEnrol   Boolean      @default(false)
+  id                String       @id @default(cuid())
+  title             String
+  description       String       @default("")
+  country           Country      @default(Both)
+  status            CourseStatus @default(DRAFT)
+  thumbnailId       String?
+  thumbX            Float        @default(50) // crop focus, percent
+  thumbY            Float        @default(50)
+  thumbScale        Float        @default(1)
+  selfEnrol         Boolean      @default(false)
   // Reference material: shown in its own dashboard section, no progress, no quiz.
-  reference   Boolean      @default(false)
-  icon        String       @default("")
+  reference         Boolean      @default(false)
+  icon              String       @default("")
   // Set when modules of a published course change, so an admin can decide
   // whether existing completions still stand.
-  recertFlag  Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  recertFlag        Boolean      @default(false)
+  // Prerequisite: the course stays hidden until the learner has completed this one,
+  // plus unlockDelayDays. prerequisiteSetAt marks when it was switched on (earlier
+  // completions unlock straight away, without an email).
+  prerequisiteId    String?
+  prerequisite      Course?      @relation("CoursePrerequisite", fields: [prerequisiteId], references: [id], onDelete: SetNull)
+  dependents        Course[]     @relation("CoursePrerequisite")
+  unlockDelayDays   Int          @default(0)
+  prerequisiteSetAt DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
   categories Category[]       @relation("CourseCategories")
   groups     Group[]          @relation("CourseGroups")
@@ -189,6 +198,7 @@ model Course {
   modules    Module[]
   enrolments Enrolment[]
   reminders  CourseReminder[]
+  unlocks    CourseUnlock[]
 }
 
 model Module {
@@ -385,6 +395,18 @@ model CourseReminder {
   firstSeenAt    DateTime  @default(now())
   remindersSent  Int       @default(0)
   lastRemindedAt DateTime?
+
+  @@id([userId, courseId])
+}
+
+// "Gratulerer! … har du nå låst opp …" — one row per person and unlocked course, so the
+// unlock email is sent once.
+model CourseUnlock {
+  userId     String
+  courseId   String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  notifiedAt DateTime @default(now())
 
   @@id([userId, courseId])
 }

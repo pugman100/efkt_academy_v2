@@ -4,6 +4,7 @@ import type { Prisma } from '@prisma/client';
 import { db } from '@/lib/db';
 import { canAccessCourse, coursesForUser } from '@/lib/access';
 import { courseProgress } from '@/lib/progress';
+import { notifyUnlocks } from '@/lib/course-unlocks';
 import { fileUrl } from '@/lib/blocks';
 import { getSession, type CurrentUser } from '@/lib/auth';
 
@@ -146,6 +147,8 @@ export async function recordOpen(userId: string, m: LearnerModule) {
       ...(exhausted ? { attempts: 0, dwellSeconds: 0, confirmedAllSlides: false } : {}),
     },
   });
+  // Opening a quiz-less module passes it; that may complete the course and unlock another.
+  if (passNow) await notifyUnlocks({ userId, afterCourseId: m.courseId }).catch((e) => console.error('[unlocks]', e));
 }
 
 /** Linked-course blocks: title/description, and a link only when the learner has access. */
