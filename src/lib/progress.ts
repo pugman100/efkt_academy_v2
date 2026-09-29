@@ -40,7 +40,8 @@ export function courseProgress<M extends ModuleLike>(modules: M[], rows: Progres
   const passed = items.filter((i) => i.state === 'passed').length;
   const total = modules.length;
   const current = items.find((i) => i.state !== 'passed' && i.state !== 'locked') ?? null;
-  const started = rows.some((r) => r.seenAt);
+  // Only this course's modules count (callers may pass the person's rows for every course).
+  const started = modules.some((m) => !!byId.get(m.id)?.seenAt);
   return {
     items,
     passed,

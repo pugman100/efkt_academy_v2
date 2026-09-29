@@ -9,6 +9,8 @@ import { EMPTY_STYLE, Initials, StatTile } from '@/components/admin/tracking/ui'
 import { STATUS, loadCompletion, readFilters, trackRows, type CellKey } from '@/components/admin/tracking/completion-data';
 import { CompletionFilters } from './CompletionFilters';
 import { ExportPanel } from './ExportPanel';
+import { ReminderPanel } from './ReminderPanel';
+import { findDueReminders, getCourseReminderSettings } from '@/lib/course-reminders';
 
 export const metadata: Metadata = { title: 'Completion' };
 
@@ -36,6 +38,8 @@ export default async function CompletionPage({ searchParams }: { searchParams: P
   const filters = readFilters(sp);
   const [data, groups] = await Promise.all([loadCompletion(scope), db.group.findMany({ orderBy: { createdAt: 'asc' }, select: { name: true } })]);
   const { course, all, shown } = trackRows(data, filters);
+  const reminderSettings = await getCourseReminderSettings();
+  const due = await findDueReminders(reminderSettings);
   const where = scopeLine(scope);
 
   const doneCount = all.filter((r) => r.sum.bucket === 'Completed').length;
@@ -71,6 +75,8 @@ export default async function CompletionPage({ searchParams }: { searchParams: P
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16 }}>
         {stats.map((s) => <StatTile key={s.label} {...s} />)}
       </div>
+
+      <ReminderPanel settings={reminderSettings} dueNow={{ people: due.length, courses: due.reduce((a, d) => a + d.courses.length, 0) }} />
 
       <ExportPanel filters={filters} course={course} shownCount={shown.length} allCount={all.length} courseCount={data.courses.length} where={where} />
 

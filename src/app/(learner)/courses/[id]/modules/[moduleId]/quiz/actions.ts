@@ -1,5 +1,6 @@
 'use server';
 
+import { notifyUnlocks } from '@/lib/course-unlocks';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { requireUser } from '@/lib/auth';
@@ -71,6 +72,8 @@ export async function submitQuiz(input: z.input<typeof Input>): Promise<{ ok: tr
       },
     }),
   ]);
+  // Finishing this course may unlock another (prerequisite); tell the learner by email.
+  if (passed && !p?.passed) await notifyUnlocks({ userId: user.id, afterCourseId: courseId }).catch((e) => console.error('[unlocks]', e));
   revalidatePath(`/courses/${courseId}`);
   revalidatePath('/');
   return { ok: true, result };

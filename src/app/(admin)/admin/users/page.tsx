@@ -1,10 +1,13 @@
 import { db } from '@/lib/db';
+import { EQUIPMENT_FIELDS, type Equipment } from '@/lib/equipment';
 import { requireAdmin } from '@/lib/auth';
 import { getScope, scopeLine } from '@/lib/scope';
 import { ago, monthYear } from '@/lib/format';
 import { countryMatches } from '@/lib/access';
 import { COURSE_STATUS_LABEL } from '@/lib/labels';
-import { courseLines, loadProgress, loadPublishedCourses, summarise, userScopeWhere } from '@/components/admin/people/data';
+import { courseLines, loadProgress, loadPublishedCourses, reachable, summarise, userScopeWhere } from '@/components/admin/people/data';
+import { gate } from '@/lib/prerequisites';
+import { dateNo } from '@/lib/format';
 import { UsersView } from '@/components/admin/people/UsersView';
 import type { UserDetail, UserRow } from '@/components/admin/people/types';
 import '@/components/admin/people/people.css';
@@ -88,6 +91,17 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
   ]);
   const lines = courseLines(courses, user, progress);
   const visible = new Set(lines.map((l) => l.id));
+  // Courses the person has, but that a prerequisite still hides.
+  const titles = new Map(all.map((c) => [c.id, c.title]));
+  const locked = reachable(courses, user)
+    .filter(({ course }) => !visible.has(course.id) && course.prerequisiteId)
+    .map(({ course }) => {
+      const g = gate(course, new Map([[course.id, course.modules.map((m) => m.id)], [course.prerequisiteId!, course.prerequisite?.modules.map((m) => m.id) ?? []]]), progress);
+      const pre = titles.get(course.prerequisiteId!) ?? 'the prerequisite';
+      const why = !g.open && g.unlockAt ? `Unlocks ${dateNo(g.unlockAt)} (${course.unlockDelayDays} days after completing «${pre}»)` : `Unlocks after completing «${pre}»`;
+      return { id: course.id, title: course.title, why };
+    });
+  const lockedIds = new Set(locked.map((l) => l.id));
   const direct = new Set(user.directCourses.map((c) => c.id));
   const active = user.status === 'ACTIVE';
   return {
@@ -97,6 +111,7 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
     jobTitle: user.jobTitle,
     phone: user.phone,
     bio: user.bio,
+    equipment: Object.fromEntries(EQUIPMENT_FIELDS.map((f) => [f.key, user[f.key]])) as Equipment,
     role: user.role,
     country: user.country,
     regionId: user.regionId,
@@ -107,12 +122,13 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
     // Tracked courses first, reference material last.
     courses: [...lines].sort((a, b) => Number(a.reference) - Number(b.reference)),
     hiddenDirect: user.directCourses
-      .filter((c) => !visible.has(c.id))
+      .filter((c) => !visible.has(c.id) && !lockedIds.has(c.id))
       .map((c) => ({
         id: c.id,
         title: c.title,
         why: c.status !== 'PUBLISHED' ? `${COURSE_STATUS_LABEL[c.status]} — not visible yet` : `Only for ${c.country}`,
       })),
+    locked,
     assignable: all.filter((c) => !direct.has(c.id) && countryMatches(c.country, user.country)).map((c) => ({ id: c.id, title: c.title, status: c.status })),
     resetSent: user.resetTokens[0] ? ago(user.resetTokens[0].createdAt).toLowerCase() : null,
     isSelf: user.id === adminId,

@@ -1,5 +1,6 @@
 import type { Country, Prisma } from '@prisma/client';
 import { db } from './db';
+import { gate, type GatedCourse, type GateRow } from './prerequisites';
 
 /**
  * Access rule. A learner sees a course if it is Published, matches their country
@@ -63,6 +64,32 @@ export function reachableWhere(user: UserForAccess): Prisma.CourseWhereInput {
   };
 }
 
+/** Module ids per course, for the given courses and their prerequisites. */
+export async function gateModules(courses: GatedCourse[]): Promise<Map<string, string[]>> {
+  const ids = [...new Set(courses.flatMap((c) => (c.prerequisiteId ? [c.id, c.prerequisiteId] : [])))];
+  const map = new Map<string, string[]>();
+  if (!ids.length) return map;
+  const mods = await db.module.findMany({ where: { courseId: { in: ids } }, select: { id: true, courseId: true } });
+  for (const m of mods) map.set(m.courseId, [...(map.get(m.courseId) ?? []), m.id]);
+  return map;
+}
+
+/** The learner's progress rows the prerequisite rule needs. */
+export async function gateRows(userId: string, modules: Map<string, string[]>): Promise<GateRow[]> {
+  const ids = [...modules.values()].flat();
+  if (!ids.length) return [];
+  return db.progress.findMany({ where: { userId, moduleId: { in: ids } }, select: { moduleId: true, seenAt: true, passed: true, passedAt: true } });
+}
+
+/** Drops courses whose prerequisite the user hasn't met yet (or whose delay hasn't passed). */
+export async function withPrerequisites<C extends GatedCourse>(userId: string, courses: C[]): Promise<C[]> {
+  if (!courses.some((c) => c.prerequisiteId)) return courses;
+  const modules = await gateModules(courses);
+  const rows = await gateRows(userId, modules);
+  const now = new Date();
+  return courses.filter((c) => gate(c, modules, rows, now).open);
+}
+
 /** Published courses the user can see, with the reasons, in category order. */
 export async function coursesForUser<T extends Prisma.CourseInclude>(user: UserForAccess, include?: T) {
   const courses = await db.course.findMany({
@@ -70,13 +97,16 @@ export async function coursesForUser<T extends Prisma.CourseInclude>(user: UserF
     include: { ...COURSE_ACCESS_INCLUDE, ...(include ?? {}) } as typeof COURSE_ACCESS_INCLUDE & T,
     orderBy: { createdAt: 'asc' },
   });
-  return courses.map((course) => ({ course, reasons: accessReasons(course as CourseForAccess, user) }));
+  const visible = await withPrerequisites(user.id, courses);
+  return visible.map((course) => ({ course, reasons: accessReasons(course as CourseForAccess, user) }));
 }
 
-/** Whether a user may open a course (learner side). */
+/** Whether a user may open a course (learner side), prerequisites included. */
 export async function canAccessCourse(user: UserForAccess, courseId: string): Promise<boolean> {
-  const n = await db.course.count({
+  const course = await db.course.findFirst({
     where: { id: courseId, status: 'PUBLISHED', country: { in: [user.country, 'Both'] }, ...reachableWhere(user) },
+    select: { id: true, prerequisiteId: true, unlockDelayDays: true, prerequisiteSetAt: true },
   });
-  return n > 0;
+  if (!course) return false;
+  return (await withPrerequisites(user.id, [course])).length > 0;
 }

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, useTransition } from 'react';
 import type { Country, CourseStatus } from '@prisma/client';
 import { Button, Checkbox, Dialog, ImageCropField, Input, Select, Switch, Textarea, useToast, type Crop } from '@/components/ui';
 import { deleteCourse, setCoursePassPercent, setCourseStatus, updateCourse } from '@/app/(admin)/admin/courses/actions';
+import { PrerequisiteField, type PrerequisiteOption } from './PrerequisiteField';
 
 type CourseSettings = {
   id: string;
@@ -19,6 +20,8 @@ type CourseSettings = {
   reference: boolean;
   icon: string;
   status: CourseStatus;
+  prerequisiteId: string | null;
+  unlockDelayDays: number;
 };
 
 const COUNTRIES = [
@@ -33,11 +36,13 @@ export function SettingsTab({
   categories,
   pass,
   quizCount,
+  prerequisiteOptions,
 }: {
   course: CourseSettings;
   categories: { id: string; name: string; count: number }[];
   pass: number;
   quizCount: number;
+  prerequisiteOptions: PrerequisiteOption[];
 }) {
   const router = useRouter();
   const toast = useToast();
@@ -144,6 +149,7 @@ export function SettingsTab({
         onChange={(e) => save({ country: e.target.value as 'Both' | 'Denmark' | 'Norway' })}
         hint="Which learners can see this course."
       />
+      <PrerequisiteField courseId={course.id} prerequisiteId={course.prerequisiteId} unlockDelayDays={course.unlockDelayDays} options={prerequisiteOptions} />
       <Input
         label="Quiz pass score"
         type="number"

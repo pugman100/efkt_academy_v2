@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Prisma } from '@prisma/client';
 import { requireAdmin } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { createsCycle } from '@/lib/prerequisites';
 import { getScope } from '@/lib/scope';
 import { ago } from '@/lib/format';
 import { parseBlocks } from '@/lib/blocks';
@@ -154,10 +155,14 @@ async function assignment(course: CourseFull, scope: 'All' | 'Denmark' | 'Norway
 }
 
 async function settings(course: CourseFull, passes: number[]) {
-  const categories = await db.category.findMany({
-    orderBy: [{ order: 'asc' }, { name: 'asc' }],
-    select: { id: true, name: true, _count: { select: { courses: true } } },
-  });
+  const [categories, others] = await Promise.all([
+    db.category.findMany({
+      orderBy: [{ order: 'asc' }, { name: 'asc' }],
+      select: { id: true, name: true, _count: { select: { courses: true } } },
+    }),
+    db.course.findMany({ where: { status: { not: 'ARCHIVED' } }, orderBy: { title: 'asc' }, select: { id: true, title: true, status: true, prerequisiteId: true } }),
+  ]);
+  const parentOf = new Map(others.map((c) => [c.id, c.prerequisiteId]));
   return (
     <SettingsTab
       course={{
@@ -173,7 +178,12 @@ async function settings(course: CourseFull, passes: number[]) {
         reference: course.reference,
         icon: course.icon,
         status: course.status,
+        prerequisiteId: course.prerequisiteId,
+        unlockDelayDays: course.unlockDelayDays,
       }}
+      prerequisiteOptions={others
+        .filter((c) => c.id !== course.id)
+        .map((c) => ({ id: c.id, title: c.title, status: c.status, blocked: createsCycle(course.id, c.id, parentOf) }))}
       categories={categories.map((k) => ({ id: k.id, name: k.name, count: k._count.courses }))}
       pass={passes.length ? passes[passes.length - 1] : 80}
       quizCount={course.modules.filter((m) => m.quiz).length}

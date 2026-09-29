@@ -4,6 +4,7 @@ import { db } from '@/lib/db';
 import { COURSE_ACCESS_INCLUDE, accessReasons, countryMatches, reasonLabel } from '@/lib/access';
 import { courseProgress, type ModuleState } from '@/lib/progress';
 import { inScope, type Scope } from '@/lib/labels';
+import { gate } from '@/lib/prerequisites';
 
 /** Status map from the prototype (`STATUS` in LMS Admin). */
 export type CellKey = 'passed' | 'failed' | 'started' | 'none';
@@ -57,6 +58,7 @@ export async function loadCompletion(scope: Scope) {
     include: {
       ...COURSE_ACCESS_INCLUDE,
       modules: { orderBy: { order: 'asc' }, include: { quiz: { select: { id: true, retries: true, passPercent: true } } } },
+      prerequisite: { select: { modules: { select: { id: true } } } },
     },
     orderBy: { createdAt: 'asc' },
   });
@@ -68,7 +70,8 @@ export async function loadCompletion(scope: Scope) {
     orderBy: { name: 'asc' },
   });
 
-  const moduleIds = scopedCourses.flatMap((c) => c.modules.map((m) => m.id));
+  const moduleIds = scopedCourses.flatMap((c) => [...c.modules.map((m) => m.id), ...(c.prerequisite?.modules.map((m) => m.id) ?? [])]);
+  const now = new Date();
   const progress = await db.progress.findMany({ where: { moduleId: { in: moduleIds }, userId: { in: userRows.map((u) => u.id) } } });
   const byUser = new Map<string, typeof progress>();
   for (const p of progress) byUser.set(p.userId, [...(byUser.get(p.userId) ?? []), p]);
@@ -80,6 +83,8 @@ export async function loadCompletion(scope: Scope) {
       if (!countryMatches(c.country, u.country)) continue;
       const reasons = accessReasons(c, u);
       if (!reasons.length) continue;
+      // Not counted until the prerequisite unlocks it for this person.
+      if (c.prerequisiteId && !gate(c, new Map([[c.id, c.modules.map((m) => m.id)], [c.prerequisiteId, c.prerequisite?.modules.map((m) => m.id) ?? []]]), mine, now).open) continue;
       const ids = new Set(c.modules.map((m) => m.id));
       const rows = mine.filter((p) => ids.has(p.moduleId));
       const cp = courseProgress(c.modules, rows);

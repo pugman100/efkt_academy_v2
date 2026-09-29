@@ -11,6 +11,7 @@ import { useToast } from '@/components/ui/Toast';
 import { COURSE_STATUS_LABEL, ROLE_LABEL, ROLES, USER_COUNTRIES } from '@/lib/labels';
 import { impersonate, sendPasswordReset, setDirectCourse, setUserActive, setUserGroup, updateUser, updateUserDetails } from '@/app/(admin)/admin/users/actions';
 import { EmptyNote, Initials, MUTED, ProgressLine, SECTION } from './bits';
+import { EQUIPMENT_FIELDS, EQUIPMENT_MAX, type Equipment } from '@/lib/equipment';
 import type { ActionResult, CourseLine, GroupOption, RegionOption, UserDetail } from './types';
 
 export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetail; groups: GroupOption[]; regions: RegionOption[]; onClose: () => void }) {
@@ -111,7 +112,7 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
         <div style={MUTED}>
           {tracked.length ? `${done} of ${tracked.length} assigned courses completed` : 'No courses assigned yet'}
         </div>
-        {user.courses.length === 0 && user.hiddenDirect.length === 0 ? (
+        {user.courses.length === 0 && user.hiddenDirect.length === 0 && user.locked.length === 0 ? (
           <EmptyNote>Nothing assigned yet. Add this person to a group, or assign a course directly from the course page.</EmptyNote>
         ) : null}
         {user.courses.map((c) => (
@@ -124,6 +125,15 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
               <div style={{ ...MUTED, marginTop: 4 }}>Assigned directly · {c.why}</div>
             </div>
             <UnassignButton disabled={pending} onClick={() => run(() => setDirectCourse(user.id, c.id, false), 'Direct assignment removed')} />
+          </div>
+        ))}
+        {user.locked.map((c) => (
+          <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 20, border: '1px dashed var(--border-dashed)', borderRadius: 20 }}>
+            <i className="ph ph-lock-simple" style={{ fontSize: 20, color: 'var(--text-muted)' }} aria-hidden />
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <Link href={`/admin/courses/${c.id}`} style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-body)', textDecoration: 'none' }}>{c.title}</Link>
+              <div style={{ ...MUTED, marginTop: 4 }}>{c.why}</div>
+            </div>
           </div>
         ))}
         {user.assignable.length ? (
@@ -190,11 +200,11 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
   );
 }
 
-type Details = { name: string; email: string; jobTitle: string; phone: string; bio: string };
+type Details = { name: string; email: string; jobTitle: string; phone: string; bio: string } & Equipment;
 
 /** Name, email and profile fields, saved together with one button. */
 function DetailsForm({ user, disabled, run }: { user: UserDetail; disabled: boolean; run: (fn: () => Promise<ActionResult>, ok: string) => void }) {
-  const initial: Details = { name: user.name, email: user.email, jobTitle: user.jobTitle, phone: user.phone, bio: user.bio };
+  const initial: Details = { name: user.name, email: user.email, jobTitle: user.jobTitle, phone: user.phone, bio: user.bio, ...user.equipment };
   const [form, setForm] = useState<Details>(initial);
   const dirty = (Object.keys(initial) as (keyof Details)[]).some((k) => form[k].trim() !== initial[k]);
   const set = (k: keyof Details) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -224,6 +234,10 @@ function DetailsForm({ user, disabled, run }: { user: UserDetail; disabled: bool
           <Input label="Phone" type="tel" value={form.phone} onChange={set('phone')} autoComplete="off" />
         </div>
         <Textarea label="Bio" value={form.bio} onChange={set('bio')} rows={3} />
+        <div style={{ fontSize: 16, fontWeight: 600, marginTop: 4 }}>Utstyr</div>
+        {EQUIPMENT_FIELDS.map((f) => (
+          <Input key={f.key} label={f.label} placeholder={f.placeholder} value={form[f.key]} onChange={set(f.key)} maxLength={EQUIPMENT_MAX} autoComplete="off" />
+        ))}
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Button type="submit" disabled={disabled || !dirty}>Save changes</Button>
           {dirty ? <Button variant="secondary" disabled={disabled} onClick={() => setForm(initial)}>Cancel</Button> : null}

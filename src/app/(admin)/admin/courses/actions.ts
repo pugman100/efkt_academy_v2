@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
+import { createsCycle } from '@/lib/prerequisites';
 import type { Prisma } from '@prisma/client';
 import { db } from '@/lib/db';
 import { requireAdmin } from '@/lib/auth';
@@ -84,6 +85,35 @@ export async function updateCourse(courseId: string, input: z.input<typeof Setti
     where: { id: courseId },
     data: { ...data, ...(categoryIds ? { categories: { set: categoryIds.map((c) => ({ id: c })) } } : {}) },
   });
+  refresh(courseId);
+  return { ok: true };
+}
+
+/**
+ * Prerequisite: the course stays hidden for a learner until they have completed another
+ * course, plus `unlockDelayDays`. Loops (A needs B needs A) are refused. Audited.
+ */
+export async function setPrerequisite(courseId: string, input: { prerequisiteId: string | null; unlockDelayDays: number }): Promise<Result> {
+  const admin = await requireAdmin();
+  const p = z
+    .object({ prerequisiteId: id.nullable(), unlockDelayDays: z.number().int().min(0, 'Days must be 0 or more').max(730, 'At most 730 days') })
+    .safeParse(input);
+  if (!p.success) return fail(first(p.error));
+  const course = await db.course.findUnique({ where: { id: courseId }, select: { prerequisiteId: true, unlockDelayDays: true } });
+  if (!course) return fail('Course not found');
+  const { prerequisiteId, unlockDelayDays } = p.data;
+  if (prerequisiteId) {
+    if (prerequisiteId === courseId) return fail('A course cannot require itself');
+    const all = await db.course.findMany({ select: { id: true, prerequisiteId: true } });
+    if (!all.some((c) => c.id === prerequisiteId)) return fail('Prerequisite course not found');
+    if (createsCycle(courseId, prerequisiteId, new Map(all.map((c) => [c.id, c.prerequisiteId])))) return fail('That would create a loop: the chosen course already depends on this one');
+  }
+  const changed = prerequisiteId !== course.prerequisiteId;
+  await db.course.update({
+    where: { id: courseId },
+    data: { prerequisiteId, unlockDelayDays: prerequisiteId ? unlockDelayDays : 0, ...(changed ? { prerequisiteSetAt: prerequisiteId ? new Date() : null } : {}) },
+  });
+  await audit(admin.id, 'course.prerequisite', { type: 'course', id: courseId }, { from: course.prerequisiteId, to: prerequisiteId, fromDays: course.unlockDelayDays, days: unlockDelayDays });
   refresh(courseId);
   return { ok: true };
 }
