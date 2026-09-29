@@ -67,6 +67,38 @@ export async function createUser(input: z.input<typeof createSchema>): Promise<{
 
 // ---------- Profile ----------
 
+const detailsSchema = z.object({
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(120),
+  email: z.string().trim().toLowerCase().email('Enter a valid email address').max(200),
+  jobTitle: z.string().trim().max(120),
+  phone: z.string().trim().max(40),
+  bio: z.string().trim().max(1000),
+});
+
+/** Admin edits a person's name, email and profile fields. */
+export async function updateUserDetails(userId: string, input: z.input<typeof detailsSchema>): Promise<ActionResult> {
+  const admin = await requireAdmin();
+  const parsed = detailsSchema.safeParse(input);
+  if (!id.safeParse(userId).success) return { ok: false, error: 'Invalid input' };
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0].message };
+  const user = await db.user.findUnique({ where: { id: userId } });
+  if (!user) return { ok: false, error: 'User not found' };
+  const d = parsed.data;
+  if (d.email !== user.email && (await db.user.findUnique({ where: { email: d.email } })))
+    return { ok: false, error: `Another user already uses ${d.email}` };
+
+  await db.user.update({ where: { id: userId }, data: d });
+  const changed = (Object.keys(d) as (keyof typeof d)[]).filter((k) => d[k] !== user[k]);
+  if (changed.length)
+    await audit(admin.id, 'user.update', { type: 'user', id: userId }, {
+      fields: changed,
+      ...(changed.includes('email') ? { emailFrom: user.email, emailTo: d.email } : {}),
+      ...(changed.includes('name') ? { nameFrom: user.name, nameTo: d.name } : {}),
+    });
+  refresh();
+  return { ok: true };
+}
+
 const updateSchema = z.object({ role: role.optional(), country: country.optional(), regionId: id.nullable().optional() });
 
 export async function updateUser(userId: string, input: z.input<typeof updateSchema>): Promise<ActionResult> {

@@ -1,15 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { useTransition, type ReactNode } from 'react';
+import { useState, useTransition, type ReactNode } from 'react';
 import type { Role } from '@prisma/client';
 import { Dialog, CloseButton } from '@/components/ui/Dialog';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { Checkbox, Select } from '@/components/ui/Field';
+import { Checkbox, Input, Select, Textarea } from '@/components/ui/Field';
 import { useToast } from '@/components/ui/Toast';
 import { COURSE_STATUS_LABEL, ROLE_LABEL, ROLES, USER_COUNTRIES } from '@/lib/labels';
-import { impersonate, sendPasswordReset, setDirectCourse, setUserActive, setUserGroup, updateUser } from '@/app/(admin)/admin/users/actions';
+import { impersonate, sendPasswordReset, setDirectCourse, setUserActive, setUserGroup, updateUser, updateUserDetails } from '@/app/(admin)/admin/users/actions';
 import { EmptyNote, Initials, MUTED, ProgressLine, SECTION } from './bits';
 import type { ActionResult, CourseLine, GroupOption, RegionOption, UserDetail } from './types';
 
@@ -49,6 +49,8 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
         <Tile label="Group" value={groupNames} sub={user.country + (regionName ? ` · ${regionName}` : '')} />
         <Tile label="Activity" value={user.last} sub={user.joined} />
       </div>
+
+      <DetailsForm key={user.id} user={user} disabled={pending} run={run} />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <Select
@@ -185,6 +187,49 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
         ) : null}
       </div>
     </Dialog>
+  );
+}
+
+type Details = { name: string; email: string; jobTitle: string; phone: string; bio: string };
+
+/** Name, email and profile fields, saved together with one button. */
+function DetailsForm({ user, disabled, run }: { user: UserDetail; disabled: boolean; run: (fn: () => Promise<ActionResult>, ok: string) => void }) {
+  const initial: Details = { name: user.name, email: user.email, jobTitle: user.jobTitle, phone: user.phone, bio: user.bio };
+  const [form, setForm] = useState<Details>(initial);
+  const dirty = (Object.keys(initial) as (keyof Details)[]).some((k) => form[k].trim() !== initial[k]);
+  const set = (k: keyof Details) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const emailChanged = form.email.trim().toLowerCase() !== user.email;
+
+  return (
+    <Section title="Profile">
+      <form
+        style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          run(() => updateUserDetails(user.id, form), 'Profile saved');
+        }}
+      >
+        <Input label="Name" value={form.name} onChange={set('name')} autoComplete="off" required />
+        <Input
+          label="Email"
+          type="email"
+          value={form.email}
+          onChange={set('email')}
+          autoComplete="off"
+          required
+          hint={emailChanged ? 'They will sign in with the new address from now on.' : 'Used to sign in and for invitations and password resets.'}
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 16 }}>
+          <Input label="Job title" value={form.jobTitle} onChange={set('jobTitle')} autoComplete="off" />
+          <Input label="Phone" type="tel" value={form.phone} onChange={set('phone')} autoComplete="off" />
+        </div>
+        <Textarea label="Bio" value={form.bio} onChange={set('bio')} rows={3} />
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <Button type="submit" disabled={disabled || !dirty}>Save changes</Button>
+          {dirty ? <Button variant="secondary" disabled={disabled} onClick={() => setForm(initial)}>Cancel</Button> : null}
+        </div>
+      </form>
+    </Section>
   );
 }
 

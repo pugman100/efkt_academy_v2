@@ -29,6 +29,8 @@ export type UserDetail = {
   name: string;
   email: string;
   jobTitle: string;
+  phone: string;
+  bio: string;
   role: Role;
   country: Country;
   regionId: string | null;
