@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
   // Neon: pooled URL for app traffic, direct URL for migrations
   directUrl = env("DATABASE_URL_UNPOOLED")
@@ -36,6 +36,7 @@ enum CourseStatus {
 enum ModuleSource {
   EMBED
   BUILT
+  PDF
 }
 
 enum NewsStatus {
@@ -191,6 +192,7 @@ model Module {
   source     ModuleSource @default(EMBED)
   url        String       @default("")
   blocks     Json         @default("[]") // Block[] — see src/lib/blocks.ts
+  fileId     String? // PDF modules: the uploaded document (FileUpload id)
   // Seconds the learner must spend on the module (tab visible) before the quiz opens.
   minSeconds Int          @default(10)
   createdAt  DateTime     @default(now())

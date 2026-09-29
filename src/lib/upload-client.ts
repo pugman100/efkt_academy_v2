@@ -1,6 +1,6 @@
 // Browser-side image upload: shrinks large photos before sending them, so they stay well
 // under the host's request limit (4.5 MB on Vercel), and never leaves the caller hanging.
-import { uploadImage } from '@/app/actions/upload';
+import { finishDocumentUpload, startDocumentUpload, uploadImage } from '@/app/actions/upload';
 
 type Result = { ok: true; id: string } | { ok: false; error: string };
 
@@ -41,6 +41,29 @@ export async function uploadImageFile(file: File): Promise<Result> {
     const fd = new FormData();
     fd.set('file', f);
     return await uploadImage(fd);
+  } catch {
+    return { ok: false, error: 'Upload failed. Check your connection and try again.' };
+  }
+}
+
+/**
+ * Uploads a PDF straight to the bucket (it may be far bigger than the host's request
+ * limit): ask for a presigned URL, PUT the file with progress, then confirm.
+ */
+export async function uploadPdfFile(file: File, onProgress?: (fraction: number) => void): Promise<Result> {
+  try {
+    const start = await startDocumentUpload({ name: file.name, size: file.size, type: file.type });
+    if (!start.ok) return start;
+    await new Promise<void>((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', start.url);
+      xhr.setRequestHeader('Content-Type', 'application/pdf');
+      xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.(e.loaded / e.total);
+      xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(String(xhr.status))));
+      xhr.onerror = () => reject(new Error('network'));
+      xhr.send(file);
+    });
+    return await finishDocumentUpload(start.id, file.name);
   } catch {
     return { ok: false, error: 'Upload failed. Check your connection and try again.' };
   }

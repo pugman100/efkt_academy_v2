@@ -34,7 +34,7 @@ export default async function ModulePlayer({ params }: { params: Promise<{ id: s
         title: m.title,
         source: m.source,
         url: m.url,
-        embed: embedUrl(m.url),
+        embed: m.source === 'PDF' ? (m.fileId ? `/api/files/${m.fileId}` : '') : embedUrl(m.url),
         blocks,
         minSeconds: m.minSeconds,
         quiz: m.quiz ? { questions: m.quiz._count.questions, passPercent: m.quiz.passPercent } : null,

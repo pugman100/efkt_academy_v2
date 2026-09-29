@@ -1,18 +1,21 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useRef, useState, useTransition } from 'react';
 import type { ModuleSource } from '@prisma/client';
 import { Button, Dialog, Input, useToast } from '@/components/ui';
 import { embedUrl } from '@/lib/blocks';
 import { addModule, updateModule } from '@/app/(admin)/admin/courses/actions';
+import { uploadPdfFile } from '@/lib/upload-client';
+import { fileSize, type FileInfo } from './files';
 import './courses.css';
 
-export type ModuleForm = { title: string; source: ModuleSource; url: string; withQuiz: boolean };
+export type ModuleForm = { title: string; source: ModuleSource; url: string; fileId: string | null; file: FileInfo | null; withQuiz: boolean };
 
 const SOURCES: { key: ModuleSource; label: string; icon: string }[] = [
   { key: 'EMBED', label: 'Lenke / Google Slides', icon: 'presentation-chart' },
   { key: 'BUILT', label: 'Bygg innholdet her', icon: 'article' },
+  { key: 'PDF', label: 'Last opp PDF', icon: 'file-pdf' },
 ];
 const TYPES = [
   { quiz: false, label: 'Uten quiz', icon: 'browser' },
@@ -33,12 +36,12 @@ export function ModuleDialog({ courseId, moduleId, initial, onClose }: { courseI
   function submit() {
     start(async () => {
       if (moduleId) {
-        const res = await updateModule(moduleId, f);
+        const res = await updateModule(moduleId, { title: f.title, source: f.source, url: f.url, fileId: f.fileId, withQuiz: f.withQuiz });
         if (!res.ok) return toast(res.error, 'error');
         toast('Modulen er lagret');
         return onClose();
       }
-      const res = await addModule(courseId, f);
+      const res = await addModule(courseId, { title: f.title, source: f.source, url: f.url, fileId: f.fileId, withQuiz: f.withQuiz });
       if (!res.ok) return toast(res.error, 'error');
       onClose();
       if (f.source === 'BUILT') {
@@ -94,11 +97,16 @@ export function ModuleDialog({ courseId, moduleId, initial, onClose }: { courseI
               </div>
             ) : null}
           </div>
+        ) : f.source === 'PDF' ? (
+          <PdfField
+            file={f.file}
+            onUploaded={(fileId, file) => set({ fileId, file, title: f.title || file.name.replace(/\.pdf$/i, '') })}
+          />
         ) : (
           <div style={{ padding: 20, background: 'var(--efkt-offwhite)', borderRadius: 20, display: 'flex', gap: 16 }}>
             <i className="ph ph-article" style={{ fontSize: 24, color: 'var(--efkt-coral)' }} aria-hidden />
             <div style={{ minWidth: 0, flex: 1, fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>
-              Du bygger innholdet med samme blokker som nyhetssakene — overskrift, tekst, bilde, sitat, punktliste, knapp. Editoren åpnes når du lagrer modulen.
+              Du bygger innholdet i samme editor som nyhetssakene — overskrift, tekst, bilde, bilde + tekst, sitat, punktliste, knapp og lenket kurs — og redigerer direkte i forhåndsvisningen. Editoren åpnes når du lagrer modulen.
             </div>
           </div>
         )}
@@ -121,5 +129,56 @@ export function ModuleDialog({ courseId, moduleId, initial, onClose }: { courseI
         </div>
       </div>
     </Dialog>
+  );
+}
+
+/** Drag-and-drop / browse PDF upload, straight to storage, with progress. */
+function PdfField({ file, onUploaded }: { file: FileInfo | null; onUploaded: (fileId: string, file: FileInfo) => void }) {
+  const toast = useToast();
+  const input = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<number | null>(null);
+  const [over, setOver] = useState(false);
+
+  async function upload(f: File | undefined) {
+    if (!f) return;
+    if (f.type !== 'application/pdf' && !/\.pdf$/i.test(f.name)) return toast('Velg en PDF-fil', 'error');
+    setProgress(0);
+    const res = await uploadPdfFile(f, setProgress);
+    setProgress(null);
+    if (!res.ok) return toast(res.error, 'error');
+    onUploaded(res.id, { name: f.name, size: f.size });
+    toast('PDF-en er lastet opp');
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <button
+        type="button"
+        onClick={() => input.current?.click()}
+        onDragOver={(e) => { e.preventDefault(); setOver(true); }}
+        onDragLeave={() => setOver(false)}
+        onDrop={(e) => { e.preventDefault(); setOver(false); upload(e.dataTransfer.files?.[0]); }}
+        disabled={progress !== null}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 16, padding: 24, textAlign: 'left', cursor: 'pointer',
+          border: `1px dashed ${over ? 'var(--efkt-coral)' : 'var(--efkt-divider)'}`, borderRadius: 20,
+          background: 'var(--efkt-offwhite)', fontFamily: 'var(--efkt-font)', color: 'var(--text-body)',
+        }}
+      >
+        <i className="ph ph-file-pdf" style={{ fontSize: 32, color: 'var(--efkt-coral)' }} aria-hidden />
+        <span style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <span style={{ fontSize: 16, fontWeight: 600, overflowWrap: 'anywhere' }}>
+            {progress !== null ? `Laster opp … ${Math.round(progress * 100)}%` : file ? file.name : 'Slipp en PDF her, eller klikk for å velge'}
+          </span>
+          <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>
+            {file && progress === null ? `${fileSize(file.size)} · klikk for å bytte fil` : 'PDF, opptil 100 MB. Vises side for side inne i kurset.'}
+          </span>
+        </span>
+      </button>
+      {progress !== null ? (
+        <div className="efkt-progress"><span style={{ width: `${Math.round(progress * 100)}%` }} /></div>
+      ) : null}
+      <input ref={input} type="file" accept="application/pdf,.pdf" hidden onChange={(e) => { upload(e.target.files?.[0]); e.target.value = ''; }} />
+    </div>
   );
 }

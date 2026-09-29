@@ -122,11 +122,20 @@ async function clearRecertSetting(courseId: string) {
 const ModuleInput = z
   .object({
     title: z.string().trim().min(1, 'Give the module a title').max(200),
-    source: z.enum(['EMBED', 'BUILT']),
+    source: z.enum(['EMBED', 'BUILT', 'PDF']),
     url: z.string().trim().max(2000),
+    fileId: z.string().max(64).nullable().optional(),
     withQuiz: z.boolean(),
   })
-  .refine((m) => m.source === 'BUILT' || m.url.length > 0, { message: 'Lim inn lenken til innholdet' });
+  .refine((m) => m.source !== 'EMBED' || m.url.length > 0, { message: 'Lim inn lenken til innholdet' })
+  .refine((m) => m.source !== 'PDF' || !!m.fileId, { message: 'Last opp en PDF' });
+
+/** The PDF a module plays must be an uploaded PDF. */
+async function pdfFileId(input: { source: string; fileId?: string | null }): Promise<string | null | false> {
+  if (input.source !== 'PDF') return null;
+  const f = await db.fileUpload.findUnique({ where: { id: input.fileId! }, select: { mimeType: true } });
+  return f?.mimeType === 'application/pdf' ? input.fileId! : false;
+}
 
 /** Pass score new quizzes start with: the course's current one, else 80. */
 async function defaultPass(courseId: string) {
@@ -138,6 +147,8 @@ export async function addModule(courseId: string, input: z.input<typeof ModuleIn
   await requireAdmin();
   const p = ModuleInput.safeParse(input);
   if (!p.success) return fail(first(p.error));
+  const fileId = await pdfFileId(p.data);
+  if (fileId === false) return fail('Last opp PDF-en på nytt');
   const last = await db.module.findFirst({ where: { courseId }, orderBy: { order: 'desc' }, select: { order: true } });
   const m = await db.module.create({
     data: {
@@ -146,6 +157,7 @@ export async function addModule(courseId: string, input: z.input<typeof ModuleIn
       order: (last?.order ?? -1) + 1,
       source: p.data.source,
       url: p.data.source === 'EMBED' ? embedUrl(p.data.url) : '',
+      fileId,
       blocks: p.data.source === 'BUILT' ? [newBlock('heading'), newBlock('paragraph')] : [],
       ...(p.data.withQuiz ? { quiz: { create: { passPercent: await defaultPass(courseId) } } } : {}),
     },
@@ -161,8 +173,10 @@ export async function updateModule(moduleId: string, input: z.input<typeof Modul
   if (!p.success) return fail(first(p.error));
   const m = await db.module.findUnique({ where: { id: moduleId }, include: { quiz: { select: { id: true } } } });
   if (!m) return fail('Module not found');
+  const fileId = await pdfFileId(p.data);
+  if (fileId === false) return fail('Last opp PDF-en på nytt');
   const url = p.data.source === 'EMBED' ? embedUrl(p.data.url) : '';
-  const contentChanged = url !== m.url || p.data.source !== m.source;
+  const contentChanged = url !== m.url || p.data.source !== m.source || fileId !== m.fileId;
   const quizChanged = p.data.withQuiz !== !!m.quiz;
   await db.module.update({
     where: { id: moduleId },
@@ -170,6 +184,7 @@ export async function updateModule(moduleId: string, input: z.input<typeof Modul
       title: p.data.title,
       source: p.data.source,
       url,
+      fileId,
       ...(quizChanged
         ? p.data.withQuiz
           ? { quiz: { create: { passPercent: await defaultPass(m.courseId) } } }
@@ -226,11 +241,17 @@ const BlockSchema = z
   .object({ id: z.string().min(1).max(40), kind: z.enum(BLOCK_KINDS.map((b) => b.kind) as [string, ...string[]]) })
   .passthrough();
 
-export async function saveModuleBlocks(moduleId: string, blocks: unknown[]): Promise<Result> {
+export async function saveModuleBlocks(moduleId: string, blocks: unknown[], title?: string): Promise<Result> {
   await requireAdmin();
   const p = z.array(BlockSchema).max(200).safeParse(blocks);
   if (!p.success) return fail('Some blocks are invalid');
-  const m = await db.module.update({ where: { id: moduleId }, data: { blocks: p.data as Prisma.InputJsonValue }, select: { courseId: true } });
+  const t = title === undefined ? undefined : z.string().trim().min(1, 'Give the module a title').max(200).safeParse(title);
+  if (t && !t.success) return fail(first(t.error));
+  const m = await db.module.update({
+    where: { id: moduleId },
+    data: { blocks: p.data as Prisma.InputJsonValue, ...(t ? { title: t.data } : {}) },
+    select: { courseId: true },
+  });
   await noteModuleChange(m.courseId);
   refresh(m.courseId);
   return { ok: true };
