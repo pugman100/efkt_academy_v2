@@ -11,7 +11,6 @@ export const metadata: Metadata = { title: 'Photographer Dashboard' };
 
 const H2 = { margin: 0, fontSize: 32, lineHeight: 1.1, letterSpacing: '-0.045em', fontWeight: 300 } as const;
 const CARD = { height: '100%', background: 'var(--surface-card)', border: '1px solid var(--border-default)', borderRadius: 20, padding: 32, display: 'flex', flexDirection: 'column', gap: 24, minWidth: 0 } as const;
-const GRID = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,360px),1fr))', gap: 24, alignItems: 'stretch' } as const;
 
 export default async function Dashboard() {
   const user = await requireUser();
@@ -108,7 +107,7 @@ export default async function Dashboard() {
               </div>
               <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{doneCount} av {tracked.length} tildelte kurs fullført</div>
             </div>
-            <div style={GRID}>
+            <div className="lr-course-grid">
               {current.map((m) => <ContinueTile key={m.course.id} t={tile(m)} />)}
             </div>
           </section>
@@ -144,7 +143,7 @@ export default async function Dashboard() {
                 </div>
                 <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{full} av {s.items.length} fullført</div>
               </div>
-              <div style={GRID}>
+              <div className="lr-course-grid">
                 {s.items.map((m) => <CourseTile key={m.course.id} t={tile(m)} />)}
               </div>
             </section>
