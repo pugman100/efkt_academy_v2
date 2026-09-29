@@ -1,3 +1,4 @@
+import type { Equipment } from '@/lib/equipment';
 import type { Country, Role, CourseStatus } from '@prisma/client';
 import type { CourseLine } from './data';
 
@@ -31,6 +32,7 @@ export type UserDetail = {
   jobTitle: string;
   phone: string;
   bio: string;
+  equipment: Equipment;
   role: Role;
   country: Country;
   regionId: string | null;

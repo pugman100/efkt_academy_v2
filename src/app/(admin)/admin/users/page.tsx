@@ -1,4 +1,5 @@
 import { db } from '@/lib/db';
+import { EQUIPMENT_FIELDS, type Equipment } from '@/lib/equipment';
 import { requireAdmin } from '@/lib/auth';
 import { getScope, scopeLine } from '@/lib/scope';
 import { ago, monthYear } from '@/lib/format';
@@ -97,6 +98,7 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
     jobTitle: user.jobTitle,
     phone: user.phone,
     bio: user.bio,
+    equipment: Object.fromEntries(EQUIPMENT_FIELDS.map((f) => [f.key, user[f.key]])) as Equipment,
     role: user.role,
     country: user.country,
     regionId: user.regionId,

@@ -11,6 +11,7 @@ import { appUrl, hashToken, newToken } from '@/lib/tokens';
 import { mailLayout, sendMail } from '@/lib/email';
 import { ROLE_LABEL } from '@/lib/labels';
 import type { ActionResult } from '@/components/admin/people/types';
+import { EQUIPMENT_FIELDS, EQUIPMENT_MAX, type EquipmentKey } from '@/lib/equipment';
 
 const id = z.string().min(1).max(64);
 const role = z.enum(['LEARNER', 'TEAM_LEAD', 'ADMIN']);
@@ -73,6 +74,7 @@ const detailsSchema = z.object({
   jobTitle: z.string().trim().max(120),
   phone: z.string().trim().max(40),
   bio: z.string().trim().max(1000),
+  ...(Object.fromEntries(EQUIPMENT_FIELDS.map((f) => [f.key, z.string().trim().max(EQUIPMENT_MAX)])) as Record<EquipmentKey, z.ZodString>),
 });
 
 /** Admin edits a person's name, email and profile fields. */
