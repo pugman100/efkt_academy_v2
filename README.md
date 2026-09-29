@@ -61,7 +61,7 @@ Administrators land on `/admin`; everyone else on the dashboard.
 | Command | What it does |
 |---|---|
 | `npm run dev` / `build` / `start` | Next.js |
-| `npm run vercel-build` | What Vercel runs on deploy: applies pending migrations (`prisma migrate deploy`, via `DATABASE_URL_UNPOOLED`), then builds |
+| `npm run vercel-build` | What Vercel runs on deploy: on **production** deploys it first applies pending migrations (`prisma migrate deploy`, via `DATABASE_URL_UNPOOLED`); preview deploys only build, so an unmerged branch never changes the live database |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run db:migrate` | Create a new migration after changing the schema |
 | `npm run db:seed` | Reset content to the prototype seed |
