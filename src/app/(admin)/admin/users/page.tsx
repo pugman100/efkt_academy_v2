@@ -95,6 +95,8 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
     name: user.name,
     email: user.email,
     jobTitle: user.jobTitle,
+    phone: user.phone,
+    bio: user.bio,
     role: user.role,
     country: user.country,
     regionId: user.regionId,
