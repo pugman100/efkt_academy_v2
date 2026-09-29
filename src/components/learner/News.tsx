@@ -46,18 +46,33 @@ export function FeaturedNews({ n }: { n: NewsItem }) {
   );
 }
 
+/**
+ * Secondary story in "Siste nytt". With a hero photo it is shown the same way as the
+ * featured story: the whole photo, a Deep Navy scrim and white text (readable on any
+ * photo, light or dark). Without a photo it is a plain white card with navy text.
+ */
 export function NewsRow({ n }: { n: NewsItem }) {
-  return (
-    <Link href={`/news/${n.id}`} className="lr-soft" style={{ flex: 1, display: 'flex', gap: 20, border: '1px solid var(--border-default)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface-card)' }}>
-      <span className="lr-newsthumb" style={{ width: 160, minWidth: 160, position: 'relative' }}>
+  const meta = `${newsDate(n)}${n.authorName ? ` · ${n.authorName}` : ''}`;
+  if (n.heroId) {
+    return (
+      <Link href={`/news/${n.id}`} className="lr-lift" style={{ flex: 1, position: 'relative', minHeight: 200, borderRadius: 20, overflow: 'hidden', background: 'var(--efkt-offwhite)', display: 'block' }}>
         <Photo {...newsPhoto(n)} style={{ position: 'absolute', inset: 0 }} />
-      </span>
-      <span style={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', gap: 8, padding: '24px 24px 24px 0' }}>
-        <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--efkt-coral)' }}>{n.category}</span>
-        <span style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-body)', textWrap: 'pretty' }}>{n.title}</span>
-        <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>{n.lead}</span>
-        <span style={{ marginTop: 'auto', fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{newsDate(n)}{n.authorName ? ` · ${n.authorName}` : ''}</span>
-      </span>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(12,14,57,0.15) 0%, rgba(12,14,57,0.85) 100%)' }} />
+        <span style={{ position: 'relative', height: '100%', minHeight: 200, padding: 24, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: 8 }}>
+          <span style={{ alignSelf: 'flex-start', padding: '6px 14px', borderRadius: 25, background: 'var(--efkt-coral)', fontSize: 14, fontWeight: 600, color: 'var(--efkt-white)' }}>{n.category}</span>
+          <span style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--efkt-white)', textWrap: 'pretty' }}>{n.title}</span>
+          <span style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.9)', textWrap: 'pretty' }}>{n.lead}</span>
+          <span style={{ fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,0.75)' }}>{meta}</span>
+        </span>
+      </Link>
+    );
+  }
+  return (
+    <Link href={`/news/${n.id}`} className="lr-soft" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, padding: 24, border: '1px solid var(--border-default)', borderRadius: 20, background: 'var(--surface-card)' }}>
+      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--efkt-coral)' }}>{n.category}</span>
+      <span style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-body)', textWrap: 'pretty' }}>{n.title}</span>
+      <span style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>{n.lead}</span>
+      <span style={{ marginTop: 'auto', fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{meta}</span>
     </Link>
   );
 }
