@@ -65,6 +65,12 @@ model User {
   photoId        String?
   bio            String     @default("")
   phone          String     @default("")
+  // Equipment, filled in by the photographer on their profile.
+  cameraModel    String     @default("")
+  lens1          String     @default("")
+  lens2          String     @default("")
+  droneModel     String     @default("")
+  phoneModel     String     @default("")
   status         UserStatus @default(ACTIVE)
   createdByAdmin Boolean    @default(false)
   createdAt      DateTime   @default(now())

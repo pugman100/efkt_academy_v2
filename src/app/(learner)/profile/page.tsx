@@ -4,6 +4,7 @@ import { fileUrl } from '@/lib/blocks';
 import { Avatar } from '@/components/ui/Avatar';
 import { PasswordForm } from '@/components/learner/PasswordForm';
 import { ProfileForm } from '@/components/learner/ProfileForm';
+import { EQUIPMENT_FIELDS, type Equipment } from '@/lib/equipment';
 import { myCourses } from '@/components/learner/server';
 
 export const metadata: Metadata = { title: 'Min profil' };
@@ -51,7 +52,10 @@ export default async function Profile() {
 
       <section className="lr-x" style={{ paddingTop: 32, paddingBottom: 96, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 24, alignItems: 'start' }}>
         <ProfileForm
-          initial={{ name: user.name, jobTitle: user.jobTitle, phone: user.phone, bio: user.bio, photoId: user.photoId }}
+          initial={{
+            name: user.name, jobTitle: user.jobTitle, phone: user.phone, bio: user.bio, photoId: user.photoId,
+            ...(Object.fromEntries(EQUIPMENT_FIELDS.map((f) => [f.key, user[f.key]])) as Equipment),
+          }}
           email={user.email}
           region={user.region?.name ?? ''}
           teamleader={user.region?.leadName ?? ''}

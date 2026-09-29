@@ -61,6 +61,9 @@ export function UsersView({
     );
   }, [rows, q, group, role, status]);
 
+  // The export covers exactly the segment shown: same filters, plus the country switcher.
+  const exportHref = `/api/admin/users-export?${new URLSearchParams({ q: q.trim(), group, role, status })}`;
+
   // Actions only ever apply to selected rows that are visible under the current filters.
   const selected = shown.filter((u) => picked.has(u.id));
   const shownPicked = selected.length;
@@ -96,6 +99,16 @@ export function UsersView({
         fat="EFKT"
         actions={
           <>
+            <a
+              href={exportHref}
+              download
+              className="efkt-btn efkt-btn--secondary"
+              aria-disabled={!shown.length}
+              onClick={(e) => !shown.length && e.preventDefault()}
+              title="Download everyone shown below, with all profile fields, as an Excel file"
+            >
+              Export XLSX ({shown.length}) <i className="ph ph-download-simple" style={{ fontSize: 20 }} aria-hidden />
+            </a>
             <Button variant="secondary" iconRight="key" onClick={() => setCreating(true)}>Create user</Button>
             <ButtonLink href="/admin/invitations" iconRight="plus">Invite people</ButtonLink>
           </>
