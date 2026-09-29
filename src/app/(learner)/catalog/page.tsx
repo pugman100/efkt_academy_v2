@@ -32,7 +32,7 @@ export default async function Catalog() {
           Åpent for alle på teamet ditt. Meld deg på når du har tid.
         </div>
       </section>
-      <section className="lr-x" style={{ paddingTop: 32, paddingBottom: 96, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(min(100%,360px),1fr))', gap: 24, alignItems: 'stretch' }}>
+      <section className="lr-x lr-course-grid" style={{ paddingTop: 32, paddingBottom: 96 }}>
         {courses.map((c) => (
           <div key={c.id} style={{ height: '100%', borderRadius: 20, overflow: 'hidden', background: 'var(--efkt-white)', border: '1px solid var(--border-default)', display: 'flex', flexDirection: 'column' }}>
             <div style={{ position: 'relative', height: 200 }}>
