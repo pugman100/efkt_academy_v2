@@ -59,6 +59,7 @@ img { max-width: 100%; }
 .efkt-field__box > i { font-size: 20px; color: var(--text-muted); }
 .efkt-field__input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-family: var(--efkt-font); font-size: var(--efkt-text-body); font-weight: var(--efkt-weight-thin); color: var(--text-body); padding: 14px 0; line-height: 1.5; }
 .efkt-field__input:focus-visible { outline: none; }
+.efkt-field__input::placeholder { color: var(--efkt-muted); opacity: .55; }
 textarea.efkt-field__input { padding: 0; resize: vertical; }
 .efkt-field__hint { display: block; margin-top: var(--space-2); font-size: var(--text-micro); color: var(--text-muted); }
 .efkt-field__hint--error { color: var(--efkt-coral); }

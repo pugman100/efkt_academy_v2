@@ -10,8 +10,9 @@ import { Photo } from '@/components/ui/Photo';
 import { Tag } from '@/components/ui/Tag';
 import { useToast } from '@/components/ui/Toast';
 import { fileUrl } from '@/lib/blocks';
+import { EQUIPMENT_FIELDS, EQUIPMENT_MAX, type Equipment } from '@/lib/equipment';
 
-type Values = { name: string; jobTitle: string; phone: string; bio: string; photoId: string | null };
+type Values = { name: string; jobTitle: string; phone: string; bio: string; photoId: string | null } & Equipment;
 
 export function ProfileForm({ initial, email, region, teamleader, groups }: { initial: Values; email: string; region: string; teamleader: string; groups: string[] }) {
   const [v, setV] = useState(initial);
@@ -94,6 +95,15 @@ export function ProfileForm({ initial, email, region, teamleader, groups }: { in
         <Textarea label="Kort om deg" value={v.bio} onChange={(e) => set({ bio: e.target.value.slice(0, 280) })} rows={4} />
         <div style={{ marginTop: 8, fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>{v.bio.length} / 280 tegn</div>
       </div>
+
+      <div style={{ height: 1, background: 'var(--border-default)' }} />
+      <div>
+        <div style={{ fontSize: 20, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 8 }}>Utstyr</div>
+        <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>Hva du bruker på oppdrag. Hjelper teamlederen din med å planlegge og gi råd.</div>
+      </div>
+      {EQUIPMENT_FIELDS.map((f) => (
+        <Input key={f.key} label={f.label} placeholder={f.placeholder} value={v[f.key]} onChange={(e) => set({ [f.key]: e.target.value })} maxLength={EQUIPMENT_MAX} />
+      ))}
 
       <div style={{ padding: 20, background: 'var(--efkt-offwhite)', borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-muted)' }}>Tilhørighet</div>

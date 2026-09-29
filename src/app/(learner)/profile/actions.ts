@@ -7,6 +7,7 @@ import { getSession, requireUser, SESSION_COOKIE } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { hashPassword, passwordOk, verifyPassword } from '@/lib/password';
 import { hashToken } from '@/lib/tokens';
+import { EQUIPMENT_FIELDS, EQUIPMENT_MAX } from '@/lib/equipment';
 
 type Result = { ok: true } | { ok: false; error: string };
 
@@ -16,6 +17,7 @@ const Profile = z.object({
   phone: z.string().trim().max(40),
   bio: z.string().trim().max(280),
   photoId: z.string().min(1).max(64).nullable(),
+  ...Object.fromEntries(EQUIPMENT_FIELDS.map((f) => [f.key, z.string().trim().max(EQUIPMENT_MAX)])) as Record<(typeof EQUIPMENT_FIELDS)[number]['key'], z.ZodString>,
 });
 
 export async function saveProfile(input: z.input<typeof Profile>): Promise<Result> {
