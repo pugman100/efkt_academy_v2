@@ -173,7 +173,9 @@ export default async function CourseOverview({ params }: { params: Promise<{ id:
                   {c.reference
                     ? m.source === 'BUILT'
                       ? 'Bygget her'
-                      : m.url
+                      : m.source === 'PDF'
+                        ? 'PDF'
+                        : m.url
                     : m.quiz
                       ? `${m.quiz._count.questions} spørsmål · bestått ved ${m.quiz.passPercent}%`
                       : 'Ingen quiz — fullføres når du har åpnet innholdet'}

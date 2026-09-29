@@ -61,6 +61,7 @@ Administrators land on `/admin`; everyone else on the dashboard.
 | Command | What it does |
 |---|---|
 | `npm run dev` / `build` / `start` | Next.js |
+| `npm run vercel-build` | What Vercel runs on deploy: applies pending migrations (`prisma migrate deploy`, via `DATABASE_URL_UNPOOLED`), then builds |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run db:migrate` | Create a new migration after changing the schema |
 | `npm run db:seed` | Reset content to the prototype seed |
@@ -94,6 +95,16 @@ A learner sees a course when it is **Published**, matches their **country** (or 
 of: assigned directly, assigned to one of their groups, one of its categories is assigned to one of
 their groups, or it is self-enrol and they enrolled. Every matching reason is kept, so admins see
 *why* a user has a course ("via category Foto → Photographers").
+
+### Module types
+
+- **Link** (`EMBED`): a published page, e.g. Google Slides "Publish to web" (`/pub` → `/embed`).
+- **Built here** (`BUILT`): content made in the admin with the same block editor as news stories
+  (heading, text, image, image + text, quote, list, button, divider, linked course), edited in
+  place in a live preview.
+- **PDF** (`PDF`): an uploaded PDF (up to 100 MB). The browser uploads it straight to the private
+  `uploads` bucket with a presigned PUT (so it isn't limited by Vercel's 4.5 MB request size), and
+  learners get a short-lived presigned link that pdf.js renders page by page in the player.
 
 ### Course flow (`src/lib/progress.ts`)
 

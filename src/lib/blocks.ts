@@ -66,8 +66,9 @@ export function embedUrl(url: string | null | undefined): string {
     .replace(/\/edit$/, '/embed');
 }
 
-export function sourceLabel(m: { source: 'EMBED' | 'BUILT'; url: string }): string {
+export function sourceLabel(m: { source: 'EMBED' | 'BUILT' | 'PDF'; url: string }): string {
   if (m.source === 'BUILT') return 'Bygget her';
+  if (m.source === 'PDF') return 'PDF';
   const u = m.url || '';
   if (u.includes('docs.google.com/presentation')) return 'Google Slides';
   if (u.includes('docs.google.com/document')) return 'Google Docs';

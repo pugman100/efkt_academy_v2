@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
+import { PdfViewer } from './PdfViewer';
 import { BlockRenderer, type LinkedCourse } from '@/components/blocks/BlockRenderer';
 import { useToast } from '@/components/ui/Toast';
 import type { Block } from '@/lib/blocks';
@@ -17,8 +18,9 @@ export type PlayerProps = {
   module: {
     id: string;
     title: string;
-    source: 'EMBED' | 'BUILT';
+    source: 'EMBED' | 'BUILT' | 'PDF';
     url: string;
+    /** Frameable URL: the /embed form of a published link, or the uploaded PDF. */
     embed: string;
     blocks: Block[];
     minSeconds: number;
@@ -159,16 +161,20 @@ export function Player(props: PlayerProps) {
     side(a.href);
   }
 
-  const isEmbed = m.source === 'EMBED' && !!m.embed;
-  const isEmpty = m.source === 'EMBED' && !m.embed;
+  const isPdf = m.source === 'PDF';
+  const isEmbed = (m.source === 'EMBED' || isPdf) && !!m.embed;
+  const isEmpty = (m.source === 'EMBED' || isPdf) && !m.embed;
+  // PDFs open in the browser's own viewer; link out to the published original otherwise.
+  const outside = isPdf ? m.embed : m.url.startsWith('http') ? m.url : 'https://' + m.url;
+  const pages = isPdf ? 'sidene' : 'slidene';
   const fsLabel = fullscreen ? 'Avslutt fullskjerm' : 'Fullskjerm';
   const quizHref = `/courses/${courseId}/modules/${m.id}/quiz`;
 
   const gateLine = timeMet
     ? confirmed
       ? 'Bekreftet — quizen er åpen.'
-      : 'Bekreft at du har vært gjennom alle slidene for å åpne quizen.'
-    : `Quizen åpnes om ${formatRemain(remain)}. Bla gjennom alle slidene i mellomtiden.`;
+      : `Bekreft at du har vært gjennom alle ${pages} for å åpne quizen.`
+    : `Quizen åpnes om ${formatRemain(remain)}. Bla gjennom alle ${pages} i mellomtiden.`;
 
   return (
     <div ref={root} style={{ position: 'fixed', inset: 0, zIndex: 70, background: 'var(--surface-dark)', display: 'flex', flexDirection: 'column', fontFamily: 'var(--efkt-font)' }}>
@@ -197,7 +203,7 @@ export function Player(props: PlayerProps) {
         {props.preview ? <PreviewNotice dark /> : null}
         {isEmbed ? (
           <>
-            <button
+            {!isPdf ? <button
               type="button"
               className="lr-pbtn"
               title="Last modulen på nytt"
@@ -207,8 +213,8 @@ export function Player(props: PlayerProps) {
               }}
             >
               <i className="ph ph-arrow-clockwise" style={{ fontSize: 16 }} aria-hidden /> <span className="lr-plabel">Tilbake til modulen</span>
-            </button>
-            <button type="button" className="lr-pbtn" title="Åpne i eget vindu ved siden av kurset" onClick={() => side(m.url.startsWith('http') ? m.url : 'https://' + m.url)}>
+            </button> : null}
+            <button type="button" className="lr-pbtn" title="Åpne i eget vindu ved siden av kurset" onClick={() => side(outside)}>
               <i className="ph ph-arrow-square-out" style={{ fontSize: 16 }} aria-hidden /> <span className="lr-plabel">Åpne i eget vindu</span>
             </button>
           </>
@@ -244,7 +250,8 @@ export function Player(props: PlayerProps) {
       </div>
 
       <div style={{ flex: 1, minHeight: 0, margin: '0 12px', borderRadius: 20, overflow: 'hidden', background: 'var(--efkt-white)', display: 'flex', flexDirection: 'column' }}>
-        {isEmbed ? (
+        {isEmbed && isPdf ? <PdfViewer src={m.embed} title={m.title} /> : null}
+        {isEmbed && !isPdf ? (
           <iframe key={reloadKey} src={m.embed} title={m.title} allowFullScreen allow="fullscreen" style={{ flex: 1, minHeight: 0, width: '100%', border: 'none', display: 'block' }} />
         ) : null}
         {m.source === 'BUILT' ? (
@@ -259,7 +266,7 @@ export function Player(props: PlayerProps) {
             <i className="ph ph-link-break" style={{ fontSize: 40, color: 'var(--efkt-coral)' }} aria-hidden />
             <div style={{ fontSize: 20, fontWeight: 600 }}>Innholdet mangler</div>
             <div style={{ fontSize: 16, fontWeight: 300, color: 'var(--text-muted)', maxWidth: 420, textWrap: 'pretty' }}>
-              Denne modulen har ingen lenke ennå. Si det til teamlederen din, så får administratoren lagt den inn.
+              Denne modulen har {isPdf ? 'ingen PDF' : 'ingen lenke'} ennå. Si det til teamlederen din, så får administratoren lagt den inn.
             </div>
           </div>
         ) : null}
@@ -295,7 +302,7 @@ export function Player(props: PlayerProps) {
             ) : (
               <i className="ph ph-circle" style={{ fontSize: 20, color: 'rgba(255,255,255,0.5)' }} aria-hidden />
             )}
-            {confirmed ? 'Bekreftet — hele modulen gjennomgått' : 'Jeg har vært gjennom alle slidene'}
+            {confirmed ? 'Bekreftet — hele modulen gjennomgått' : `Jeg har vært gjennom alle ${pages}`}
           </button>
         ) : null}
 

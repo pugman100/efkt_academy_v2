@@ -1,6 +1,6 @@
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
-import { readImage } from '@/lib/storage';
+import { presignDocumentRead, readImage } from '@/lib/storage';
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   // Images are only visible to signed-in users; the bucket is private and read server-side.
@@ -8,6 +8,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const { id } = await params;
   const file = await db.fileUpload.findUnique({ where: { id } });
   if (!file) return new Response('Not found', { status: 404 });
+  // PDFs can exceed the host's response limit: hand the browser a short-lived bucket link.
+  if (file.mimeType === 'application/pdf') {
+    return new Response(null, { status: 302, headers: { Location: await presignDocumentRead(id, file.filename), 'Cache-Control': 'private, no-store' } });
+  }
   // Images uploaded before the move to object storage still carry their bytes.
   const body = file.data ? new Uint8Array(file.data) : await readImage(id);
   if (!body) return new Response('Not found', { status: 404 });

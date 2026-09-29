@@ -84,12 +84,19 @@ export default async function CoursePage({ params, searchParams }: { params: Pro
       <div style={{ padding: '40px 48px 64px' }}>
         {tab === 'modules' ? (
           <ModulesTab
+            files={Object.fromEntries(
+              (await db.fileUpload.findMany({
+                where: { id: { in: course.modules.flatMap((m) => (m.fileId ? [m.fileId] : [])) } },
+                select: { id: true, filename: true, size: true },
+              })).map((f) => [f.id, { name: f.filename, size: f.size }]),
+            )}
             courseId={course.id}
             modules={course.modules.map((m) => ({
               id: m.id,
               title: m.title,
               source: m.source,
               url: m.url,
+              fileId: m.fileId,
               blockCount: parseBlocks(m.blocks).length,
               minSeconds: m.minSeconds,
               quiz: m.quiz ? { questions: m.quiz._count.questions, passPercent: m.quiz.passPercent } : null,

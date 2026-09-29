@@ -7,6 +7,7 @@ import { Badge, Button, Dialog, useToast } from '@/components/ui';
 import { sourceLabel } from '@/lib/blocks';
 import { deleteModule, moveModule, setModuleSeconds } from '@/app/(admin)/admin/courses/actions';
 import { ModuleDialog, type ModuleForm } from './ModuleDialog';
+import { fileSize, type FileInfo } from './files';
 import './courses.css';
 
 export type ModuleRow = {
@@ -14,6 +15,7 @@ export type ModuleRow = {
   title: string;
   source: ModuleSource;
   url: string;
+  fileId: string | null;
   blockCount: number;
   minSeconds: number;
   quiz: { questions: number; passPercent: number } | null;
@@ -21,13 +23,22 @@ export type ModuleRow = {
 
 type Stats = { modules: number; withQuiz: number; pass: string; enrolled: number };
 
-function subLine(m: ModuleRow) {
-  const content = m.source === 'BUILT' ? `${m.blockCount} ${m.blockCount === 1 ? 'innholdsblokk' : 'innholdsblokker'}` : m.url || 'Ingen lenke ennå';
+const SOURCE_ICON: Record<ModuleSource, string> = { EMBED: 'presentation-chart', BUILT: 'article', PDF: 'file-pdf' };
+const SOURCE_TONE: Record<ModuleSource, 'mint' | 'sand' | 'blush'> = { EMBED: 'mint', BUILT: 'sand', PDF: 'blush' };
+
+function subLine(m: ModuleRow, files: Record<string, FileInfo>) {
+  const file = m.fileId ? files[m.fileId] : undefined;
+  const content =
+    m.source === 'BUILT'
+      ? `${m.blockCount} ${m.blockCount === 1 ? 'innholdsblokk' : 'innholdsblokker'}`
+      : m.source === 'PDF'
+        ? file ? `${file.name} · ${fileSize(file.size)}` : 'Ingen PDF ennå'
+        : m.url || 'Ingen lenke ennå';
   const quiz = m.quiz ? `  ·  quiz: ${m.quiz.questions} spørsmål, bestått ved ${m.quiz.passPercent}%` : '  ·  ingen quiz';
   return content + quiz;
 }
 
-export function ModulesTab({ courseId, modules, stats }: { courseId: string; modules: ModuleRow[]; stats: Stats }) {
+export function ModulesTab({ courseId, modules, files, stats }: { courseId: string; modules: ModuleRow[]; files: Record<string, FileInfo>; stats: Stats }) {
   const toast = useToast();
   const [pending, start] = useTransition();
   const [dialog, setDialog] = useState<{ moduleId: string | null; form: ModuleForm } | null>(null);
@@ -41,7 +52,7 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
     });
 
   const edit = (m: ModuleRow) =>
-    setDialog({ moduleId: m.id, form: { title: m.title, source: m.source, url: m.url, withQuiz: !!m.quiz } });
+    setDialog({ moduleId: m.id, form: { title: m.title, source: m.source, url: m.url, fileId: m.fileId, file: m.fileId ? files[m.fileId] ?? null : null, withQuiz: !!m.quiz } });
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap: 32, alignItems: 'start' }}>
@@ -51,12 +62,12 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
             {/* Title row: the title gets the full card width; actions sit on their own row below. */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
               <div style={{ width: 32, height: 32, minWidth: 32, borderRadius: '50%', background: 'var(--efkt-offwhite)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600 }}>{i + 1}</div>
-              <i className={`ph ph-${m.source === 'BUILT' ? 'article' : 'presentation-chart'}`} style={{ fontSize: 24, color: 'var(--efkt-coral)' }} aria-hidden />
+              <i className={`ph ph-${SOURCE_ICON[m.source]}`} style={{ fontSize: 24, color: 'var(--efkt-coral)' }} aria-hidden />
               <div style={{ minWidth: 0, flex: 1 }}>
                 <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 4, textWrap: 'pretty' }}>{m.title}</div>
-                <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={m.url || undefined}>{subLine(m)}</div>
+                <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={m.url || undefined}>{subLine(m, files)}</div>
               </div>
-              <Badge tone={m.source === 'BUILT' ? 'sand' : 'mint'} style={{ flexShrink: 0 }}>{sourceLabel(m)}</Badge>
+              <Badge tone={SOURCE_TONE[m.source]} style={{ flexShrink: 0 }}>{sourceLabel(m)}</Badge>
             </div>
             <div className="ac-modactions">
               {m.source === 'BUILT' ? (
@@ -65,7 +76,7 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
                 </Link>
               ) : (
                 <button type="button" className="ac-pill" onClick={() => edit(m)}>
-                  <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> Bytt lenke
+                  <i className="ph ph-pencil-simple-line" style={{ fontSize: 16, color: 'var(--efkt-coral)' }} aria-hidden /> {m.source === 'PDF' ? 'Bytt PDF' : 'Bytt lenke'}
                 </button>
               )}
               {m.quiz && m.minSeconds > 0 ? <GateInput key={m.minSeconds} value={m.minSeconds} onCommit={(n) => run(() => setModuleSeconds(m.id, n))} /> : null}
@@ -82,7 +93,7 @@ export function ModulesTab({ courseId, modules, stats }: { courseId: string; mod
           </div>
         ))}
 
-        <button type="button" className="ac-add" onClick={() => setDialog({ moduleId: null, form: { title: '', source: 'EMBED', url: '', withQuiz: true } })}>
+        <button type="button" className="ac-add" onClick={() => setDialog({ moduleId: null, form: { title: '', source: 'EMBED', url: '', fileId: null, file: null, withQuiz: true } })}>
           <i className="ph ph-plus" style={{ fontSize: 20 }} aria-hidden /> Add module
         </button>
       </div>
