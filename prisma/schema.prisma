@@ -76,16 +76,17 @@ model User {
   createdAt      DateTime   @default(now())
   lastSeenAt     DateTime?
 
-  groups          Group[]         @relation("UserGroups")
-  directCourses   Course[]        @relation("CourseUsers")
+  groups          Group[]          @relation("UserGroups")
+  directCourses   Course[]         @relation("CourseUsers")
   enrolments      Enrolment[]
   progress        Progress[]
   attempts        QuizAttempt[]
-  sessions        Session[]       @relation("SessionUser")
-  impersonations  Session[]       @relation("SessionImpersonator")
+  sessions        Session[]        @relation("SessionUser")
+  impersonations  Session[]        @relation("SessionImpersonator")
   resetTokens     PasswordReset[]
-  invitationsSent Invitation[]    @relation("InvitedBy")
+  invitationsSent Invitation[]     @relation("InvitedBy")
   auditLogs       AuditLog[]
+  courseReminders CourseReminder[]
 }
 
 model Session {
@@ -182,11 +183,12 @@ model Course {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
-  categories Category[]  @relation("CourseCategories")
-  groups     Group[]     @relation("CourseGroups")
-  users      User[]      @relation("CourseUsers")
+  categories Category[]       @relation("CourseCategories")
+  groups     Group[]          @relation("CourseGroups")
+  users      User[]           @relation("CourseUsers")
   modules    Module[]
   enrolments Enrolment[]
+  reminders  CourseReminder[]
 }
 
 model Module {
@@ -370,4 +372,19 @@ model EmailOutbox {
 model Setting {
   key   String @id
   value Json
+}
+
+// Course reminders ("not started" / "not finished") per person and course.
+// firstSeenAt is when the reminder job first saw the person holding the course, so
+// "not started for 7 days" counts from then (access via groups has no date of its own).
+model CourseReminder {
+  userId         String
+  courseId       String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course         Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  firstSeenAt    DateTime  @default(now())
+  remindersSent  Int       @default(0)
+  lastRemindedAt DateTime?
+
+  @@id([userId, courseId])
 }

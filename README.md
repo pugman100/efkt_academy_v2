@@ -83,7 +83,7 @@ then `neon env pull --file .env`. `neon diff` shows schema changes against the p
 ### Scheduled job
 
 `GET /api/cron` with header `Authorization: Bearer $CRON_SECRET` sends due invitation reminders,
-expires old invitations and publishes scheduled news stories. On Vercel, `vercel.json` runs it
+expires old invitations, publishes scheduled news stories and sends course reminders. On Vercel, `vercel.json` runs it
 daily at 06:00 UTC (the Hobby plan's limit) and sends the header automatically when
 `CRON_SECRET` is set; on a Pro plan it can run hourly (`0 * * * *`).
 
@@ -113,6 +113,16 @@ the learner has spent the module's `minSeconds` with the tab visible **and** tic
 through all slides" — the dwell time is tracked server-side. Quizzes are graded on the server
 (correct answers never reach the browser before submission), retries are enforced, and passing
 offers "Neste: …" straight away. Completion = passed modules / total.
+
+### Course reminders (`src/lib/course-reminders.ts`)
+
+Off by default; switched on and tuned in Admin → Completion. Learners and team leads (not
+admins) with an active, signed-up account get **one email** listing their waiting courses when a
+published, non-reference course hasn't been started N days after they got it, or a started
+course has had no progress for N days, up to a maximum number of reminders per course. Progress
+after a reminder starts the count over. Group and category access carry no date, so "got it"
+is the first time the daily job saw the person holding the course — turning reminders on never
+floods everyone at once. Sent by the daily cron job, or immediately with "Send now".
 
 ### Security notes
 
