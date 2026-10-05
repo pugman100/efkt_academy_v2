@@ -1,6 +1,6 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
-import { GetObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, GetObjectCommand, HeadObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { db } from './db';
 
@@ -92,4 +92,10 @@ export async function presignDocumentRead(id: string, filename: string): Promise
     }),
     { expiresIn: 3600 },
   );
+}
+
+/** Removes one stored image (object and metadata row), e.g. when a portfolio photo is deleted. */
+export async function removeImage(id: string): Promise<void> {
+  await s3.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: objectKey(id) }));
+  await db.fileUpload.deleteMany({ where: { id } });
 }

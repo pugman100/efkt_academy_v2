@@ -8,6 +8,9 @@ import { COURSE_STATUS_LABEL } from '@/lib/labels';
 import { courseLines, loadProgress, loadPublishedCourses, reachable, summarise, userScopeWhere } from '@/components/admin/people/data';
 import { gate } from '@/lib/prerequisites';
 import { dateNo } from '@/lib/format';
+import { fileUrl } from '@/lib/blocks';
+import { appUrl } from '@/lib/tokens';
+import { portfolioPath } from '@/lib/portfolio';
 import { UsersView } from '@/components/admin/people/UsersView';
 import type { UserDetail, UserRow } from '@/components/admin/people/types';
 import '@/components/admin/people/people.css';
@@ -82,6 +85,7 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
       groups: { select: { id: true, name: true } },
       directCourses: { select: { id: true, title: true, status: true, country: true } },
       resetTokens: { orderBy: { createdAt: 'desc' }, take: 1, select: { createdAt: true } },
+      portfolio: { orderBy: [{ order: 'asc' }, { createdAt: 'asc' }], select: { fileId: true } },
     },
   });
   if (!user) return null;
@@ -133,5 +137,10 @@ async function loadDetail(id: string, adminId: string, courses: Awaited<ReturnTy
     resetSent: user.resetTokens[0] ? ago(user.resetTokens[0].createdAt).toLowerCase() : null,
     isSelf: user.id === adminId,
     canImpersonate: active && user.role !== 'ADMIN' && user.id !== adminId,
+    portfolio: {
+      count: user.portfolio.length,
+      url: appUrl(portfolioPath(user.portfolioToken)),
+      previews: user.portfolio.slice(0, 4).map((p) => fileUrl(p.fileId)!),
+    },
   };
 }

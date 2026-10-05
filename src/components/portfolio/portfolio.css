@@ -1,0 +1,28 @@
+/* Public portfolio: black page, masonry grid, full-screen viewer. */
+.pf-page { min-height: 100vh; background: #000; color: #fff; padding: 40px 48px 96px; font-family: var(--efkt-font); }
+.pf-head { display: flex; flex-direction: column; gap: 32px; margin-bottom: 40px; }
+.pf-title { margin: 0; font-size: 48px; line-height: 1.1; letter-spacing: -0.05em; font-weight: 300; color: #fff; }
+/* Justified rows: reading order left to right; every photo in a row gets the same height.
+   Each tile's flex-grow and basis are its aspect ratio (set inline), so portrait and
+   landscape share rows. The spacer keeps the last row from stretching. */
+.pf-grid { display: flex; flex-wrap: wrap; gap: 16px; --pf-row: 340px; }
+.pf-grid::after { content: ''; flex-grow: 1000; }
+.pf-tile { display: block; padding: 0; border: none; background: #111; cursor: zoom-in; border-radius: 4px; overflow: hidden; flex-basis: calc(var(--r) * var(--pf-row)); flex-grow: var(--r); aspect-ratio: var(--r); max-width: 100%; }
+.pf-tile img { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity 180ms cubic-bezier(0.4,0,0.2,1); }
+.pf-tile:hover img { opacity: 0.88; }
+.pf-viewer { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.96); display: flex; align-items: center; justify-content: center; padding: 56px 72px; }
+.pf-viewer img { max-width: 100%; max-height: 100%; object-fit: contain; cursor: default; }
+.pf-close, .pf-nav { position: absolute; width: 48px; height: 48px; border-radius: 50%; border: none; background: rgba(255,255,255,0.12); color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; }
+.pf-close:hover, .pf-nav:hover { background: rgba(255,255,255,0.24); }
+.pf-close { top: 16px; right: 16px; }
+.pf-nav { top: 50%; transform: translateY(-50%); }
+.pf-nav--prev { left: 16px; }
+.pf-nav--next { right: 16px; }
+.pf-count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 14px; color: rgba(255,255,255,0.7); }
+@media (max-width: 700px) {
+  .pf-page { padding: 24px 16px 64px; }
+  .pf-title { font-size: 32px; }
+  .pf-grid { gap: 8px; --pf-row: 200px; }
+  .pf-viewer { padding: 56px 8px; }
+  .pf-nav { display: none; }
+}

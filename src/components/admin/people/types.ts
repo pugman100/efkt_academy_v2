@@ -49,6 +49,8 @@ export type UserDetail = {
   resetSent: string | null;
   isSelf: boolean;
   canImpersonate: boolean;
+  /** Public portfolio: image count, link and up to four preview images (signed-in URLs). */
+  portfolio: { count: number; url: string; previews: string[] };
 };
 
 export type ActionResult = { ok: true } | { ok: false; error: string };

@@ -6,6 +6,10 @@ import { PasswordForm } from '@/components/learner/PasswordForm';
 import { ProfileForm } from '@/components/learner/ProfileForm';
 import { EQUIPMENT_FIELDS, type Equipment } from '@/lib/equipment';
 import { myCourses } from '@/components/learner/server';
+import { PortfolioEditor } from '@/components/learner/PortfolioEditor';
+import { db } from '@/lib/db';
+import { appUrl } from '@/lib/tokens';
+import { portfolioPath } from '@/lib/portfolio';
 
 export const metadata: Metadata = { title: 'Min profil' };
 
@@ -14,7 +18,11 @@ const COUNTRY_NO = { Norway: 'Norge', Denmark: 'Danmark', Both: 'Norge og Danmar
 
 export default async function Profile() {
   const user = await requireUser();
-  const tracked = (await myCourses(user)).filter((m) => !m.course.reference);
+  const [mine, portfolio] = await Promise.all([
+    myCourses(user),
+    db.portfolioImage.findMany({ where: { userId: user.id }, orderBy: [{ order: 'asc' }, { createdAt: 'asc' }], select: { id: true, fileId: true, width: true, height: true } }),
+  ]);
+  const tracked = mine.filter((m) => !m.course.reference);
   const done = tracked.filter((m) => m.progress.complete).length;
   const modulesPassed = tracked.reduce((a, m) => a + m.progress.passed, 0);
   const groups = user.groups.map((g) => g.name);
@@ -64,6 +72,14 @@ export default async function Profile() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, minWidth: 0 }}>
           <PasswordForm />
         </div>
+      </section>
+
+      <section className="lr-x" style={{ paddingBottom: 96, marginTop: -64 }}>
+        <PortfolioEditor
+          name={user.name}
+          link={appUrl(portfolioPath(user.portfolioToken))}
+          images={portfolio.map((p) => ({ id: p.id, src: fileUrl(p.fileId)!, width: p.width, height: p.height }))}
+        />
       </section>
     </>
   );

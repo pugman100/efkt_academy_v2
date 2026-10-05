@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 // Cheap gate: bounce requests without a session cookie to /login.
 // Real session validation happens server-side in layouts and actions.
-const PUBLIC = ['/login', '/invite', '/reset', '/api/cron', '/assets', '/_next', '/favicon'];
+// /portfolio/<code> is public on purpose: the random code in the link is the access check.
+const PUBLIC = ['/login', '/invite', '/reset', '/api/cron', '/assets', '/_next', '/favicon', '/portfolio/'];
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
