@@ -3,6 +3,8 @@ import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
 import { COUNTRY_SHORT, ROLE_LABEL } from '@/lib/labels';
 import { csv, xlsx, type Table } from '@/lib/spreadsheet';
+import { appUrl } from '@/lib/tokens';
+import { portfolioPath } from '@/lib/portfolio';
 import { courseLines, loadProgress, loadPublishedCourses, summarise } from '@/components/admin/people/data';
 
 export const dynamic = 'force-dynamic';
@@ -21,7 +23,11 @@ export async function POST(req: Request) {
   const [users, courses] = await Promise.all([
     db.user.findMany({
       where: { id: { in: ids } },
-      include: { groups: { select: { id: true, name: true }, orderBy: { createdAt: 'asc' } }, region: { select: { name: true } } },
+      include: {
+        groups: { select: { id: true, name: true }, orderBy: { createdAt: 'asc' } },
+        region: { select: { name: true } },
+        _count: { select: { portfolio: true } },
+      },
       orderBy: { name: 'asc' },
     }),
     loadPublishedCourses(),
@@ -31,11 +37,12 @@ export async function POST(req: Request) {
   const table: Table = {
     name: `efkt-academy_brukere_${new Date().toISOString().slice(0, 10)}`,
     sheet: 'Brukere',
-    head: ['Navn', 'E-post', 'Stilling', 'Rolle', 'Status', 'Grupper', 'Land', 'Region', 'Tildelte kurs', 'Fullført', 'Fremdrift %', 'Sist innlogget', 'Opprettet'],
+    head: ['Navn', 'E-post', 'Stilling', 'Rolle', 'Status', 'Grupper', 'Land', 'Region', 'Tildelte kurs', 'Fullført', 'Fremdrift %', 'Sist innlogget', 'Opprettet', 'Portefølje (bilder)', 'Portefølje-lenke'],
     rows: users.map((u) => {
       const s = summarise(courseLines(courses, u, progress));
       return [u.name, u.email, u.jobTitle, ROLE_LABEL[u.role], u.status === 'ACTIVE' ? 'Aktiv' : 'Deaktivert', u.groups.map((g) => g.name).join(', '),
-        COUNTRY_SHORT[u.country], u.region?.name ?? '', s.assigned, s.done, s.pct, day(u.lastSeenAt), day(u.createdAt)];
+        COUNTRY_SHORT[u.country], u.region?.name ?? '', s.assigned, s.done, s.pct, day(u.lastSeenAt), day(u.createdAt),
+        u._count.portfolio, appUrl(portfolioPath(u.portfolioToken))];
     }),
   };
 

@@ -88,6 +88,9 @@ model User {
   auditLogs       AuditLog[]
   courseReminders CourseReminder[]
   courseUnlocks   CourseUnlock[]
+  /// Random code in the public portfolio link (/portfolio/<code>). A new code revokes the old link.
+  portfolioToken  String          @unique @default(dbgenerated("replace((gen_random_uuid())::text, '-'::text, '')"))
+  portfolio       PortfolioImage[]
 }
 
 model Session {
@@ -343,6 +346,20 @@ model NewsStory {
 
 // Uploaded images. Stored in the database so the app runs without extra infrastructure;
 // swap src/lib/storage.ts for S3 / Supabase Storage when volume grows.
+// One image in a user's portfolio (max 20). The bytes live in FileUpload / the uploads bucket.
+model PortfolioImage {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileId    String
+  width     Int
+  height    Int
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([userId, order])
+}
+
 // Metadata for an uploaded image; the bytes live in the Neon "uploads" bucket at images/<id>.
 model FileUpload {
   id        String   @id @default(cuid())

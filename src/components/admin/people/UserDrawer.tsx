@@ -13,6 +13,7 @@ import { impersonate, sendPasswordReset, setDirectCourse, setUserActive, setUser
 import { EmptyNote, Initials, MUTED, ProgressLine, SECTION } from './bits';
 import { EQUIPMENT_FIELDS, EQUIPMENT_MAX, type Equipment } from '@/lib/equipment';
 import type { ActionResult, CourseLine, GroupOption, RegionOption, UserDetail } from './types';
+import { PORTFOLIO_MAX } from '@/lib/portfolio';
 
 export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetail; groups: GroupOption[]; regions: RegionOption[]; onClose: () => void }) {
   const toast = useToast();
@@ -151,6 +152,26 @@ export function UserDrawer({ user, groups, regions, onClose }: { user: UserDetai
             }}
           />
         ) : null}
+      </Section>
+
+      <Section title="Portfolio" aside={`${user.portfolio.count} of ${PORTFOLIO_MAX} images`}>
+        {user.portfolio.count ? (
+          <a href={user.portfolio.url} target="_blank" rel="noopener noreferrer" className="pp-hoverbg" style={{ display: 'flex', gap: 6, padding: 8, borderRadius: 16, background: '#000', textDecoration: 'none' }} title="Open portfolio in a new tab">
+            {user.portfolio.previews.map((src) => (
+              <img key={src} src={src} alt="" style={{ height: 72, flex: 1, minWidth: 0, objectFit: 'cover', borderRadius: 6 }} />
+            ))}
+          </a>
+        ) : (
+          <EmptyNote>No portfolio images yet. {user.name} can add them under My profile.</EmptyNote>
+        )}
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+          <a href={user.portfolio.url} target="_blank" rel="noopener noreferrer" className="efkt-btn efkt-btn--secondary efkt-btn--sm">
+            Open portfolio <i className="ph ph-arrow-square-out" style={{ fontSize: 20 }} aria-hidden />
+          </a>
+          <Button size="sm" variant="ghost" iconLeft="copy" onClick={() => navigator.clipboard.writeText(user.portfolio.url).then(() => toast('Portfolio link copied'), () => window.prompt('Portfolio link', user.portfolio.url))}>
+            Copy link
+          </Button>
+        </div>
       </Section>
 
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
