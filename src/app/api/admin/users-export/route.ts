@@ -5,6 +5,8 @@ import { getScope } from '@/lib/scope';
 import { ROLE_LABEL, ROLES } from '@/lib/labels';
 import { EQUIPMENT_FIELDS } from '@/lib/equipment';
 import { xlsx, type Table } from '@/lib/spreadsheet';
+import { appUrl } from '@/lib/tokens';
+import { portfolioPath } from '@/lib/portfolio';
 import { userScopeWhere } from '@/components/admin/people/data';
 
 export const dynamic = 'force-dynamic';
@@ -35,18 +37,23 @@ export async function GET(req: Request) {
   };
   const users = await db.user.findMany({
     where,
-    include: { groups: { select: { name: true }, orderBy: { createdAt: 'asc' } }, region: { select: { name: true } } },
+    include: {
+      groups: { select: { name: true }, orderBy: { createdAt: 'asc' } },
+      region: { select: { name: true } },
+      _count: { select: { portfolio: true } },
+    },
     orderBy: { name: 'asc' },
   });
 
   const table: Table = {
     name: `efkt-brukere-${day(new Date())}`,
     sheet: 'Brukere',
-    head: ['Navn', 'E-post', 'Rolle', 'Land', 'Region', 'Grupper', 'Stilling og sted', 'Mobil', 'Kort om deg', ...EQUIPMENT_FIELDS.map((f) => f.label), 'Status', 'Opprettet', 'Sist innlogget'],
+    head: ['Navn', 'E-post', 'Rolle', 'Land', 'Region', 'Grupper', 'Stilling og sted', 'Mobil', 'Kort om deg', ...EQUIPMENT_FIELDS.map((f) => f.label), 'Status', 'Opprettet', 'Sist innlogget', 'Portefølje (bilder)', 'Portefølje-lenke'],
     rows: users.map((u) => [
       u.name, u.email, ROLE_LABEL[u.role], u.country, u.region?.name ?? '', u.groups.map((g) => g.name).join(', '),
       u.jobTitle, u.phone, u.bio, ...EQUIPMENT_FIELDS.map((f) => u[f.key]),
       u.status === 'ACTIVE' ? 'Aktiv' : 'Deaktivert', day(u.createdAt), day(u.lastSeenAt),
+      u._count.portfolio, appUrl(portfolioPath(u.portfolioToken)),
     ]),
   };
 
