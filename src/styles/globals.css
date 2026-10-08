@@ -82,6 +82,9 @@ textarea.efkt-field__input { padding: 0; resize: vertical; }
 /* Sidebar nav item (admin) */
 .efkt-nav { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 20px; color: var(--efkt-white); font-size: 16px; font-weight: 300; text-decoration: none; transition: background var(--efkt-duration) var(--efkt-ease); }
 .efkt-nav:hover { background: rgba(255,255,255,.10); color: var(--efkt-white); }
+/* Sub-item: indented under the item above it. */
+.efkt-nav--sub { margin-left: 16px; padding: 8px 12px; gap: 10px; font-size: 15px; white-space: nowrap; }
+.efkt-nav--sub i { font-size: 18px; }
 .efkt-nav[aria-current='page'] { background: rgba(255,255,255,.14); font-weight: 600; }
 .efkt-nav i { font-size: 20px; color: rgba(255,255,255,.7); }
 .efkt-nav[aria-current='page'] i { color: var(--efkt-coral); }
