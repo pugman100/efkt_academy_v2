@@ -120,7 +120,7 @@ export default async function Dashboard() {
             <h2 style={{ ...H2, fontSize: 40, letterSpacing: '-0.065em' }}>Fortsett der du <span style={{ fontWeight: 800 }}>slapp</span></h2>
             {!tracked.length ? (
               <div style={{ marginTop: 16, fontSize: 16, fontWeight: 300, color: 'var(--text-muted)', textWrap: 'pretty' }}>
-                Du har ingen tildelte kurs ennå. Se i <Link href="/catalog" className="lr-coral" style={{ color: 'var(--efkt-coral)', fontWeight: 500 }}>kurskatalogen</Link> for kurs du kan melde deg på.
+                Du har ingen tildelte kurs ennå. Kursene du får tildelt, dukker opp her.
               </div>
             ) : null}
           </section>

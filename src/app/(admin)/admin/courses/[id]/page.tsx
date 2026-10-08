@@ -149,7 +149,6 @@ async function assignment(course: CourseFull, scope: 'All' | 'Denmark' | 'Norway
       }))}
       categories={course.categories.map((k) => k.name)}
       inherited={inherited}
-      selfEnrol={course.selfEnrol}
     />
   );
 }
