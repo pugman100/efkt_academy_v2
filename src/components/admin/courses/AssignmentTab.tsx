@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Button, Checkbox, Input, Switch, Tag, useToast } from '@/components/ui';
-import { assignCourseUsers, setCourseGroup, setSelfEnrol } from '@/app/(admin)/admin/courses/actions';
+import { Button, Checkbox, Input, Tag, useToast } from '@/components/ui';
+import { assignCourseUsers, setCourseGroup } from '@/app/(admin)/admin/courses/actions';
 import { BulkAssignDialog, type Person } from './BulkAssignDialog';
 import './courses.css';
 
@@ -15,7 +15,6 @@ export function AssignmentTab({
   people,
   categories,
   inherited,
-  selfEnrol,
 }: {
   courseId: string;
   groups: { id: string; name: string; count: number; checked: boolean }[];
@@ -23,7 +22,6 @@ export function AssignmentTab({
   people: Person[];
   categories: string[];
   inherited: { id: string; group: string; category: string }[];
-  selfEnrol: boolean;
 }) {
   const toast = useToast();
   const [pending, start] = useTransition();
@@ -119,7 +117,7 @@ export function AssignmentTab({
 
       <div style={{ ...card, gap: 24 }}>
         <div>
-          <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>Category &amp; catalogue</div>
+          <div style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>Category</div>
           <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)' }}>Groups assigned to a category get every course in it.</div>
         </div>
         <div style={{ padding: 20, background: 'var(--efkt-offwhite)', borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -143,12 +141,6 @@ export function AssignmentTab({
               })}
             </div>
           ) : null}
-        </div>
-        <Switch checked={selfEnrol} onChange={() => run(() => setSelfEnrol(courseId, !selfEnrol))} label="Available for self-enrolment" />
-        <div style={{ fontSize: 14, fontWeight: 300, color: 'var(--text-muted)', lineHeight: 1.6 }}>
-          {selfEnrol
-            ? 'Anyone with portal access can find this course in the catalogue and enrol themselves.'
-            : 'Only assigned users and groups can see this course.'}
         </div>
       </div>
 

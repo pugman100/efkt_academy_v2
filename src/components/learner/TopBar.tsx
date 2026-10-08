@@ -8,7 +8,6 @@ import { Avatar } from '@/components/ui/Avatar';
 
 const TABS = [
   { href: '/', label: 'Mine kurs', match: (p: string) => p === '/' || p.startsWith('/courses') || p.startsWith('/news') },
-  { href: '/catalog', label: 'Kurskatalog', match: (p: string) => p.startsWith('/catalog') },
 ];
 
 /** Deep-navy learner top bar: logo, tabs, "Log in SPA" and the avatar menu. */

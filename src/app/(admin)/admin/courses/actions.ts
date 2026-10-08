@@ -405,14 +405,6 @@ export async function assignCourseUsers(courseId: string, userIds: string[], on:
   return { ok: true, count: users.length };
 }
 
-export async function setSelfEnrol(courseId: string, on: boolean): Promise<Result> {
-  const admin = await requireAdmin();
-  await db.course.update({ where: { id: courseId }, data: { selfEnrol: on } });
-  await audit(admin.id, 'course.selfEnrol', { type: 'course', id: courseId }, { selfEnrol: on });
-  refresh(courseId);
-  return { ok: true };
-}
-
 // ---------- Re-certification ----------
 
 export async function resolveRecert(courseId: string, resetProgress: boolean): Promise<Result<{ reset: number }>> {
