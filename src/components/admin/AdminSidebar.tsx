@@ -7,15 +7,16 @@ import { Logo } from '@/components/ui/Logo';
 import { setScope } from '@/app/(admin)/admin/actions';
 import type { Scope } from '@/lib/labels';
 
-const NAV = [
+// `sub` items are indented under the item above them.
+const NAV: { label: string; icon: string; href: string; sub?: boolean }[] = [
   { label: 'Courses', icon: 'graduation-cap', href: '/admin/courses' },
-  { label: 'Categories', icon: 'squares-four', href: '/admin/categories' },
+  { label: 'Course Categories', icon: 'squares-four', href: '/admin/categories', sub: true },
+  { label: 'Course Completion', icon: 'chart-line-up', href: '/admin/completion', sub: true },
+  { label: 'Bulk assign', icon: 'stack', href: '/admin/bulk-assign', sub: true },
   { label: 'Question bank', icon: 'list-checks', href: '/admin/question-bank' },
   { label: 'Users', icon: 'users-three', href: '/admin/users' },
-  { label: 'Groups', icon: 'users-four', href: '/admin/groups' },
-  { label: 'Bulk assign', icon: 'stack', href: '/admin/bulk-assign' },
-  { label: 'Invitations', icon: 'envelope-simple', href: '/admin/invitations' },
-  { label: 'Completion', icon: 'chart-line-up', href: '/admin/completion' },
+  { label: 'User Groups', icon: 'users-four', href: '/admin/groups' },
+  { label: 'User Invitations', icon: 'envelope-simple', href: '/admin/invitations', sub: true },
   { label: 'News', icon: 'newspaper', href: '/admin/news' },
   { label: 'Teamleaders', icon: 'user-focus', href: '/admin/teamleaders' },
 ];
@@ -51,7 +52,7 @@ export function AdminSidebar({ scope, user }: { scope: Scope; user: { name: stri
         {NAV.map((n) => {
           const on = path === n.href || path.startsWith(n.href + '/');
           return (
-            <Link key={n.href} href={n.href} className="efkt-nav" aria-current={on ? 'page' : undefined}>
+            <Link key={n.href} href={n.href} className={n.sub ? 'efkt-nav efkt-nav--sub' : 'efkt-nav'} aria-current={on ? 'page' : undefined}>
               <i className={`ph ph-${n.icon}`} style={on ? { color: 'var(--efkt-coral)' } : undefined} aria-hidden />
               {n.label}
             </Link>

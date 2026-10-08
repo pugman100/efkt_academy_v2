@@ -1,6 +1,5 @@
 'use server';
 
-import { randomBytes } from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { db } from '@/lib/db';
@@ -85,14 +84,5 @@ export async function movePortfolioImage(imageId: string, dir: -1 | 1): Promise<
   [all[i], all[j]] = [all[j]!, all[i]!];
   await db.$transaction(all.map((x, order) => db.portfolioImage.update({ where: { id: x.id }, data: { order } })));
   refresh(user.portfolioToken);
-  return { ok: true };
-}
-
-/** Issues a new link; the previous link stops working at once. */
-export async function newPortfolioLink(): Promise<Result> {
-  const user = await requireUser();
-  const old = user.portfolioToken;
-  await db.user.update({ where: { id: user.id }, data: { portfolioToken: randomBytes(16).toString('hex') } });
-  refresh(old);
   return { ok: true };
 }

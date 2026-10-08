@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 import { shrinkImage } from '@/lib/upload-client';
 import { PORTFOLIO_MAX } from '@/lib/portfolio';
-import { addPortfolioImage, deletePortfolioImage, movePortfolioImage, newPortfolioLink, replacePortfolioImage } from '@/app/(learner)/profile/portfolio-actions';
+import { addPortfolioImage, deletePortfolioImage, movePortfolioImage, replacePortfolioImage } from '@/app/(learner)/profile/portfolio-actions';
 
 type Img = { id: string; src: string; width: number; height: number };
 type Result = { ok: true } | { ok: false; error: string };
@@ -110,15 +110,6 @@ export function PortfolioEditor({ name, link, images }: { name: string; link: st
         <a href={link} target="_blank" rel="noopener noreferrer" className="efkt-btn efkt-btn--ghost efkt-btn--sm">
           <i className="ph ph-arrow-square-out" style={{ fontSize: 20 }} aria-hidden /> Åpne
         </a>
-        <Button
-          size="sm"
-          variant="ghost"
-          iconLeft="arrows-clockwise"
-          disabled={working}
-          onClick={() => window.confirm('Lage en ny lenke? Den gamle lenken slutter å virke med en gang.') && run(() => newPortfolioLink(), 'Ny lenke er laget')}
-        >
-          Ny lenke
-        </Button>
       </div>
 
       {images.length ? (
