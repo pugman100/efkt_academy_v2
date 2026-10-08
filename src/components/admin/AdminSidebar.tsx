@@ -15,7 +15,7 @@ const NAV: { label: string; icon: string; href: string; sub?: boolean }[] = [
   { label: 'Bulk assign', icon: 'stack', href: '/admin/bulk-assign', sub: true },
   { label: 'Question bank', icon: 'list-checks', href: '/admin/question-bank' },
   { label: 'Users', icon: 'users-three', href: '/admin/users' },
-  { label: 'User Groups', icon: 'users-four', href: '/admin/groups' },
+  { label: 'User Groups', icon: 'users-four', href: '/admin/groups', sub: true },
   { label: 'User Invitations', icon: 'envelope-simple', href: '/admin/invitations', sub: true },
   { label: 'News', icon: 'newspaper', href: '/admin/news' },
   { label: 'Teamleaders', icon: 'user-focus', href: '/admin/teamleaders' },
